@@ -1,0 +1,194 @@
+<extend name="template/Maruti/common.html"/>
+<block name="body">
+
+<div id="content">
+  <div id="content-header">
+    <div id="breadcrumb"> <a href="__ROOT__/index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a> <a href="__ROOT__/order.html" class="current">会员等级列表</a> </div>
+	<h1><empty name="data">新增会员等级<else />会员等级详情</empty></h1>
+  </div>
+  <div class="container-fluid">
+		<div class="row-fluid" id="select_map">
+					<div class="span12">
+						<div class="widget-box">
+							<div class="widget-title">
+								<span class="icon">
+									<i class="icon-align-justify"></i>									
+								</span>
+								<h5><empty name="data">新增会员等级<else />会员等级详情</empty></h5>
+							</div>
+							<div class="widget-content nopadding">
+								<form action="__SELF__" method="get" class="myform form-horizontal">									
+									<div class="control-group">
+										<label class="control-label">等级名:</label>											
+										<div class="controls"><input name="name" type="text" class="span3" placeholder="等级名" value="[{$data.name}]" />
+										<div id="error_name" ><error class="color-red hidden"></error></div>
+										</div>
+										
+									</div>
+									<div class="control-group">
+										<label class="control-label">条件数值:</label>											
+										<div class="controls"><input name="auth_num" type="text" class="span3" placeholder="条件数值" value="[{$data.auth_num}]" /> 
+										<div id="error_name" ><error class="color-red hidden"></error></div>
+										</div>
+										
+									</div>	
+									<div class="control-group">
+										<label class="control-label">折扣%:</label>											
+										<div class="controls"><input name="discount" type="text" class="span1" placeholder="折扣" value="[{$data.discount}]" />%
+										<div id="error_name" ><error class="color-red hidden"></error></div>
+										</div>
+										
+									</div>			
+									<div class="form-actions">
+										<button type="button" id="confirm_submit" class="btn btn-success ajax-post" url="" target-form="myform"><empty name="data">添加<else />保存</empty></button>
+											<button type="button" class="btn btn-warning"  onclick="window.location.href='__ROOT__/membergrade.html'">返回</button>
+									</div>
+								</form>
+							</div>
+						</div>						
+					</div>
+				</div>
+       
+      </div>
+    </div>
+  </div>
+</div>
+
+	
+
+<script src="__JS__/jquery.min.js"></script> 
+<script src="__JS__/jquery.ui.custom.js"></script> 
+<script src="__JS__/bootstrap.min.js"></script> 
+<script src="__JS__/select2.min.js"></script> 
+ <script src="__JS__/bootstrap-datepicker.js"></script>
+ <script src="__JS__/bootstrap-colorpicker.js"></script>
+<script src="__JS__/jquery.dataTables.min.js"></script> 
+ <script src="__JS__/jquery.uniform.js"></script>
+<script src="__JS__/maruti.js"></script> 
+<script src="__JS__/maruti.tables.js"></script>
+ <script src="__JS__/maruti.form_common.js"></script>
+<script src="__JS__/maruti.popup.js"></script>
+<script src="__JS__/maruti.ajax.js"></script>
+<script>
+$(document).on('blur','input',function(){
+  var name=$(this).attr('name');
+  var vlaue=$(this).val();
+  switch(name)
+  {
+	case "name":
+	if(vlaue.length==0){
+			$(this).addClass('redborder');
+			$(this).siblings('div').find('error').html("<span>*</span>请输入等级名");
+			$(this).siblings('div').find('error').removeClass('hidden');
+			$("#confirm_submit").attr("disabled",true);
+	}else{
+		$(this).removeClass('redborder');
+		$(this).siblings('div').find('error').html("");
+		$(this).siblings('div').find('error').addClass('hidden');
+		$("#confirm_submit").attr("disabled",false);
+	}
+	break;
+	case "auth_num":
+	if(vlaue.length==0){
+			$(this).addClass('redborder');
+			$(this).siblings('div').find('error').html("<span>*</span>请输入条件数值");
+			$(this).siblings('div').find('error').removeClass('hidden');
+			$("#confirm_submit").attr("disabled",true);
+			
+	}else{
+		$(this).removeClass('redborder');
+		$(this).siblings('div').find('error').html("");
+		$(this).siblings('div').find('error').addClass('hidden');
+		$("#confirm_submit").attr("disabled",false);
+
+	}
+	break;
+	case "discount":
+	if(vlaue.length==0){
+			$(this).addClass('redborder');
+			$(this).siblings('div').find('error').html("<span>*</span>请输入折扣");
+			$(this).siblings('div').find('error').removeClass('hidden');
+			$("#confirm_submit").attr("disabled",true);
+			
+	}else{
+		$(this).removeClass('redborder');
+		$(this).siblings('div').find('error').html("");
+		$(this).siblings('div').find('error').addClass('hidden');
+		$("#confirm_submit").attr("disabled",false);
+	}
+	break;
+	}
+})
+$("#goodsname .dropdown-menu li a").click(function(){
+	var goodsid=$(this).attr('data-id');
+	var goodsname=$(this).html();
+	$("input[name='goodsid']").val(goodsid);
+	$(this).parent().parent().siblings('.goodsname').html(goodsname);
+
+})
+//数据格式验证int
+$(document).on('change',".int",function(){
+	var val=parseInt($(this).val());
+	if(isNaN(val) || val==0){
+		$(this).val(1);
+	}else{
+		$(this).val(val);
+		}
+		change_money();
+})
+</script>
+<script>
+
+		
+		$('#confirm_submit').click(function(){
+			var name=$('input[name="name"]').val();	
+			var stat=1;
+				if(name.length==0){
+					$("input[name='name']").addClass('redborder');
+					$("input[name='name']").siblings('div').find('error').html("<span>*</span>请输入等级名");
+					$("input[name='name']").siblings('div').find('error').removeClass('hidden');
+					stat=0;
+				}
+			var auth_num=$('input[name="auth_num"]').val();									
+			if(auth_num.length==0){
+				$("input[name='auth_num']").addClass('redborder');
+				$("input[name='auth_num']").siblings('div').find('error').html("<span>*</span>请输入条件数值");
+				$("input[name='auth_num']").siblings('div').find('error').removeClass('hidden');
+				stat=0;
+			}
+			var discount=$('input[name="discount"]').val();									
+			if(discount==0){
+				$("input[name='discount']").addClass('redborder');
+				$("input[name='discount']").siblings('div').find('error').html("<span>*</span>请输入折扣");
+				$("input[name='discount']").siblings('div').find('error').removeClass('hidden');
+				stat=0;
+			}
+			if(stat){
+				var url='__SELF__';		
+				var data={};
+				data['name']=name;
+				data['value']=value;
+				data['discount']=discount;
+				$.post(url,data).success(function(data){
+					if (data.status==1) {
+						$('#popbox .controls').html(data['info']);
+						center($("#popbox"));
+						 setTimeout(function(){
+						window.location.href="__ROOT__/membergrade.html";
+						},1500);
+					}else{
+						$('#popbox .controls').html(data['info']);
+						center($("#popbox"));
+						return false;
+					}
+				});
+			}							
+		})
+
+		function isPhone(phone) { 
+			 var pattern = /^1[34578]\d{9}$/; 
+			 return pattern.test(phone); 
+		}
+</script>
+</body>
+</block>

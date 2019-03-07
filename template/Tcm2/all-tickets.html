@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="description" content=""/>
+    <meta name="keywords" content=""/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/><!-- 是否启用 WebApp 全屏模式 -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/><!-- 设置状态栏的背景颜色 -->
+    <meta name="viewport" content="initial-scale=1.0,user-scalable=no,width=device-width,minimum-scale=1.0,maximum-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no"/><!-- 禁止数字识自动别为电话号码 --><!-- 不让android识别邮箱 -->
+	<title>天辅安中医馆我的卡券</title>
+	<link rel="stylesheet" type="text/css" href="__CSS__/common.css">
+	<link rel="stylesheet" type="text/css" href="__CSS__/style.css">
+	<link rel="stylesheet" type="text/css" href="__CSS__/mescroll.min.css">
+	<script type="text/javascript" src="__JS__/jquery-1.11.3.min.js"></script>
+	<script type="text/javascript" src="__JS__/resize.js"></script>
+	<script type="text/javascript" src="__JS__/common.js"></script>
+	<script type="text/javascript" src="__JS__/mescroll.min.js"></script>
+</head>
+<body class="bg-white">
+	<div class="title-info">
+		<a href="javascript:history.go(-1);" class="back-link">
+			<i class="icon-left-arrow"></i>返回
+		</a>
+		已领卡券
+	</div>
+	<div class="ticket-container all-tickets-container mescroll" id="mescroll">
+		<div class="canUse-ticket" id="data-list"><!-- used-ticket、notUse-ticket -->
+			<ul class="ticket-list">
+				<li>
+					<a href="ticket-detail.html" class="ticket-link">
+						<div class="left ticket-logo">
+							<img src="__IMAGES__/logo.png">
+						</div>
+						<div class="left ticket-info">
+							<div class="ticket-name">天辅安中医馆代金券</div>
+							<div class="ticket-num">数量：10张</div>
+						</div>
+						<span class="ticket-state-wrap">
+							<span class="red-state"></span>
+							<span class="ticket-state">未使用</span>
+						</span>
+						<span class="ticket-past">3天后过期</span>
+					</a>
+				</li>
+				<li>
+					<a href="ticket-detail.html" class="ticket-link">
+						<div class="left ticket-logo">
+							<img src="__IMAGES__/logo.png">
+						</div>
+						<div class="left ticket-info">
+							<div class="ticket-name">天辅安中医馆代金券</div>
+							<div class="ticket-num">数量：10张</div>
+						</div>
+						<span class="ticket-state-wrap">
+							<span class="red-state"></span><!-- yellows-state、grey-state -->
+							<span class="ticket-state">未使用</span>
+						</span>
+						<span class="ticket-past">3天后过期</span>
+					</a>
+				</li>
+				<li>
+					<a href="ticket-detail.html" class="ticket-link">
+						<div class="left ticket-logo">
+							<img src="__IMAGES__/logo.png">
+						</div>
+						<div class="left ticket-info">
+							<div class="ticket-name">天辅安中医馆代金券</div>
+							<div class="ticket-num">数量：10张</div>
+						</div>
+						<span class="ticket-state-wrap">
+							<span class="red-state"></span><!-- yellows-state、grey-state -->
+							<span class="ticket-state">未使用</span>
+						</span>
+						<span class="ticket-past">3天后过期</span>
+					</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<script type="text/javascript">
+		$(function(){
+			var mescroll = new MeScroll("mescroll", {
+				down:{
+					use:false
+				},
+				up: {
+					callback: upCallback, //上拉加载的回调
+					empty:{
+						wrapId :'data-list',
+						icon: "__IMAGES__/empty.png",
+  						tip : "暂无相关数据",
+					}
+				}
+			});
+
+			//上拉加载的回调 page = {num:1, size:10}; num:当前页 默认从1开始, size:每页数据条数,默认10
+			function upCallback(page){
+				$.ajax({
+					url: '/path/to/file',
+					type: 'GET',
+					dataType: 'json',
+					data: page,
+					success:function(curPageData){
+						mescroll.endByPage(curPageData.length, totalPage);
+						setListData(curPageData);
+					},
+					error: function(e) {
+						//联网失败的回调,隐藏下拉刷新和上拉加载的状态
+						mescroll.endErr();
+					}
+				})
+			}
+
+			function setListData(curPageData){
+				var listData = [];
+				for (var i = 0; i < curPageData.length; i++) {
+					listData.push(curPageData[i]);
+				}
+			}
+		})
+	</script>
+</body>
+</html>

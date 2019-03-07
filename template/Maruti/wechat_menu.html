@@ -1,0 +1,120 @@
+<extend name="template/Maruti/common.html"/>
+<block name="body">
+<link rel="stylesheet" type="text/css" href="__CSS__/base.css">
+<link rel="stylesheet" type="text/css" href="__CSS__/module.css">
+
+<div id="content">
+  <div id="content-header">
+    <div id="breadcrumb"> <a href="__ROOT__/index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a> <a href="__ROOT__/wechatmenu.html" class="current">公众号菜单</a> </div>
+	<notempty name="twoMenu">
+	  <div  class="quick-actions_homepage">
+		<ul class="quick-actions">
+			<foreach name="twoMenu" item="two_menu">
+			  <li> <a href="__ROOT__/[{$two_menu.tip}]"> <i class="[{$two_menu.icon}]"></i>[{$two_menu.title}]</a> </li>
+			</foreach>
+		</ul>
+	  </div>
+	<else />
+	 <h1>[{$two_title}]</h1>
+	</notempty>
+  </div>
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="span12"> 
+        <div class="widget-box">
+          <div class="widget-title"><span class="icon"><i class="icon-signal"></i></span>
+            <h5>公众号菜单管理</h5>
+          </div>
+          <div class="widget-content">
+            <div class="row-fluid">
+              <div class="span12 category">
+			   <div class="span12" style="background-color: #e5e5e5;">
+			   <span class="btn ajax-post confirm" onclick="<eq name="topmenu" value="3">alert('一级菜单最多只能存在3个')<else />javascript:window.location.href='[{:U('add')}]';</eq>"  style="margin:5px;padding:8px 12px;color:#333;background-color:#fff;border: 1px solid #ddd;"> <i class="icon-plus"></i> 新增一级菜单</span>
+			   </div>
+				 <table class="table table-bordered table-striped with-check">
+              <thead>
+                <tr>
+                  <th class="hide"><input type="checkbox"  id="title-table-checkbox" name="title-table-checkbox" /></th>
+                  <th width="5%">折叠</th>
+                  <th width="15%">排序</th>
+				  <th width="15%">级别</th>
+                  <th>名称</th>
+				  <th width="15%">操作</th>
+                </tr>
+              </thead>
+			  </table>
+			  [{:R('Wechatmenu/tree', array($tree))}]
+              </div>
+            </div></div></div>
+             
+          
+      </div>
+    </div> 
+  </div>
+</div>
+<script src="__JS__/excanvas.min.js"></script> 
+<script src="__JS__/jquery.min.js"></script> 
+<script src="__JS__/jquery.ui.custom.js"></script> 
+<script src="__JS__/bootstrap.min.js"></script> 
+<script src="__JS__/jquery.flot.min.js"></script> 
+<script src="__JS__/jquery.flot.resize.min.js"></script> 
+<script src="__JS__/jquery.peity.min.js"></script> 
+<script src="__JS__/fullcalendar.min.js"></script> 
+<script src="__JS__/maruti.js"></script> 
+<script src="__JS__/maruti.dashboard.js"></script> 
+<script src="__JS__/maruti.popup.js"></script>
+<script src="__JS__/maruti.ajax.js"></script>
+<script type="text/javascript">
+		(function($){
+			/* 分类展开收起 */
+			$(".category dd").prev().find(".fold i").addClass("icon-unfold")
+				.click(function(){
+					var self = $(this);
+					if(self.hasClass("icon-unfold")){
+						self.closest("dt").next().slideUp("fast", function(){
+							self.removeClass("icon-unfold").addClass("icon-fold");
+						});
+					} else {
+						self.closest("dt").next().slideDown("fast", function(){
+							self.removeClass("icon-fold").addClass("icon-unfold");
+						});
+					}
+				});
+
+			/* 三级分类删除新增按钮 */
+			$(".category dd dd .add-sub").remove();
+
+			/* 实时更新分类信息 */
+			$(".category")
+				.on("submit", "form", function(){
+					var self = $(this);
+					$.post(
+						self.attr("action"),
+						self.serialize(),
+						function(data){
+							/* 提示信息 */
+							var name = data.status ? "success" : "error", msg;
+							msg = self.find(".msg").addClass(name).text(data.info.error)
+									  .css("display", "inline-block");
+							setTimeout(function(){
+								msg.fadeOut(function(){
+									msg.text("").removeClass(name);
+								});
+							}, 1000);
+						},
+						"json"
+					);
+					return false;
+				})
+                .on("focus","input",function(){
+                    $(this).data('param',$(this).closest("form").serialize());
+
+                })
+                .on("blur", "input", function(){
+                    if($(this).data('param')!=$(this).closest("form").serialize()){
+                        $(this).closest("form").submit();
+                    }
+                });
+		})(jQuery);
+	</script>
+</block>

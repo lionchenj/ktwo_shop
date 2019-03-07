@@ -1,0 +1,151 @@
+<extend name="template/Maruti/common.html"/>
+<block name="body">
+<style>
+.counter{
+    border: medium none;
+    height: 27px;
+    line-height: 27px;
+    outline: medium none;
+    padding: 0;
+    text-align: center;
+    vertical-align: top;
+    width: 50px;
+}
+</style>
+<style>
+
+.box1{ 
+	background-color:#FFF;
+	width:430px;
+	height:430px;
+	border:3px solid transparent; 
+	overflow: hidden !important; 
+	text-align: left;
+	position:absolute;
+	-moz-border-image:url(__IMG__/css-border-bg.jpg) 3 3 round;  /* Old Firefox */	
+	-webkit-border-image:url(__IMG__/css-border-bg.jpg) 3 3 round;    /* Safari */	
+	-o-border-image:url(__IMG__/css-border-bg.jpg) 3 3 round;   /* Opera */	
+	border-image:url(__IMG__/css-border-bg.jpg) 3 3 round; 
+	box-shadow:8px 10px 20px #b6b6b6;
+    top: 30%;
+	left:30%;
+	display:none;
+	z-index:9999;
+}  
+ .normal_text {
+    padding: 15px 10px;
+    text-align: center;
+    font-size: 14px;
+    line-height: 20px;
+} 
+.box1 .controls{
+	margin-left: 20%;
+}
+.box1 label{
+	height:50px;
+	margin-top:13px;
+}
+.box {
+    width:100%;
+    height:100%;
+    position:absolute;
+    top:0;
+    left:0;
+    z-index:2;
+    background-color: grey;
+    opacity: 0.5;
+    /*兼容IE8及以下版本浏览器*/
+    filter: alpha(opacity=30);
+    display:none;
+}
+.select2-container{
+	width:150px;
+}
+</style>
+<div id="content">
+  <div id="content-header">
+    <div id="breadcrumb"> <a href="__ROOT__/index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a> <a href="__ROOT__/member.html" class="current">会员管理</a> </div>
+	<h1>新增会员</h1>
+  </div>
+  <div class="container-fluid">
+		<div class="row-fluid" id="select_map">
+					<div class="span12">
+						<div class="widget-box">
+							<div class="widget-title">
+								<span class="icon">
+									<i class="icon-align-justify"></i>									
+								</span>
+								<h5>新增会员</h5>
+							</div>
+							<div class="widget-content nopadding">
+								<form action="__SELF__" method="post" class="myform form-horizontal">								
+									<div class="control-group">
+										<label class="control-label">登陆账号:</label>											
+										<div class="controls"><input name="username" type="text" class="span3" placeholder="登陆账号"  /> 
+										<div><error class="color-red hidden"></error></div>
+										</div>										
+									</div>									
+									<div class="control-group">
+                                        <label class="control-label">登陆密码</label>
+                                        <div class="controls">
+										<input type="text" name="password" class="span3"  placeholder="登陆密码"  >
+										<div><error class="color-red hidden"></error></div>
+                                        </div>
+                                    </div>									
+									<div class="control-group">
+										<label class="control-label">绑定邮箱:</label>
+										<div class="controls ">									
+											<input type="text" name="email"  class="span3" placeholder="绑定邮箱"   class="span2"  /><div></div>														
+										</div>
+									</div>
+									<div class="control-group">
+										<label class="control-label">角色组:</label>
+										<div class="controls">
+											<select name="group" id="group">
+		
+											<foreach name="group_list" item="vo">
+											<option value ="[{$vo.id}]">[{$vo.title}]</option>
+											</foreach>
+											</select>
+										</div>								
+										</div>
+								<div class="control-group">
+										<label class="control-label">所属门店:</label>
+										<div class="controls">
+											<select name="cinema" id="cinema">
+											<option value ="0">不限</option>
+											<foreach name="cinema" item="vo">
+											<option value ="[{$vo.id}]">[{$vo.name}]</option>
+											</foreach>
+											</select>
+										</div>								
+										</div>										
+									<div class="form-actions">
+										<button type="submit"  class="btn btn-success ajax-post"  target-form="myform">保存</button>
+											<button type="button" class="btn btn-warning"  onclick="window.location.href='__ROOT__/admin.html'">返回</button>
+									</div>
+								</form>
+							</div>
+						</div>						
+					</div>
+				</div>
+       
+      </div>
+    </div>
+  </div>
+</div>
+<script src="__JS__/jquery.min.js"></script> 
+<script src="__JS__/jquery.ui.custom.js"></script> 
+<script src="__JS__/bootstrap.min.js"></script> 
+<script src="__JS__/select2.min.js"></script> 
+ <script src="__JS__/bootstrap-datepicker.js"></script>
+ <script src="__JS__/bootstrap-colorpicker.js"></script>
+<script src="__JS__/jquery.dataTables.min.js"></script> 
+ <script src="__JS__/jquery.uniform.js"></script>
+<script src="__JS__/maruti.js"></script> 
+<script src="__JS__/maruti.tables.js"></script>
+ <script src="__JS__/maruti.form_common.js"></script>
+<script src="__JS__/maruti.popup.js"></script>
+<script src="__JS__/maruti.ajax.js"></script>
+</body>
+</block>

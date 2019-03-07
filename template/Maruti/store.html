@@ -1,0 +1,216 @@
+<extend name="template/Maruti/common.html"/>
+<block name="body">
+<div id="content">
+  <div id="content-header">
+    <div id="breadcrumb"> <a href="__ROOT__/index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a> <a href="__ROOT__/goods.html" class="current">策略列表</a> </div>
+	<h1>门店列表</h1>
+  </div>
+  <div class="container-fluid">
+		<div class="row-fluid" id="select_map" <neq name="select_status" value="1">style="display:none"</neq>>
+					<div class="span12">
+						<div class="widget-box">
+							<div class="widget-title">
+								<span class="icon">
+									<i class="icon-align-justify"></i>									
+								</span>
+								<h5>高级检索</h5>
+							</div>
+							<div class="widget-content nopadding">
+								<form action="[{:U('index')}]" method="get" class="form-horizontal">
+									<div class="control-group">
+										<label class="control-label">门店名称:</label>
+										<div class="controls"><input name="branch_name" type="text" class="span3" placeholder="门店名称(模糊查找)" value="[{$_GET['username']?$_GET['username']:''}]"/> </div>
+									</div>
+									<div class="control-group">
+										<label class="control-label">门店id:</label>
+										<div class="controls"><input name="poi_id" type="text" class="span3" placeholder="门店id" value="[{$_GET['mobile']?$_GET['mobile']:''}]"/> </div>
+									</div>
+									<div class="control-group">
+										<label class="control-label">状态</label>
+										<div class="controls">
+										<empty name="_GET['status']">
+											<label><input type="checkbox" name="status[]" checked="checked" value="1"/>已通过</label>
+											<label><input type="checkbox" name="status[]" checked="checked" value="2"/>审核中</label>
+											<label><input type="checkbox" name="status[]" checked="checked" value="3"/>已拒绝</label>
+											<label><input type="checkbox" name="status[]" checked="checked" value="-1"/>已删除</label>
+										<else />
+				
+										<if condition="in_array(1,$status)">
+										<label><input type="checkbox" name="status[]" checked="checked" value="1"/>已通过</label>
+										<else />
+										<label><input type="checkbox" name="status[]" value="1"/>已通过</label>
+										</if>
+										<if condition="in_array(2,$status)">
+										<label><input type="checkbox" name="status[]" checked="checked" value="2"/>审核中</label>
+										<else />
+										<label><input type="checkbox" name="status[]" value="2"/>审核中</label>
+										</if>
+										<if condition="in_array(3,$status)">
+										<label><input type="checkbox" name="status[]" checked="checked" value="3"/>已拒绝</label>
+										<else />
+										<label><input type="checkbox" name="status[]" value="3"/>已拒绝</label>
+										</if>
+										<if condition="in_array(-1,$status)">
+										<label><input type="checkbox" name="status[]" checked="checked" value="-1"/>已删除</label>
+										<else />
+										<label><input type="checkbox" name="status[]" value="-1"/>已删除</label>
+										</if>
+										</empty>
+										</div>
+									</div>                             
+                                    <div class="control-group">
+                                        <label class="control-label">时间区间</label>
+                                        <div class="controls">
+                                            <input type="text" name="starttime" data-date="[{:time_format(null,'Y-m-d')}]" data-date-format="yyyy-mm-dd" value="[{$_GET['starttime']}]" placeholder="开始时间 格式YYYY-MM-DD" class="datepicker" /> --
+											<input type="text" name="endtime" data-date="[{:time_format(null,'Y-m-d')}]" data-date-format="yyyy-mm-dd" value="[{$_GET['endtime']}]" placeholder="结束时间 格式YYYY-MM-DD" class="datepicker" /><span style="margin-left:25px;">(开始时间默认为00:00:00、结束时间默认为23:59:59)</span>
+                                        </div>
+                                    </div>
+									
+									
+                                    
+									<div class="form-actions">
+										<button type="submit" class="btn btn-success">立即查询</button>
+									</div>
+								</form>
+							</div>
+						</div>						
+					</div>
+				</div>
+                
+        <div class="widget-box">
+          <div class="widget-title"> <span class="icon"> <i class="icon-th"></i> </span>
+            <h5>门店列表</h5>
+            <span class="label label-info <neq name="select_status" value="1">click-show<else />click-hide</neq>"><neq name="select_status" value="1"><i class="icon-search"></i>高级检索<else /><i class="icon-minus-sign"></i>关闭检索</span></neq></span> </div>
+          <div class="widget-content">
+		  <form name="myform" id="myform" method="post">
+            <table class="table table-bordered table-striped with-check">
+              <thead>
+                <tr>
+                  <th><input type="checkbox" id="title-table-checkbox" name="title-table-checkbox" /></th>
+                  <th>ID</th>
+                  <th>门店名</th>
+				  <th>门店地址</th>
+				  <th>状态</th>
+				  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+				<foreach name="_list" item="vo">
+                  <td><input type="checkbox" class="ids" name="id[]" value="[{$vo.id}]"  /></td>
+                  <td>[{$vo.id}]</td>
+                  <td>[{$vo.branch_name}]</td>
+				  <td>[{$vo.province}][{$vo.city}][{$vo.district}][{$vo.address}]</td>
+				  <td>
+					<eq name="vo.status" value="-1">无效门店</eq>
+					<eq name="vo.status" value="1">已通过</eq>
+					<eq name="vo.status" value="2">审核中</eq>
+					<eq name="vo.status" value="3">已拒绝</eq>
+				  </td>
+				    <td>
+					<span class="fr">
+					<a class="btn btn-primary btn-mini" href="[{:U('edit',array('id'=>$vo['goodsid']))}]">详情</a>
+					<eq name="vo.status" value="1">
+					<a class="btn btn-danger btn-mini confirm ajax-get" href="[{:U('operate',array('type'=>'del','id'=>$vo['id']))}]">删除门店</a>
+					</eq>
+					</span>
+					</td>
+                </tr>
+				</foreach>
+              </tbody>
+            </table>
+			</form>
+			 <div class="dataTables_paginate fg-buttonset ui-buttonset fg-buttonset-multi ui-buttonset-multi paging_full_numbers">
+			[{$_page}]
+			 </div>
+          </div>
+        </div>
+       
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="__JS__/jquery.min.js"></script> 
+<script src="__JS__/jquery.ui.custom.js"></script> 
+<script src="__JS__/bootstrap.min.js"></script> 
+<script src="__JS__/select2.min.js"></script> 
+ <script src="__JS__/bootstrap-datepicker.js"></script>
+ <script src="__JS__/bootstrap-colorpicker.js"></script>
+<script src="__JS__/jquery.dataTables.min.js"></script> 
+ <script src="__JS__/jquery.uniform.js"></script>
+<script src="__JS__/maruti.js"></script> 
+<script src="__JS__/maruti.tables.js"></script>
+ <script src="__JS__/maruti.form_common.js"></script>
+<script src="__JS__/maruti.popup.js"></script>
+<script src="__JS__/maruti.ajax.js"></script>
+<script>
+$(document).on('click','.click-show',function(){
+$("#select_map").show();
+$(this).html('<i class="icon-minus-sign"></i>关闭检索</span>');
+$(this).addClass('click-hide');
+$(this).removeClass('click-show');	
+
+})
+$(document).on('click','.click-hide',function(){
+$("#select_map").hide();
+$(this).html('<i class="icon-search"></i>高级检索</span> ');
+$(this).addClass('click-show');
+$(this).removeClass('click-hide');	
+
+})
+$("#type .dropdown-menu li a").click(function(){
+	var typeid=$(this).attr('data-id');
+	var type=$(this).html();
+	$("input[name='type']").val(typeid);
+	$(this).parent().parent().siblings('.type').html(type);
+	if(typeid=='0'){
+		$('#futures').hide();
+		$('#classify').hide();
+		$('#shares').hide();
+	}else if(typeid=='1'){
+		$('#futures').hide();
+		$('#classify').show();
+		$('#shares').hide();
+	}else if(typeid=='2'){
+	$('#futures').show();
+		$('#classify').hide();
+		$('#shares').hide();
+	}else if(typeid=='3'){
+		$('#futures').hide();
+		$('#classify').hide();
+		$('#shares').show();
+	}
+
+})
+$("#nickname .dropdown-menu li a").click(function(){
+	var userid=$(this).attr('data-id');
+	var nickname=$(this).html();
+	$("input[name='userid']").val(userid);
+	$(this).parent().parent().siblings('.nickname').html(nickname);
+
+})
+$(".classifyContainer dl dd span").click(function(){
+	$(this).parent().parent().find('span').removeClass('active');
+	$(this).addClass('active');
+	if($(this).hasClass('data-tab')){
+	var data=$(this).attr('data-id');
+		if(data){
+			$(".class-tab").hide();
+			$(".class-tab dd span").removeClass('active');
+			$(".class-"+data).show();
+		}
+		}
+})
+$(".classifyContainer dl dd span").each(function(i){
+	if($(this).hasClass('active')){
+		var data=$(this).attr('data-id');
+		if(data){
+			$(".class-tab").hide();
+			$(".class-"+data).show();
+		}
+	}
+})
+</script>
+</body>
+</block>

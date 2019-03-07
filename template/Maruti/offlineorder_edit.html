@@ -1,0 +1,359 @@
+<extend name="template/Maruti/common.html"/>
+<block name="body">
+<style>
+.counter{
+    border: medium none;
+    height: 27px;
+    line-height: 27px;
+    outline: medium none;
+    padding: 0;
+    text-align: center;
+    vertical-align: top;
+    width: 50px;
+}
+</style>
+<style>
+
+.box1{ 
+	background-color:#FFF;
+	width:430px;
+	height:430px;
+	border:3px solid transparent; 
+	overflow: hidden !important; 
+	text-align: left;
+	position:absolute;
+	-moz-border-image:url(__IMG__/css-border-bg.jpg) 3 3 round;  /* Old Firefox */	
+	-webkit-border-image:url(__IMG__/css-border-bg.jpg) 3 3 round;    /* Safari */	
+	-o-border-image:url(__IMG__/css-border-bg.jpg) 3 3 round;   /* Opera */	
+	border-image:url(__IMG__/css-border-bg.jpg) 3 3 round; 
+	box-shadow:8px 10px 20px #b6b6b6;
+    top: 30%;
+	left:30%;
+	display:none;
+	z-index:9999;
+}  
+ .normal_text {
+    padding: 15px 10px;
+    text-align: center;
+    font-size: 14px;
+    line-height: 20px;
+} 
+.box1 .controls{
+	margin-left: 20%;
+}
+.box1 label{
+	height:50px;
+	margin-top:13px;
+}
+.box {
+    width:100%;
+    height:100%;
+    position:absolute;
+    top:0;
+    left:0;
+    z-index:2;
+    background-color: grey;
+    opacity: 0.5;
+    /*兼容IE8及以下版本浏览器*/
+    filter: alpha(opacity=30);
+    display:none;
+}
+</style>
+<div id="content">
+  <div id="content-header">
+    <div id="breadcrumb"> <a href="__ROOT__/index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a> <a href="__ROOT__/order.html" class="current">订单列表</a> </div>
+	<h1>订单详情</h1>
+  </div>
+  <div class="container-fluid">
+		<div class="row-fluid" id="select_map">
+					<div class="span12">
+						<div class="widget-box">
+							<div class="widget-title">
+								<span class="icon">
+									<i class="icon-align-justify"></i>									
+								</span>
+								<h5>订单详情</h5>
+							</div>
+							<div class="widget-content nopadding">
+								<form action="__SELF__" method="get" class="myform form-horizontal">
+									<notempty name="order_info">
+									<div class="control-group">
+										<label class="control-label">订单号:</label>											
+										<div class="controls"><input name="orderid" type="text" class="span3" placeholder="订单号" value="[{$order_info.orderid}]" readonly="readonly" /> </div>
+									</div>
+									</notempty>
+									<div class="control-group">
+                                        <label class="control-label">用户手机号码</label>
+                                        <div class="controls">
+										<input type="text" name="mobile" class="span3"  placeholder="用户手机号码" value="[{$order_info.mobile}]" >
+										<div><error class="color-red hidden"></error></div>
+                                        </div>
+                                    </div>
+									<div class="control-group">
+                                        <label class="control-label">订单金额</label>
+                                        <div class="controls">
+										<input type="text"  name="money" class="span3"   placeholder="订单金额"  value="[{$order_info.money}]"  >
+										<div><error class="color-red hidden"></error></div>
+                                        </div>
+                                    </div>											
+                                    <div class="control-group">
+										<label class="control-label">订单说明</label>
+										<div class="controls " id="goodsname">										
+											<input type="text" name="goodsname"  class="span3"  placeholder="订单说明" value="[{$order_info['goodsname']}]"  />			
+											<div><error class="color-red hidden"></error></div>											
+										</div>
+									</div>   
+									<div class="control-group">
+										<label class="control-label">短信验证码:</label>
+										<div class="controls ">									
+											<input type="text" name="captcha"  placeholder="短信验证码"   class="span2"  /><button type="button" class="btn btn-success" id="get_captcha">获取验证码</button><div><error class="color-red hidden"></error></div>														
+										</div>
+									</div>   
+									<div class="form-actions">
+										<button type="button" id="confirm_submit" class="btn btn-success ajax-post" url="" target-form="myform">保存</button>
+											<button type="button" class="btn btn-warning"  onclick="window.location.href='__ROOT__/offlineorder.html'">返回</button>
+									</div>
+								</form>
+							</div>
+						</div>						
+					</div>
+				</div>
+       
+      </div>
+    </div>
+  </div>
+</div>
+<div class="box">
+</div>
+	<div class="box1">	
+           <form class="form-vertical" action="__SELF__"> 
+			<div class="control-group normal_text"><h3>支付方式</h3></div>
+               <div class="control-group">										
+					<div class="controls">
+						<label><input type="radio" name="pay_type"  value="1" checked='checked' id='balance'>余额</label>
+						<label><input type="radio" name="pay_type"  value="2" disabled >pos机</label>
+						<label><input type="radio" name="pay_type" value="3" disabled >银行卡</label>
+						<label><input type="radio" name="pay_type" value="4" id="cash">现金</label>														
+					</div>
+				</div> 
+ 
+                <div class="form-actions">                   
+                    <span class=""><input type="button" class="btn btn-success" id="submit_deposit" value="确认支付" /></span>
+                </div>
+            </form>
+	</div>
+
+<script src="__JS__/jquery.min.js"></script> 
+<script src="__JS__/jquery.ui.custom.js"></script> 
+<script src="__JS__/bootstrap.min.js"></script> 
+<script src="__JS__/select2.min.js"></script> 
+ <script src="__JS__/bootstrap-datepicker.js"></script>
+ <script src="__JS__/bootstrap-colorpicker.js"></script>
+<script src="__JS__/jquery.dataTables.min.js"></script> 
+ <script src="__JS__/jquery.uniform.js"></script>
+<script src="__JS__/maruti.js"></script> 
+<script src="__JS__/maruti.tables.js"></script>
+ <script src="__JS__/maruti.form_common.js"></script>
+<script src="__JS__/maruti.popup.js"></script>
+<script src="__JS__/maruti.ajax.js"></script>
+<script>
+$(document).on('blur','input',function(){
+  var name=$(this).attr('name');
+  var vlaue=$(this).val();
+  switch(name)
+  {
+	case "mobile":
+	if(vlaue.length==0||isPhone(vlaue)==false){
+			$(this).addClass('redborder');
+			$(this).siblings('div').find('error').html("<span>*</span>请输入正确手机号码");
+			$(this).siblings('div').find('error').removeClass('hidden');
+			$("#confirm_submit").attr("disabled",true);
+	}else{
+		$(this).removeClass('redborder');
+		$(this).siblings('div').find('error').html("");
+		$(this).siblings('div').find('error').addClass('hidden');
+		$("#confirm_submit").attr("disabled",false);
+	}
+	break;
+	case "money":
+	if(vlaue.length==0){
+			$(this).addClass('redborder');
+			$(this).siblings('div').find('error').html("<span>*</span>请输入订单金额");
+			$(this).siblings('div').find('error').removeClass('hidden');
+			$("#confirm_submit").attr("disabled",true);
+			
+	}else{
+		$(this).removeClass('redborder');
+		$(this).siblings('div').find('error').html("");
+		$(this).siblings('div').find('error').addClass('hidden');
+		$("#confirm_submit").attr("disabled",false);
+
+	}
+	break;
+	case "captcha":
+	if(vlaue.length==0){
+			$(this).addClass('redborder');
+			$(this).siblings('div').find('error').html("<span>*</span>请输入验证码");
+			$(this).siblings('div').find('error').removeClass('hidden');
+			$("#confirm_submit").attr("disabled",true);
+			
+	}else{
+		$(this).removeClass('redborder');
+		$(this).siblings('div').find('error').html("");
+		$(this).siblings('div').find('error').addClass('hidden');
+		$("#confirm_submit").attr("disabled",false);
+	}
+	break;
+	case "goodsname":
+	if(vlaue.length==0){
+			$(this).addClass('redborder');
+			$(this).siblings('div').find('error').html("<span>*</span>请输入订单说明");
+			$(this).siblings('div').find('error').removeClass('hidden');
+			$("#confirm_submit").attr("disabled",true);
+			
+	}else{
+		$(this).removeClass('redborder');
+		$(this).siblings('div').find('error').html("");
+		$(this).siblings('div').find('error').addClass('hidden');
+		$("#confirm_submit").attr("disabled",false);
+	}
+	break;
+	}
+})
+$("#goodsname .dropdown-menu li a").click(function(){
+	var goodsid=$(this).attr('data-id');
+	var goodsname=$(this).html();
+	$("input[name='goodsid']").val(goodsid);
+	$(this).parent().parent().siblings('.goodsname').html(goodsname);
+
+})
+//数据格式验证int
+$(document).on('change',".int",function(){
+	var val=parseInt($(this).val());
+	if(isNaN(val) || val==0){
+		$(this).val(1);
+	}else{
+		$(this).val(val);
+		}
+		change_money();
+})
+</script>
+<script>
+		$('input[name="total"]').on('change',function(){			
+			var money=$(this).val();
+			$('input[name="money"]').val(money);
+			$('#money').show();
+			$(this).val(money);
+		})
+		$('.box').click(function(){
+		$('.box1').hide();
+			$(this).hide();
+		})
+		$('#get_captcha').click(function(){
+			var mobile=$('input[name="mobile"]').val();									
+			if(isPhone(mobile)==false){
+				$("input[name='mobile']").addClass('redborder');
+				$("input[name='mobile']").siblings('div').find('error').html("<span>*</span>请输入正确手机号码");
+				$("input[name='mobile']").siblings('div').find('error').removeClass('hidden');
+			}
+			
+			var url='[{:U('Deposit/mobile_check')}]';
+			var data={};
+			data['mobile']=mobile;
+			data['money']=$('input[name="money"]').val();	
+			$.post(url,data).success(function(data){
+				if (data.status==1) {
+					$('#popbox .controls').html('发送成功');
+					center($("#popbox"));
+					return false;
+				}else{
+					$('#popbox .controls').html(data['info']);
+					center($("#popbox"));
+					return false;
+				}
+			});
+		})
+		$('#confirm_submit').click(function(){
+			var mobile=$('input[name="mobile"]').val();	
+			var stat=1;
+				if(isPhone(mobile)==false){
+					$("input[name='mobile']").addClass('redborder');
+					$("input[name='mobile']").siblings('div').find('error').html("<span>*</span>请输入正确手机号码");
+					$("input[name='mobile']").siblings('div').find('error').removeClass('hidden');
+					stat=0;
+				}
+			var money=$('input[name="money"]').val();									
+			if(money.length==0){
+				$("input[name='money']").addClass('redborder');
+				$("input[name='money']").siblings('div').find('error').html("<span>*</span>请输入订单金额");
+				$("input[name='money']").siblings('div').find('error').removeClass('hidden');
+				stat=0;
+			}
+			var goodsname=$('input[name="goodsname"]').val();									
+			if(goodsname==0){
+				$("input[name='goodsname']").addClass('redborder');
+				$("input[name='goodsname']").siblings('div').find('error').html("<span>*</span>请输入订单说明");
+				$("input[name='goodsname']").siblings('div').find('error').removeClass('hidden');
+				stat=0;
+			}
+			var captcha=$('input[name="captcha"]').val();									
+			if(isPhone(mobile)==false){
+				$("input[name='captcha']").addClass('redborder');
+				$("input[name='captcha']").siblings('div').find('error').html("<span>*</span>请输入验证码");
+				$("input[name='captcha']").siblings('div').find('error').removeClass('hidden');
+				stat=0;
+			}
+			if(stat){
+				var url='[{:U('Offlineorder/operate',array('type'=>'ajax_get_balance'))}]';
+				var data={};
+				data['mobile']=mobile;
+				data['money']=money;
+				$.post(url,data).success(function(data){
+					if (data.status==1) {
+						if(data.info.can==0){
+							$('#uniform-balance>span').removeClass('checked');
+							$('#uniform-balance').addClass('disabled');
+							$('#uniform-cash>span').addClass('checked');
+							$('#balance').attr('disabled',true);
+							
+						}else{
+							$('#balance').attr('disabled',false);					
+						}
+						$('.box1').show();
+						$('.box').show();
+					}else{
+						$('#popbox .controls').html(data['info']);
+						center($("#popbox"));
+						return false;
+					}
+				});
+			}							
+		})
+		$('#submit_deposit').click(function(){										
+			var data=$('.myform').serialize()+'&'+$('.form-vertical').serialize();
+			var url="__SELF__";
+			$.post(url,data).success(function(data){
+				if (data.status==1) {
+					$('.box1').hide();
+					$('.box').hide();
+					$('#popbox .controls').html('创建成功');
+					center($("#popbox"));
+					window.location.href='__ROOT__/offlineorder.html';
+					return false;
+				}else{
+					$('.box1').hide();
+					$('.box').hide();
+					$('#popbox .controls').html(data['info']);
+					center($("#popbox"));
+					return false;
+				}
+			});
+			
+		})
+		function isPhone(phone) { 
+			 var pattern = /^1[34578]\d{9}$/; 
+			 return pattern.test(phone); 
+		}
+</script>
+</body>
+</block>

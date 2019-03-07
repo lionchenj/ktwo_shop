@@ -1,0 +1,184 @@
+<extend name="template/Maruti/common.html"/>
+<block name="body">
+<div id="content">
+  <div id="content-header">
+    <div id="breadcrumb"> <a href="__ROOT__/index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a> <a href="__ROOT__/payorder.html" class="current">充值管理</a> </div>
+	<notempty name="twoMenu">
+	  <div  class="quick-actions_homepage">
+		<ul class="quick-actions">
+			<foreach name="twoMenu" item="two_menu">
+			  <li> <a href="__ROOT__/[{$two_menu.tip}]"> <i class="[{$two_menu.icon}]"></i>[{$two_menu.title}]</a> </li>
+			</foreach>
+		</ul>
+	  </div>
+	<else />
+	 <h1>[{$two_title}]</h1>
+	</notempty>
+  </div>
+  <div class="container-fluid">
+		<div class="row-fluid" id="select_map" <neq name="select_status" value="1">style="display:none"</neq>>
+					<div class="span12">
+						<div class="widget-box">
+							<div class="widget-title">
+								<span class="icon">
+									<i class="icon-align-justify"></i>									
+								</span>
+								<h5>高级检索</h5>
+							</div>
+							<div class="widget-content nopadding">
+								<form action="__SELF__" method="get" class="form-horizontal">
+									<div class="control-group">
+										<label class="control-label">手机号:</label>
+										<div class="controls"><input name="mobile" type="text" class="span3" placeholder="手机号(精确查找)" value="[{$_GET['mobile']?$_GET['mobile']:''}]"/> </div>
+									</div>                                                                                 
+                                    <div class="control-group">
+                                        <label class="control-label">时间区间</label>
+                                        <div class="controls">
+                                            <input type="text" name="starttime" data-date="[{:time_format(null,'Y-m-d')}]" data-date-format="yyyy-mm-dd" value="[{$_GET['starttime']}]" placeholder="开始时间 格式YYYY-MM-DD" class="datepicker" /> --
+											<input type="text" name="endtime" data-date="[{:time_format(null,'Y-m-d')}]" data-date-format="yyyy-mm-dd" value="[{$_GET['endtime']}]" placeholder="结束时间 格式YYYY-MM-DD" class="datepicker" /><span style="margin-left:25px;">(开始时间默认为00:00:00、结束时间默认为23:59:59)</span>
+                                        </div>
+                                    </div>
+									
+									
+                                    
+									<div class="form-actions">
+										<button type="submit" class="btn btn-success">立即查询</button>
+									</div>
+								</form>
+							</div>
+						</div>						
+					</div>
+				</div>
+                
+        <div class="widget-box">
+          <div class="widget-title"> <span class="icon"> <i class="icon-th"></i> </span>
+            <h5>充值记录列表</h5>
+            <span class="label label-info <neq name="select_status" value="1">click-show<else />click-hide</neq>"><neq name="select_status" value="1"><i class="icon-search"></i>高级检索<else /><i class="icon-minus-sign"></i>关闭检索</span></neq></span> </div>
+          <div class="widget-content">
+		  <form name="myform" id="myform" method="post">
+		  <span class="btn" onclick='window.location.href="[{:U('operate',array('type'=>'download'))}]"' target-form="ids" style="padding:8px 12px;color:#333;background-color:#fff;border: 1px solid #ddd;"> <i class="icon-circle-arrow-down"></i> 数据下载</span>
+			<table class="table table-bordered table-striped with-check">
+              <thead>
+                <tr>
+                  <th><input type="checkbox" id="title-table-checkbox" name="title-table-checkbox" /></th>
+                  <th>订单号</th>                 
+				  <th>买家手机</th>
+					<th>操作员</th>				   
+				  <th>价格</th>
+				  <th>下单时间</th>
+				   <th>备注</th>
+				  <th>状态</th>
+				  
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+				<foreach name="_list" item="vo">
+                  <td><input type="checkbox" class="ids" name="id[]" value="[{$vo.orderid}]"  /></td>
+                  <td>[{$vo.orderid}]</td>                  
+				  <td>[{$vo.userid|get_user_mobile}]</td>				 
+				   
+				   <td>
+				   <empty name="vo.operator">线上充值订单<else />
+				   [{$vo.operator|get_nickname}]
+				   </empty></td>	
+				    <td>[{$vo.money}]</td>
+				  <td>[{$vo.create_time|time_format='Y-m-d H:i:s'}]</td>
+				   <td>[{$vo.message}]</td>
+				  <td>充值成功</td>			 
+                </tr>
+				</foreach>
+              </tbody>
+            </table>
+			</form>
+			<div style="display:none">
+										<input type="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"  name="image2" multiple="multiple" style="width:100%;opacity:0;filter:alpha(opacity=0);" id="inputfile"/>
+			</div>
+			 <div class="dataTables_paginate fg-buttonset ui-buttonset fg-buttonset-multi ui-buttonset-multi paging_full_numbers">
+			[{$_page}]
+			 </div>
+          </div>
+        </div>
+       
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="__JS__/jquery.min.js"></script> 
+<script src="__JS__/jquery.ui.custom.js"></script> 
+<script src="__JS__/bootstrap.min.js"></script> 
+<script src="__JS__/select2.min.js"></script> 
+ <script src="__JS__/bootstrap-datepicker.js"></script>
+ <script src="__JS__/bootstrap-colorpicker.js"></script>
+<script src="__JS__/jquery.dataTables.min.js"></script> 
+ <script src="__JS__/jquery.uniform.js"></script>
+<script src="__JS__/maruti.js"></script> 
+<script src="__JS__/maruti.tables.js"></script>
+ <script src="__JS__/maruti.form_common.js"></script>
+<script src="__JS__/maruti.popup.js"></script>
+<script src="__JS__/maruti.ajax.js"></script>
+<script>
+$(document).on('click','.click-show',function(){
+$("#select_map").show();
+$(this).html('<i class="icon-minus-sign"></i>关闭检索</span>');
+$(this).addClass('click-hide');
+$(this).removeClass('click-show');	
+
+})
+$(document).on('click','.click-hide',function(){
+$("#select_map").hide();
+$(this).html('<i class="icon-search"></i>高级检索</span> ');
+$(this).addClass('click-show');
+$(this).removeClass('click-hide');	
+
+})
+$("#goodsname .dropdown-menu li a").click(function(){
+	var goodsid=$(this).attr('data-id');
+	var goodsname=$(this).html();
+	$("input[name='goodsid']").val(goodsid);
+	$(this).parent().parent().siblings('.goodsname').html(goodsname);
+
+})
+$("#nickname .dropdown-menu li a").click(function(){
+	var userid=$(this).attr('data-id');
+	var nickname=$(this).html();
+	$("input[name='userid']").val(userid);
+	$(this).parent().parent().siblings('.nickname').html(nickname);
+
+})
+$("#inputfile").change(function(){
+     //创建FormData对象
+     var data = new FormData();
+     //为FormData对象添加数据
+     //
+     $.each($('#inputfile')[0].files, function(i, file) {
+         data.append('imageFile', file);
+     });
+     $.ajax({
+         url:"[{:U('Offlineorder/operate',array('type'=>'upload'))}]",
+         type:'POST',
+         data:data,
+         cache: false,
+         contentType: false,    //不可缺
+         processData: false,    //不可缺
+         success:function(data){
+			console.log(data);
+				if(data.status==1){
+					$('#popbox .controls').html('导入成功');
+						center($("#popbox"));
+						 setTimeout(function(){
+                        if (data.url) {
+                            location.href=data.url;
+                        }else{
+                            location.reload();
+                        }
+                    },1500);
+				}
+			   
+         }
+     });
+		})
+</script>
+</body>
+</block>

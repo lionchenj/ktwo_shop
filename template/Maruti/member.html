@@ -1,0 +1,225 @@
+<extend name="template/Maruti/common.html"/>
+<block name="body">
+<div id="content">
+  <div id="content-header">
+    <div id="breadcrumb"> <a href="__ROOT__/index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a> <a href="__ROOT__/member.html" class="current">会员列表</a> </div>
+	<notempty name="twoMenu">
+	  <div  class="quick-actions_homepage">
+		<ul class="quick-actions">
+			<foreach name="twoMenu" item="two_menu">
+			  <li> <a href="__ROOT__/[{$two_menu.tip}]"> <i class="[{$two_menu.icon}]"></i>[{$two_menu.title}]</a> </li>
+			</foreach>
+		</ul>
+	  </div>
+	<else />
+	 <h1>[{$two_title}]</h1>
+	</notempty>
+  </div>
+  <div class="container-fluid">
+		<div class="row-fluid" id="select_map" <neq name="select_status" value="1">style="display:none"</neq>>
+					<div class="span12">
+						<div class="widget-box">
+							<div class="widget-title">
+								<span class="icon">
+									<i class="icon-align-justify"></i>									
+								</span>
+								<h5>高级检索</h5>
+							</div>
+							<div class="widget-content nopadding">
+								<form action="[{:U('index')}]" method="get" class="form-horizontal">
+                                    <div class="control-group">
+										<label class="control-label">昵称:</label>
+										<div class="controls"><input name="nickname" type="text" class="span3" placeholder="昵称(模糊查找)" value="[{$_GET['nickname']?$_GET['nickname']:''}]"/> </div>
+									</div>
+									<div class="control-group">
+										<label class="control-label">会员手机号:</label>
+										<div class="controls"><input name="mobile" type="text" class="span3" placeholder="会员手机号(精确查找)" value="[{$_GET['mobile']?$_GET['mobile']:''}]"/> </div>
+									</div>
+									
+                                    <div class="control-group">
+										<label class="control-label">性别</label>
+										<div class="controls">
+											<empty name="_GET['sex']">
+											<label><input type="checkbox" name="sex[]" checked="checked" value="2"/>女士</label>
+											<label><input type="checkbox" name="sex[]" checked="checked" value="1"/>先生</label>
+											<label><input type="checkbox" name="sex[]" checked="checked" value="0"/>保密</label>
+										<else />
+				
+										<if condition="in_array(2,$sex)">
+										<label><input type="checkbox" name="sex[]" checked="checked" value="2"/>女士</label>
+										<else />
+										<label><input type="checkbox" name="sex[]" value="2"/>女士</label>
+										</if>
+										<if condition="in_array(1,$sex)">
+										<label><input type="checkbox" name="sex[]" checked="checked" value="1"/>先生</label>
+										<else />
+										<label><input type="checkbox" name="sex[]" value="1"/>先生</label>
+										</if>
+										<if condition="in_array(0,$sex)">
+										<label><input type="checkbox" name="sex[]" checked="checked" value="0"/>保密</label>
+										<else />
+										<label><input type="checkbox" name="sex[]" value="0"/>保密</label>
+										</if>
+										</empty>
+										</div>
+									</div>
+									<div class="control-group">
+										<label class="control-label">状态</label>
+										<div class="controls">
+										<empty name="_GET['status']">
+											<label><input type="checkbox" name="status[]" checked="checked" value="1"/>正常</label>
+											<label><input type="checkbox" name="status[]" checked="checked" value="-1"/>禁用</label>
+										<else />
+				
+										<if condition="in_array(1,$status)">
+										<label><input type="checkbox" name="status[]" checked="checked" value="1"/>正常</label>
+										<else />
+										<label><input type="checkbox" name="status[]" value="1"/>正常</label>
+										</if>
+										<if condition="in_array(-1,$status)">
+										<label><input type="checkbox" name="status[]" checked="checked" value="-1"/>禁用</label>
+										<else />
+										<label><input type="checkbox" name="status[]" value="-1"/>禁用</label>
+										</if>
+										</empty>
+										</div>
+									</div>                             
+                                    <div class="control-group">
+                                        <label class="control-label">时间区间</label>
+                                        <div class="controls">
+                                            <input type="text" name="starttime" data-date="[{:time_format(null,'Y-m-d')}]" data-date-format="yyyy-mm-dd" value="[{$_GET['starttime']}]" placeholder="开始时间 格式YYYY-MM-DD" class="datepicker" /> --
+											<input type="text" name="endtime" data-date="[{:time_format(null,'Y-m-d')}]" data-date-format="yyyy-mm-dd" value="[{$_GET['endtime']}]" placeholder="结束时间 格式YYYY-MM-DD" class="datepicker" /><span style="margin-left:25px;">(开始时间默认为00:00:00、结束时间默认为23:59:59)</span>
+                                        </div>
+                                    </div>
+									
+									
+                                    
+									<div class="form-actions">
+										<button type="submit" class="btn btn-success">立即查询</button>
+									</div>
+								</form>
+							</div>
+						</div>						
+					</div>
+				</div>
+                
+        <div class="widget-box">
+          <div class="widget-title"> <span class="icon"> <i class="icon-th"></i> </span>
+            <h5>会员列表</h5>
+			
+            <span class="label label-info <neq name="select_status" value="1">click-show<else />click-hide</neq>"><neq name="select_status" value="1"><i class="icon-search"></i>高级检索<else /><i class="icon-minus-sign"></i>关闭检索</span></neq></span> </div>
+          <div class="widget-content">
+		  <form name="myform" id="myform" method="post">
+			<eq name="_Auth" value="1">
+			<span class="btn" url="[{:U('operate',array('type'=>'add'))}]" onclick="window.location.href='[{:U('operate',array('type'=>'add'))}]'" style="padding:8px 12px;color:#333;background-color:#fff;border: 1px solid #ddd;"> <i class="icon-plus"></i> 新建会员</span>
+			<span class="btn ajax-post confirm" url="[{:U('operate')}]" target-form="ids" style="padding:8px 12px;color:#333;background-color:#fff;border: 1px solid #ddd;"> <i class="icon-trash"></i> 批量禁用</span>
+			<span class="btn" onclick='window.location.href="[{:U('operate',array('type'=>'download'))}]"' target-form="ids" style="padding:8px 12px;color:#333;background-color:#fff;border: 1px solid #ddd;"> <i class="icon-circle-arrow-down"></i> 数据下载</span> 	
+            </eq>
+			<table class="table table-bordered table-striped with-check">
+              <thead>
+                <tr>
+                  <th><input type="checkbox" id="title-table-checkbox" name="title-table-checkbox" /></th>
+				  <th>头像</th>
+				  <th>会员昵称</th>
+				  <th>会员手机号</th>
+				  <th>所在城市</th>
+				  <th>性别</th>
+				  <th>创建时间</th>
+				  <th>状态</th>
+				  <eq name="_Auth" value="1">
+				  <th>操作</th>
+				  </eq>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+				<div style="display:none"><input  type="checkbox" class="ids" name="type" value="status" checked="checked" /></div>
+				<foreach name="_list" item="vo">
+                  <td align="center" valign="middle"><input type="checkbox" class="ids" name="id[]" value="[{$vo.userid}]"  /></td>
+				  <td align="center" valign="middle"><img  width="50px"src="[{$vo.headimgurl}]"></td>
+				  <td align="center" valign="middle">[{$vo.nickname}]</td>
+				  <td align="center" valign="middle">[{$vo.mobile}]</td>
+                  <td align="center" valign="middle">[{$vo.city}]</td>
+				  <td>
+					<eq name="vo.sex" value="0">保密</eq>
+					<eq name="vo.sex" value="1">先生</eq>
+					<eq name="vo.sex" value="2">女士</eq>
+				  </td>
+				  <td align="center" valign="middle">[{$vo.create_time|time_format='Y-m-d H:i:s'}]</td>
+				  <td>
+					<eq name="vo.status" value="-1">禁用</eq>
+					<eq name="vo.status" value="1">正常</eq>
+				  </td>
+				  <eq name="_Auth" value="1">
+				  <td>
+					<span class="fr">
+					<a class="btn btn-primary btn-mini" href="[{:U('operate',array('type'=>'edit','id'=>$vo['userid']))}]">详情</a>
+					<eq name="vo.status" value="1">
+					<a class="btn btn-danger btn-mini confirm ajax-get" href="[{:U('operate',array('type'=>'status','id'=>$vo['userid'],'status'=>-1))}]">禁用</a>
+					<else />
+					<a class="btn btn-success btn-mini confirm ajax-get" href="[{:U('operate',array('type'=>'status','id'=>$vo['userid'],'status'=>1))}]">启用</a>
+					</eq>
+					</span>
+				</td>
+				</eq>
+                </tr>
+				</foreach>
+              </tbody>
+            </table>
+			</form>
+			 <div class="dataTables_paginate fg-buttonset ui-buttonset fg-buttonset-multi ui-buttonset-multi paging_full_numbers">
+			[{$_page}]
+			 </div>
+          </div>
+        </div>
+       
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="__JS__/jquery.min.js"></script> 
+<script src="__JS__/jquery.ui.custom.js"></script> 
+<script src="__JS__/bootstrap.min.js"></script> 
+<script src="__JS__/select2.min.js"></script> 
+ <script src="__JS__/bootstrap-datepicker.js"></script>
+ <script src="__JS__/bootstrap-colorpicker.js"></script>
+<script src="__JS__/jquery.dataTables.min.js"></script> 
+ <script src="__JS__/jquery.uniform.js"></script>
+<script src="__JS__/maruti.js"></script> 
+<script src="__JS__/maruti.tables.js"></script>
+ <script src="__JS__/maruti.form_common.js"></script>
+<script src="__JS__/maruti.popup.js"></script>
+<script src="__JS__/maruti.ajax.js"></script>
+<script>
+$(document).on('click','.click-show',function(){
+$("#select_map").show();
+$(this).html('<i class="icon-minus-sign"></i>关闭检索</span>');
+$(this).addClass('click-hide');
+$(this).removeClass('click-show');	
+
+})
+$(document).on('click','.click-hide',function(){
+$("#select_map").hide();
+$(this).html('<i class="icon-search"></i>高级检索</span> ');
+$(this).addClass('click-show');
+$(this).removeClass('click-hide');	
+
+})
+$("#goodsname .dropdown-menu li a").click(function(){
+	var goodsid=$(this).attr('data-id');
+	var goodsname=$(this).html();
+	$("input[name='goodsid']").val(goodsid);
+	$(this).parent().parent().siblings('.goodsname').html(goodsname);
+
+})
+$("#nickname .dropdown-menu li a").click(function(){
+	var userid=$(this).attr('data-id');
+	var nickname=$(this).html();
+	$("input[name='userid']").val(userid);
+	$(this).parent().parent().siblings('.nickname').html(nickname);
+
+})
+</script>
+</body>
+</block>

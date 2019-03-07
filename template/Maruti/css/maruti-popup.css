@@ -1,0 +1,32 @@
+.popup{
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: #000;
+	opacity: 0.5;
+	filter: alpha(opacity=50);
+	z-index: 99;
+	display:none;
+}
+#popbox {    width: 32%;    margin-left: auto;    margin-right: auto;    position: absolute; z-index:999; display:none; }
+#popbox {	border:3px solid transparent; overflow: hidden !important;    text-align: left;    position: absolute; 		-moz-border-image:url(../img/css-border-bg.jpg) 3 3 round; /* Old Firefox */	-webkit-border-image:url(../img/css-border-bg.jpg) 3 3 round; /* Safari */	-o-border-image:url(../img/css-border-bg.jpg) 3 3 round; /* Opera */	border-image:url(../img/css-border-bg.jpg) 3 3 round; box-shadow:8px 10px 20px #b6b6b6;  }
+#popbox form{	width:100%; background:#fff;	position:relative;	top:0;	left:0; }
+#popbox .form-actions {	padding: 14px 20px 15px;}
+#popbox .form-actions .pull-left { margin-top:0px;}
+#popbox form#loginform {	z-index: 200; display:block;}
+#popbox form#recoverform {	z-index: 100;	    display:none;}
+#popbox form#recoverform .form-actions {    margin-top: 27px;}
+#popbox .main_input_box { margin:0 auto; text-align:center}
+#popbox .main_input_box .add-on{  background-color: #EEEEEE;    border: 1px dashed #dadada;    display: inline-block;    font-size: 14px;    font-weight: normal;    height:30px;    line-height: 30px;    min-width: 16px;    padding: 4px 5px;     text-align: center;    text-shadow: 0 1px 0 #FFFFFF;    width:30px;}
+#popbox .main_input_box input{ height:30px; display:inline-block; width:75%;  border: 1px dashed #dadada; margin-bottom:3px;}
+#popbox .controls{ padding:0 20px;}
+#popbox .control-group{ padding:20px 0; border-bottom:1px solid #dadada; margin-bottom:0px;}
+.form-vertical, .form-actions {    margin-bottom: 0;}
+#popbox .normal_text{ padding:15px 10px; text-align:center; font-size:14px; line-height:20px; }
+@media (max-width: 480px){
+#logo { width: 40%; }
+#popbox{ width:90%}
+#popbox .control-group{ padding:8px 0; border-bottom:1px solid #dadada; margin-bottom:0px;}
+}

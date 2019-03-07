@@ -1,0 +1,284 @@
+<extend name="template/Maruti/common.html"/>
+<block name="body">
+<style>
+.counter{
+    border: medium none;
+    height: 27px;
+    line-height: 27px;
+    outline: medium none;
+    padding: 0;
+    text-align: center;
+    vertical-align: top;
+    width: 50px;
+}
+.select2-container{
+	width:150px;
+}
+.controls span{
+	margin-right:5px;
+}
+.uploader{
+display:none;
+}
+</style>
+<div id="content">
+  <div id="content-header">
+    <div id="breadcrumb"> <a href="__ROOT__/index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a> <a href="__ROOT__/cinema.html" class="current">中医馆管理</a> </div>
+	<h1><empty name="cinema">新增中医馆<else />中医馆详情</empty></h1>
+  </div>
+  <div class="container-fluid">
+		<div class="row-fluid" id="select_map">
+					<div class="span12">
+						<div class="widget-box">
+							<div class="widget-title">
+								<span class="icon">
+									<i class="icon-align-justify"></i>									
+								</span>
+								<h5><empty name="cinema">新增中医馆<else />中医馆详情</empty></h5>
+							</div>
+							<div class="widget-content nopadding">
+								<form action="__SELF__" method="post" class="myform form-horizontal">
+									<div class="control-group">
+										<label class="control-label">中医馆名称:</label>
+										<div class="controls">
+											<input  type="text" name="name" class="span3" placeholder="中医馆名称" value="[{$cinema.name}]"/>
+											<div id="error_name" ><error class="color-red hidden"></error></div>
+										</div>
+									</div>
+									<div class="control-group">
+										<label class="control-label"<empty name='cinema.group'>disabled</empty>>所属集团:</label>
+										<div class="controls">
+											<empty name="cinema">
+											<select id="group">
+											<option value ="请选择">请选择</option>
+											<foreach name="group" item="_list">
+												<option value ="[{$_list.id}]" <eq name="cinema.group" value="$_list.id">selected="selected"</eq>>[{$_list.name}]</option>
+											</foreach>
+											</select>
+											<div id="error_group" ><error class="color-red hidden"></error></div>
+											<else />
+											<span>[{$cinema.group|get_group_name}]</span>
+											</empty>
+										</div>
+									</div>
+									<div class="control-group">
+									<label class="control-label">地理位置:</label>
+									<div class="controls" id="store">
+										<empty name="cinema">
+										
+											<span id="province">
+											</span>
+											<span id="city" class="hide" >
+											</span>
+											<span id="area" class="hide" >
+											</span>
+											<span id="address">
+												<input  type="text" name="keyword" class="span3" placeholder="详细地址" value=""/>
+											</span>
+											<div><error class="color-red hidden"></error>
+										</div>
+										<else />
+										
+										<span>[{$cinema.province}]</span><span>[{$cinema.city}]</span><span>[{$cinema.area}]</span><span>[{$cinema.keyword}]</span>
+										
+										</empty>
+										</div>
+									</div>
+									<div class="control-group">
+											<label class="control-label">登陆账号:</label>
+											<div class="controls">
+											<empty name="cinema">
+												<input  type="text" name="username" class="span3" placeholder="登陆账号" value=""/>
+												<div><error class="color-red hidden"></error></div>
+											<else />
+											<span>
+											[{$cinema.username}]
+											</span>
+											</empty>
+											</div>
+									</div>
+									<div class="form-actions">
+										<button id="submit" type="submit" class="btn btn-success"><empty name="cinema">添加中医馆<else />修改中医馆</empty></button>
+											<button type="button" class="btn btn-warning"  onclick="window.location.href='__ROOT__/cinema.html'">返回</button>
+									</div>
+								</form>
+							</div>
+						</div>						
+					</div>
+				</div>
+       
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="__JS__/jquery.min.js"></script> 
+<script src="__JS__/address.js"></script>
+<script src="__JS__/jquery.ui.custom.js"></script> 
+<script src="__JS__/bootstrap.min.js"></script> 
+<script src="__JS__/select2.min.js"></script>
+<script src="__JS__/pinyin.js"></script>
+ <script src="__JS__/bootstrap-datepicker.js"></script>
+ <script src="__JS__/bootstrap-colorpicker.js"></script>
+<script src="__JS__/jquery.dataTables.min.js"></script> 
+ <script src="__JS__/jquery.uniform.js"></script>
+<script src="__JS__/maruti.js"></script> 
+<script src="__JS__/maruti.tables.js"></script>
+ <script src="__JS__/maruti.form_common.js"></script>
+<script src="__JS__/maruti.popup.js"></script>
+<script src="__JS__/maruti.ajax.js"></script>
+<script>
+	var area_json={
+		data_area:[{$area}],
+		put_province:'#province',
+		put_city:'#city',
+		put_area:'#area',
+		put_town:'#town',
+	}
+	area_restart(area_json);
+</script>
+<script>
+
+$("input").blur(function(){
+    var name=$(this).attr('name');
+  var vlaue=$(this).val();
+  switch(name)
+  {
+	case "name":
+	if(vlaue.length==0){
+			$(this).addClass('redborder');
+			$(this).siblings('div').find('error').html("<span>*</span>请输入中医馆名称");
+			$(this).siblings('div').find('error').removeClass('hidden');
+			$("#submit").attr("disabled",true);
+	}else{
+		$(this).removeClass('redborder');
+		$(this).siblings('div').find('error').html("");
+		$(this).siblings('div').find('error').addClass('hidden');
+		$("#submit").attr("disabled",false);
+	}
+	case "username":
+	if(vlaue.length==0){
+			$(this).addClass('redborder');
+			$(this).siblings('div').find('error').html("<span>*</span>请输入登录账号");
+			$(this).siblings('div').find('error').removeClass('hidden');
+			$("#submit").attr("disabled",true);
+	}else{
+		$(this).removeClass('redborder');
+		$(this).siblings('div').find('error').html("");
+		$(this).siblings('div').find('error').addClass('hidden');
+		$("#submit").attr("disabled",false);
+	}
+	break;
+	}
+})
+</script>
+<script>
+$(".myform").submit(function(){
+	var name=$("input[name='name']").val();
+	var username=$("input[name='username']").val();
+	var stat=1;
+	if(name.length==0){
+		$("input[name='name']").addClass('redborder');
+		$("input[name='name']").siblings('div').find('error').html("<span>*</span>请输入中医馆名称");
+		$("input[name='name']").siblings('div').find('error').removeClass('hidden');
+		stat=0;
+		}
+				
+				<empty name="cinema">
+	if(username.length==0){
+	$("input[name='username']").addClass('redborder');
+	$("input[name='username']").siblings('div').find('error').html("<span>*</span>请输入登陆账号");
+	$("input[name='username']").siblings('div').find('error').removeClass('hidden');
+	stat=0;
+	}
+			
+	var group=$("#group").val();
+	if(group=='' || group==undefined || group=='请选择'){
+			$("#error_group").find('error').html("<span>*</span>请选择所属集团");
+			$("#error_group").find('error').removeClass('hidden');
+			stat=0;
+	}
+			
+	if($("#province").hasClass('hide')){
+		$("#store").find('error').html("<span>*</span>请选择省份");
+		$("#store").find('error').removeClass('hidden');
+		return false;
+	}else{
+		var province=$("#province_list").val();
+		if(province=='' || province==undefined || province=='请选择'){
+			$("#store").find('error').html("<span>*</span>请选择省份");
+			$("#store").find('error').removeClass('hidden');
+			return false;
+		}
+	}
+			
+	if($("#city").hasClass('hide')){
+		$("#store").find('error').html("<span>*</span>请选择城市");
+		$("#store").find('error').removeClass('hidden');
+		return false;
+	}else{
+		var city=$("#city_list").val();
+		if(city=='' || city==undefined || city=='请选择'){
+			$("#store").find('error').html("<span>*</span>请选择城市");
+			$("#store").find('error').removeClass('hidden');
+			return false;
+		}
+	}
+	if($("#area").hasClass('hide')){
+		var area='';
+	}else{
+		var area=$("#area_list").val();
+		if(area=='' || area==undefined || area=='请选择'){
+			$("#store").find('error').html("<span>*</span>请选择区/镇");
+			$("#store").find('error').removeClass('hidden');
+			return false;
+		}
+	}
+	var keyword=$("input[name='keyword']").val();
+	if(keyword.length==0){
+		$("#store").find('error').html("<span>*</span>请输入详细地址");
+		$("#store").find('error').removeClass('hidden');
+		return false;
+	}
+	$("#store").find('error').addClass('hidden');</empty>
+	if(stat==0){
+
+			return false;
+	}else{
+
+		var url=$(this).attr('action');
+		var query = {};
+		query['name']=name;
+		<empty name="cinema">
+		query['group']=group;
+		query['province']=province;
+		query['city']=city;
+		query['area']=area;
+		query['keyword']=keyword;
+		query['username']=username;
+		</empty>
+		$.post(url,query).success(function(data){
+		
+				 if (data.status==1) {
+					 $('#popbox .controls').html('保存成功');
+						center($("#popbox"));
+						 setTimeout(function(){
+                        if (data.url) {
+                            location.href=data.url;
+							return false;
+                        }else{
+                            location.reload();
+                        }
+                    },1500);
+				 }else{
+				 $('#popbox .controls').html(data.info);
+					center($("#popbox"));
+					return false;
+				 }
+		})
+		return false;
+	}
+})
+</script>
+</body>
+</block>

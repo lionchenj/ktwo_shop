@@ -1,0 +1,122 @@
+<extend name="template/Maruti/common.html"/>
+<block name="body">
+<style>
+.counter{
+    border: medium none;
+    height: 27px;
+    line-height: 27px;
+    outline: medium none;
+    padding: 0;
+    text-align: center;
+    vertical-align: top;
+    width: 50px;
+}
+.select2-container{
+	width:150px;
+}
+.controls span{
+	margin-right:5px;
+}
+.uploader{
+display:none;
+}
+
+.x-link{
+	color:#459ae9;
+}
+</style>
+<div id="content">
+  <div id="content-header">
+    <div id="breadcrumb"> <a href="__ROOT__/index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a> <a href="__ROOT__/card.html" class="current">卡券管理</a> </div>
+	<h1>创建卡券</h1>
+  </div>
+  <div class="container-fluid">
+		<div class="row-fluid" id="select_map">
+					<div class="span12">
+						<div class="widget-box">
+							<div class="widget-title">
+								<span class="icon">
+									<i class="icon-align-justify"></i>									
+								</span>
+								<h5>创建卡券</h5>
+							</div>
+							<div class="widget-content nopadding">
+								<form action="[{:U('operate',array('type'=>'add'))}]" method="post" class="myform form-horizontal">									
+									<div class="control-group">
+										<label class="control-label" style="margin-top: 3px;margin-right: 20px;">卡券类型</label>		
+										<div class="controls">
+											<select name="type" >
+												<option value="GIFT" selected>兑换券</option>
+												<option value="CASH" >代金券</option>
+											</select>
+										</div>									
+									</div>
+									<notempty name="IS_ROOT">
+										<div class="control-group">
+													<label class="control-label" style="margin-top: 3px;margin-right: 20px;">适用门店</label>	
+													<div class="controls">
+														<label id="use_limit1"><input type="radio" name="use"  value="0" checked>全部适用</label>
+														<label id="use_limit2"><input type="radio" name="use" value="1">指定门店</label>
+														
+													</div>
+										</div>
+										<div class="x-controls-time" style="display:none">
+														<label class="control-label">所属集团:</label>
+														<div class="controls">															
+															<select id="group" name="store">															
+															<foreach name="group" item="_list">
+																<option value ="[{$_list.id}]">[{$_list.name}]</option>
+															</foreach>
+															</select>
+															<div id="error_group" ><error class="color-red hidden"></error></div>															
+														</div>
+														</div>
+									<else />
+										<div class="control-group">
+											<label class="control-label" style="margin-top: 3px;margin-right: 20px;">适用门店</label>		
+											<div class="controls">
+												<input type="text" disabled value="[{$IS_LOGIN|get_username}]">
+												<input name="store" type="hidden" value="[{$IS_LOGIN}]">
+											</div>									
+										</div>
+									</notempty>
+									<div class="form-actions">
+										<button id="submit" type="submit" class="btn btn-success">创建卡券</button>
+											<button type="button" class="btn btn-warning"  onclick="window.location.href='__ROOT__/card.html'">返回</button>
+									</div>
+								</form>
+							</div>
+						</div>						
+					</div>
+				</div>
+       
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="__JS__/jquery.min.js"></script> 
+<script src="__JS__/address.js"></script>
+<script src="__JS__/jquery.ui.custom.js"></script> 
+<script src="__JS__/bootstrap.min.js"></script> 
+<script src="__JS__/select2.min.js"></script>
+<script src="__JS__/pinyin.js"></script>
+ <script src="__JS__/bootstrap-datepicker.js"></script>
+ <script src="__JS__/bootstrap-colorpicker.js"></script>
+<script src="__JS__/jquery.dataTables.min.js"></script> 
+ <script src="__JS__/jquery.uniform.js"></script>
+<script src="__JS__/maruti.js"></script> 
+<script src="__JS__/maruti.tables.js"></script>
+ <script src="__JS__/maruti.form_common.js"></script>
+<script src="__JS__/maruti.popup.js"></script>
+<script src="__JS__/maruti.ajax.js"></script>
+<script>
+$('#use_limit2').click(function(){
+	$('.x-controls-time').show();
+})
+$('#use_limit1').click(function(){
+	$('.x-controls-time').hide();
+})
+</script>
+</body>
+</block>

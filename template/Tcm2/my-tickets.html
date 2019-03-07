@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="description" content=""/>
+    <meta name="keywords" content=""/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/><!-- 是否启用 WebApp 全屏模式 -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/><!-- 设置状态栏的背景颜色 -->
+    <meta name="viewport" content="initial-scale=1.0,user-scalable=no,width=device-width,minimum-scale=1.0,maximum-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no"/><!-- 禁止数字识自动别为电话号码 --><!-- 不让android识别邮箱 -->
+	<title>天辅安中医馆我的卡券</title>
+	<link rel="stylesheet" type="text/css" href="__CSS__/common.css">
+	<link rel="stylesheet" type="text/css" href="__CSS__/style.css">
+	<script type="text/javascript" src="__JS__/jquery-1.11.3.min.js"></script>
+	<script type="text/javascript" src="__JS__/resize.js"></script>
+	<script type="text/javascript" src="__JS__/common.js"></script>
+</head>
+<body class="bg-white">
+	<div class="title-info">
+		<a href="javascript:history.go(-1);" class="back-link">
+			<i class="icon-left-arrow"></i>返回
+		</a>
+		我的卡券
+	</div>
+	<div class="ticket-container">
+		<div class="canUse-ticket" style="display:none;">
+			<div class="tickets-top clearfix">
+				<span class="tickets-title left">已领卡券</span>
+				<span class="tickets-all-num right">
+					<a href="all-tickets.html">共3》</a>
+				</span>
+			</div>
+			<ul class="ticket-list">
+				<li>
+					<a href="ticket-detail.html" class="ticket-link">
+						<div class="left ticket-logo">
+							<img src="__IMAGES__/logo.png">
+						</div>
+						<div class="left ticket-info">
+							<div class="ticket-name">天辅安中医馆代金券</div>
+							<div class="ticket-num">数量：10张</div>
+						</div>
+						<span class="ticket-state-wrap">
+							<span class="red-state"></span>
+							<span class="ticket-state">未使用</span>
+						</span>
+						<span class="ticket-past">3天后过期</span>
+					</a>
+				</li>
+				<li>
+					<a href="ticket-detail.html" class="ticket-link">
+						<div class="left ticket-logo">
+							<img src="__IMAGES__/logo.png">
+						</div>
+						<div class="left ticket-info">
+							<div class="ticket-name">天辅安中医馆代金券</div>
+							<div class="ticket-num">数量：10张</div>
+						</div>
+						<span class="ticket-state-wrap">
+							<span class="red-state"></span>
+							<span class="ticket-state">未使用</span>
+						</span>
+						<span class="ticket-past">3天后过期</span>
+					</a>
+				</li>
+			</ul>
+		</div>
+		<div class="used-ticket" style="display:none;">
+			<div class="tickets-top clearfix">
+				<span class="tickets-title left">已使用卡券</span>
+				<span class="tickets-all-num right">
+					<a href="all-tickets.html">共2》</a>
+				</span>
+			</div>
+			<ul class="ticket-list">
+				<li>
+					<a href="ticket-detail.html" class="ticket-link">
+						<div class="left ticket-logo">
+							<img src="__IMAGES__/logo.png">
+						</div>
+						<div class="left ticket-info">
+							<div class="ticket-name">天辅安中医馆代金券</div>
+							<div class="ticket-num">数量：10张</div>
+						</div>
+						<span class="ticket-state-wrap">
+							<span class="yellow-state"></span>
+							<span class="ticket-state">已使用</span>
+						</span>
+					</a>
+				</li>
+			</ul>
+		</div>
+		<div class="notUse-ticket" style="display:none;">
+			<div class="tickets-top clearfix">
+				<span class="tickets-title left">已失效卡券</span>
+				<span class="tickets-all-num right">
+					<a href="all-tickets.html">共2》</a>
+				</span>
+			</div>
+			<ul class="ticket-list">
+				<li>
+					<a href="ticket-detail.html" class="ticket-link">
+						<div class="left ticket-logo">
+							<img src="__IMAGES__/logo.png">
+						</div>
+						<div class="left ticket-info">
+							<div class="ticket-name">天辅安中医馆代金券</div>
+							<div class="ticket-num">数量：10张</div>
+						</div>
+						<span class="ticket-state-wrap">
+							<span class="grey-state"></span>
+							<span class="ticket-state">已失效</span>
+						</span>
+					</a>
+				</li>
+			</ul>
+		</div>
+		<div style="text-align:center;padding-top: 1.4rem">
+			<img src="__IMAGES__/empty.png" style="width: 11rem;height: 11rem;">
+			<div style="color: #999;font-size: 1.6rem;line-height: 3rem;margin-top: 1.4rem;">
+				您暂时还没有卡券
+			</div>
+		</div>
+	</div>
+</body>
+</html>

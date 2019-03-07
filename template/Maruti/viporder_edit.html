@@ -1,0 +1,136 @@
+<extend name="template/Maruti/common.html"/>
+<block name="body">
+<style>
+.counter{
+    border: medium none;
+    height: 27px;
+    line-height: 27px;
+    outline: medium none;
+    padding: 0;
+    text-align: center;
+    vertical-align: top;
+    width: 50px;
+}
+</style>
+<div id="content">
+  <div id="content-header">
+    <div id="breadcrumb"> <a href="__ROOT__/index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a> <a href="__ROOT__/order.html" class="current">订单列表</a> </div>
+	<h1>订单详情</h1>
+  </div>
+  <div class="container-fluid">
+		<div class="row-fluid" id="select_map">
+					<div class="span12">
+						<div class="widget-box">
+							<div class="widget-title">
+								<span class="icon">
+									<i class="icon-align-justify"></i>									
+								</span>
+								<h5>订单详情</h5>
+							</div>
+							<div class="widget-content nopadding">
+								<form action="__SELF__" method="get" class="myform form-horizontal">
+									<div class="control-group">
+										<label class="control-label">订单号:</label>
+											<input type="text" name="orderid" style="display:none" value="[{$order_info.orderid}]"/>
+										<div class="controls"><input name="orderid" type="text" class="span3" placeholder="订单号" value="[{$order_info.orderid}]" disabled /> </div>
+									</div>
+                                    <div class="control-group">
+										<label class="control-label">商品名称</label>
+										<div class="controls " id="goodsname">
+											<div class="btn-group">
+												<input type="text" name="goodsid" style="display:none" value="[{$order_info['goodsid']}]"/>
+												<button type="button" class="btn goodsname" onclick="javascript:;">[{$order_info['goodsid']|get_goods_goodsname}]</button>
+												<button data-toggle="dropdown" class="btn dropdown-toggle"><span class="caret"></span></button>
+												<ul class="dropdown-menu">
+												<li>
+												<foreach name="select_goods" item="vo">
+												<li><a href="javascript:;" data-id="[{$vo.goodsid}]">[{$vo.goodsname}]</a></li>
+												</foreach>
+												</ul>
+											</div>
+										</div>
+									</div>                     
+                                    <div class="control-group">
+                                        <label class="control-label">份数</label>
+                                        <div class="controls">
+										<input type="text" name="num" class="counter int" value="[{$order_info.num}]">
+                                        </div>
+                                    </div>
+									<div class="control-group">
+                                        <label class="control-label">价格</label>
+                                        <div class="controls">
+										<input type="text"  name="money" class="span3" value="[{$order_info.money}] " disabled  >
+                                        </div>
+                                    </div>
+									 <div class="control-group">
+                                        <label class="control-label">买家昵称</label>
+                                        <div class="controls">
+										<input type="text"  class="hide" value="[{$order_info.userid}]">
+										  <span>[{$order_info.userid|get_member_name}]</span>
+                                        </div>
+                                    </div>
+									 <div class="control-group">
+										<label class="control-label">订单状态</label>
+										<div class="controls">
+											<label><input type="radio" name="status"  value="0" <eq name="order_info['status']" value="0">checked=checked</eq> />未支付</label>
+											<label><input type="radio" name="status" value="1" <eq name="order_info['status']" value="1">checked=checked</eq> />已完成</label>
+											<label><input type="radio" name="status"  value="-1" <eq name="order_info['status']" value="-1">checked=checked</eq> />无效订单</label>
+										</div>
+									</div>   
+									
+                                    
+									<div class="form-actions">
+										<button type="submit" class="btn btn-success ajax-post" url="" target-form="myform">保存</button>
+											<button type="button" class="btn btn-warning"  onclick="window.location.href='__ROOT__/vip.html'">返回</button>
+									</div>
+								</form>
+							</div>
+						</div>						
+					</div>
+				</div>
+       
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="__JS__/jquery.min.js"></script> 
+<script src="__JS__/jquery.ui.custom.js"></script> 
+<script src="__JS__/bootstrap.min.js"></script> 
+<script src="__JS__/select2.min.js"></script> 
+ <script src="__JS__/bootstrap-datepicker.js"></script>
+ <script src="__JS__/bootstrap-colorpicker.js"></script>
+<script src="__JS__/jquery.dataTables.min.js"></script> 
+ <script src="__JS__/jquery.uniform.js"></script>
+<script src="__JS__/maruti.js"></script> 
+<script src="__JS__/maruti.tables.js"></script>
+ <script src="__JS__/maruti.form_common.js"></script>
+<script src="__JS__/maruti.popup.js"></script>
+<script src="__JS__/maruti.ajax.js"></script>
+<script>
+$("#goodsname .dropdown-menu li a").click(function(){
+	var goodsid=$(this).attr('data-id');
+	var goodsname=$(this).html();
+	$("input[name='goodsid']").val(goodsid);
+	$(this).parent().parent().siblings('.goodsname').html(goodsname);
+
+})
+//数据格式验证int
+$(document).on('change',".int",function(){
+	var val=parseInt($(this).val());
+	if(isNaN(val) || val==0){
+		$(this).val(1);
+	}else{
+		$(this).val(val);
+		}
+		change_money();
+})
+function change_money(){
+	var num=$("input[name='num']").val();
+	var money ='[{$money}]';
+	money =num*money;
+	$("input[name='money']").val(money);
+}
+</script>
+</body>
+</block>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="description" content=""/>
+    <meta name="keywords" content=""/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/><!-- 是否启用 WebApp 全屏模式 -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/><!-- 设置状态栏的背景颜色 -->
+    <meta name="viewport" content="initial-scale=1.0,user-scalable=no,width=device-width,minimum-scale=1.0,maximum-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no"/><!-- 禁止数字识自动别为电话号码 --><!-- 不让android识别邮箱 -->
+	<title>天辅安中医馆我的钱包</title>
+	<link rel="stylesheet" type="text/css" href="__CSS__/common.css">
+	<link rel="stylesheet" type="text/css" href="__CSS__/style.css">
+	<script type="text/javascript" src="__JS__/jquery-1.11.3.min.js"></script>
+	<script type="text/javascript" src="__JS__/resize.js"></script>
+	<script type="text/javascript" src="__JS__/common.js"></script>
+</head>
+<body class="bg-white">
+	<div class="title-info">
+		<a href="javascript:history.go(-1);" class="back-link">
+			<i class="icon-left-arrow"></i>返回
+		</a>
+		我的钱包
+	</div>
+	<div class="wallet-container">
+		<div class="wallet-top">
+			<a href="{:U('About/money')}" class="wallet-link ">
+				<div class="wallet-icon">
+					<img src="__IMAGES__/white-coin.png">
+				</div>
+				<div class="wallet-name">
+					余额
+				</div>
+			</a>
+			<a href="{:U('free_recharge')}" class="wallet-link active">
+				<div class="wallet-icon">
+					<img src="__IMAGES__/white-card.png">
+				</div>
+				<div class="wallet-name">
+					充值
+				</div>
+			</a>
+			<a href="{:U('About/golden')}" class="wallet-link">
+				<div class="wallet-icon">
+					<img src="__IMAGES__/white-rest.png">
+				</div>
+				<div class="wallet-name">
+					佣金
+				</div>
+			</a>
+		</div>
+		<div class="wallet-middle">
+			<form action="" id="wallet-form">
+				<div class="wallet-r-item">
+					充值金额
+				</div>
+				<div class="wallet-input-wrap clearfix">
+					<i class="icon-rmb left">￥</i>
+					<input type="tel" name="money" class="wallet-input left int" value="100" id="money">
+				</div>
+				<button type="button" class="wallet-r-btn">充值</button>
+			</form>
+		</div>
+		<div class="wallet-card">
+			<foreach name="_list" item="vo">
+			<a href="{:U('About/recharge_edit',array('id'=>$vo['id']))}" class="wallet-card-link" style="background-image: url(__IMAGES__/card-bg3.png);">
+				<div class="wc-top">
+					{$vo.money}元充值卡
+				</div>
+				
+				<div class="wc-bottom" <empty name="vo['title']"> style="opacity:0" </empty>>
+				
+					{$vo.title}
+				</div>
+				
+			</a>
+		</foreach>
+		</div>
+	</div>
+	<!-- 提示弹窗 -->
+	<div class="tips-box" style="display: none;"></div>
+	<div id="dishes_delete" style="display: none;">
+	<script type="text/javascript">
+		//数据格式验证int
+		$(document).on('change',".int",function(){
+		var val=parseInt($(this).val());
+		if(isNaN(val)){
+			$(this).val(0);
+		}else{
+			$(this).val(val);
+			}
+		})
+		$(function(){
+			$(".wallet-r-btn").on("click",function(){
+				if(!$("#money").val()){
+					popup("金额不能为空");
+					return false;
+				}
+				var data={};
+				data['money']=$("#money").val();
+				var url="__SELF__";
+				var query = data;
+				$.post(url,query).success(function(res){
+					if(res.status==1){
+						if(res.info.type==1){
+						res.info.data=JSON.parse(res.info.data);
+						$('#dishes_delete').attr('pay_id',res.info.payid);
+						callpay(res.info.data);
+						}
+					}else{
+					alert(JSON.stringify(res.info))
+					popup(res.info);
+					}
+				});
+			return false;	
+			});
+			
+			function jsApiCall(data)
+			{
+				WeixinJSBridge.invoke('getBrandWCPayRequest', data,function(res){
+				if(res.err_msg == "get_brand_wcpay_request:ok") {
+					var id = $('#dishes_delete').attr('pay_id');
+					var data={};
+					data['payid']=id;
+					$.ajax({
+					cache:false,
+					type:"POST",
+					url:"{:U('wechat_return')}",
+					dataType:"json",
+					data:data,
+					timeout:30000,
+					error:function(){
+					popup('支付失败');
+					return false;
+					}, success:function(data){
+					if(data.status==1){
+					window.location.href="{:U('About/money')}";
+					}else{
+						popup(data.info);
+					}
+					}
+				
+					})
+					}
+				});
+			}
+			function callpay(data)
+			{
+				if (typeof WeixinJSBridge == "undefined"){
+					if( document.addEventListener ){
+						document.addEventListener('WeixinJSBridgeReady', jsApiCall, false);
+					}else if (document.attachEvent){
+						document.attachEvent('WeixinJSBridgeReady', jsApiCall); 
+						document.attachEvent('onWeixinJSBridgeReady', jsApiCall);
+					}
+				}else{
+					jsApiCall(data);
+				}
+			}
+			$(".black-mask,.icon-close").on("click",function(){
+				$(".popup-box").hide();
+			})
+		})
+	</script>
+</body>
+</html>

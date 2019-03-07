@@ -1,0 +1,178 @@
+<extend name="template/Maruti/common.html"/>
+<block name="body">
+<div id="content">
+  <div id="content-header">
+    <div id="breadcrumb"> <a href="__ROOT__/index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a> <a href="__ROOT__/split.html" class="current">分账列表</a> </div>
+	<h1>分账列表</h1>
+  </div>
+  <div class="container-fluid">
+		<div class="row-fluid" id="select_map" <neq name="select_status" value="1">style="display:none"</neq>>
+					<div class="span12">
+						<div class="widget-box">
+							<div class="widget-title">
+								<span class="icon">
+									<i class="icon-align-justify"></i>									
+								</span>
+								<h5>高级检索</h5>
+							</div>
+							<div class="widget-content nopadding">
+								<form action="[{:U('index')}]" method="get" class="form-horizontal">
+									<div class="control-group">
+										<label class="control-label">订单号:</label>
+										<div class="controls"><input name="orderid" type="text" class="span3" placeholder="订单号(模糊查找)" value="[{$_GET['orderid']?$_GET['orderid']:''}]"/> </div>
+									</div>
+									<div class="control-group">
+										<label class="control-label">银行卡号:</label>
+										<div class="controls"><input name="bank_num" type="text" class="span3" placeholder="输入完整的银行卡号" value="[{$_GET['bank_num']?$_GET['bank_num']:''}]"/> </div>
+									</div>
+									<div class="control-group">
+										<label class="control-label">真实姓名:</label>
+										<div class="controls"><input name="name" type="text" class="span3" placeholder="输入真实姓名(模糊查找)" value="[{$_GET['name']?$_GET['name']:''}]"/> </div>
+									</div>
+									<div class="control-group">
+										<label class="control-label">操作员:</label>
+										<div class="controls">
+										<select name="username" id="cinema">
+											<option value ="不限">不限</option>
+											<foreach name="select_member" item="vo">
+											<option <eq name="vo.username" value="$_GET['username']">selected="selected"</eq> value ="[{$vo.username}]">[{$vo.username}]</option>
+											</foreach>
+										</select>
+										</div>
+									</div>
+									<div class="control-group">
+										<label class="control-label">订单状态</label>
+										<div class="controls">
+										<empty name="_GET['status']">
+											<label><input type="checkbox" name="status[]"  value="0"/>转账中</label>
+											<label><input type="checkbox" name="status[]" checked="checked" value="1"/>已转账</label>
+										<else />
+										<if condition="in_array(0,$status)">
+										<label><input type="checkbox" name="status[]" checked="checked" value="0"/>转账中</label>
+										<else />
+											<label><input type="checkbox" name="status[]" value="0"/>转账中</label>
+										</if>
+										<if condition="in_array(1,$status)">
+										<label><input type="checkbox" name="status[]" checked="checked" value="1"/>已转账</label>
+										<else />
+										<label><input type="checkbox" name="status[]" value="1"/>已转账</label>
+										</if>
+										</empty>
+										</div>
+									</div>                             
+                                    <div class="control-group">
+                                        <label class="control-label">时间区间</label>
+                                        <div class="controls">
+                                            <input type="text" name="starttime" data-date="[{:time_format(null,'Y-m-d')}]" data-date-format="yyyy-mm-dd" value="[{$_GET['starttime']}]" placeholder="开始时间 格式YYYY-MM-DD" class="datepicker" /> --
+											<input type="text" name="endtime" data-date="[{:time_format(null,'Y-m-d')}]" data-date-format="yyyy-mm-dd" value="[{$_GET['endtime']}]" placeholder="结束时间 格式YYYY-MM-DD" class="datepicker" /><span style="margin-left:25px;">(开始时间默认为00:00:00、结束时间默认为23:59:59)</span>
+                                        </div>
+                                    </div>
+									
+									
+                                    
+									<div class="form-actions">
+										<button type="submit" class="btn btn-success">立即查询</button>
+									</div>
+								</form>
+							</div>
+						</div>						
+					</div>
+				</div>
+                
+        <div class="widget-box">
+          <div class="widget-title"> <span class="icon"> <i class="icon-th"></i> </span>
+            <h5>分账列表</h5>
+            <span class="label label-info <neq name="select_status" value="1">click-show<else />click-hide</neq>"><neq name="select_status" value="1"><i class="icon-search"></i>高级检索<else /><i class="icon-minus-sign"></i>关闭检索</span></neq></span> </div>
+          <div class="widget-content">
+		  <form name="myform" id="myform" method="post">
+		  <eq name="_Auth" value="1">
+		  <span class="btn ajax-post confirm" onclick=" window.location.href='[{:U('operate',array('type'=>'add'))}]'" target-form="ids" style="padding:8px 12px;color:#333;background-color:#fff;border: 1px solid #ddd;"> <i class="icon-plus"></i> 新建分账</span>
+            </eq>
+			<table class="table table-bordered table-striped with-check">
+              <thead>
+                <tr>
+                  <th><input type="checkbox" id="title-table-checkbox" name="title-table-checkbox" /></th>
+                  <th>订单号</th>
+                  <th>操作员</th>
+				  <th>真实姓名</th>
+				  <th>银行卡号</th>
+                  <th>转账金额</th>
+				  <th>下单时间</th>
+				  <th>状态</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+				<foreach name="_list" item="vo">
+                  <td><input type="checkbox" class="ids" name="id[]" value="[{$vo.orderid}]"  /></td>
+                  <td>[{$vo.no_order}]</td>
+                  <td>[{$vo.username}]</td>
+				  <td>[{$vo.name}]</td>
+				  <td>[{$vo.bank_num}]</td>
+                  <td>[{$vo.money}]</td>
+				  <td>[{$vo.create_time|time_format='Y-m-d H:i:s'}]</td>
+				  <td>
+					<eq name="vo.status" value="0">转账中</eq>
+					<eq name="vo.status" value="1">已转账</eq>
+				  </td>				   
+                </tr>
+				</foreach>
+              </tbody>
+            </table>
+			</form>
+			 <div class="dataTables_paginate fg-buttonset ui-buttonset fg-buttonset-multi ui-buttonset-multi paging_full_numbers">
+			[{$_page}]
+			 </div>
+          </div>
+        </div>
+       
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="__JS__/jquery.min.js"></script> 
+<script src="__JS__/jquery.ui.custom.js"></script> 
+<script src="__JS__/bootstrap.min.js"></script> 
+<script src="__JS__/select2.min.js"></script> 
+ <script src="__JS__/bootstrap-datepicker.js"></script>
+ <script src="__JS__/bootstrap-colorpicker.js"></script>
+<script src="__JS__/jquery.dataTables.min.js"></script> 
+ <script src="__JS__/jquery.uniform.js"></script>
+<script src="__JS__/maruti.js"></script> 
+<script src="__JS__/maruti.tables.js"></script>
+ <script src="__JS__/maruti.form_common.js"></script>
+<script src="__JS__/maruti.popup.js"></script>
+<script src="__JS__/maruti.ajax.js"></script>
+<script>
+$(document).on('click','.click-show',function(){
+$("#select_map").show();
+$(this).html('<i class="icon-minus-sign"></i>关闭检索</span>');
+$(this).addClass('click-hide');
+$(this).removeClass('click-show');	
+
+})
+$(document).on('click','.click-hide',function(){
+$("#select_map").hide();
+$(this).html('<i class="icon-search"></i>高级检索</span> ');
+$(this).addClass('click-show');
+$(this).removeClass('click-hide');	
+
+})
+$("#goodsname .dropdown-menu li a").click(function(){
+	var goodsid=$(this).attr('data-id');
+	var goodsname=$(this).html();
+	$("input[name='goodsid']").val(goodsid);
+	$(this).parent().parent().siblings('.goodsname').html(goodsname);
+
+})
+$("#nickname .dropdown-menu li a").click(function(){
+	var userid=$(this).attr('data-id');
+	var nickname=$(this).html();
+	$("input[name='userid']").val(userid);
+	$(this).parent().parent().siblings('.nickname').html(nickname);
+
+})
+</script>
+</body>
+</block>

@@ -1,0 +1,267 @@
+<extend name="template/Maruti/common.html"/>
+<block name="body">
+<style>
+.select2-container{
+	width:150px;
+}
+.controls span{
+	margin-right:5px;
+}
+.exuser{
+	display:none;
+}
+</style>
+<div id="content">
+  <div id="content-header">
+    <div id="breadcrumb"> <a href="index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i>首页</a></div>
+  </div>
+  <notempty name="twoMenu">
+	  <div  class="quick-actions_homepage">
+		<ul class="quick-actions">
+			<foreach name="twoMenu" item="two_menu">
+			  <li> <a href="__ROOT__/[{$two_menu.tip}]"> <i class="[{$two_menu.icon}]"></i>[{$two_menu.title}]</a> </li>
+			</foreach>
+		</ul>
+	  </div>
+  </notempty>
+  <div class="container-fluid">
+  <div class="row-fluid" id="select_map">
+					<div class="span12">
+						<div class="widget-box">
+							<div class="widget-title">
+								<span class="icon">
+									<i class="icon-align-justify"></i>									
+								</span>
+								<h5>高级检索</h5>
+							</div>
+							<div class="widget-content nopadding">
+								<form action="[{:U('index')}]" method="get" class="form-horizontal">
+									<div class="control-group">
+										<label class="control-label">门店名称:</label>
+										<div class="controls">
+										<select name="cinema" id="cinema">
+											<option value ="0">不限</option>
+											<foreach name="cinema" item="_cinema">
+											<option <eq name="_cinema.id" value="$_GET['cinema']">selected="selected"</eq> value ="[{$_cinema.id}]">[{$_cinema.name}]</option>
+											</foreach>
+										</select>
+										</div>
+									</div>
+									<div class="control-group exuser">
+										<label class="control-label">核销员:</label>
+										<div class="controls">
+											<select name="exuser" id="exuser">
+											<option value ="0">不限</option>
+											</select>
+										</div>
+									</div>           									
+                                    <div class="control-group">
+                                        <label class="control-label">时间区间</label>
+                                        <div class="controls">
+                                            <input type="text" name="starttime" data-date="[{:time_format(null,'Y-m-d')}]" data-date-format="yyyy-mm-dd" value="[{$_GET['starttime']}]" placeholder="开始时间 格式YYYY-MM-DD" class="datepicker" /> --
+											<input type="text" name="endtime" data-date="[{:time_format(null,'Y-m-d')}]" data-date-format="yyyy-mm-dd" value="[{$_GET['endtime']}]" placeholder="结束时间 格式YYYY-MM-DD" class="datepicker" /><span style="margin-left:25px;">(开始时间默认为00:00:00、结束时间默认为23:59:59)</span>
+                                        </div>
+                                    </div>
+									
+									
+                                    
+									<div class="form-actions">
+										<button type="submit" class="btn btn-success">立即查询</button>
+									</div>
+								</form>
+							</div>
+						</div>						
+					</div>
+				</div>
+   <div class="row-fluid">
+	<div class="chart hide" ></div>
+					<div class="span12">
+						<div class="widget-box widget-plain">
+							<div class="center">
+				<ul class="stat-boxes stat-boxes2">
+      <li>
+        <div class="left peity_bar_good"><span>2,4,9,7,12,10,12</span></div>
+        <div class="right"> <strong>[{$consume_num}]</strong> 核销量 </div>
+      </li>
+    </ul>
+							</div>
+						</div>
+					</div>
+	</div>
+  </div>
+  
+	
+				<div class="row-fluid">
+					<div class="span4">
+						<div class="widget-box">
+							<div class="widget-title">
+								<span class="icon">
+									<i class="icon-eye-open"></i>
+								</span>
+								<h5>核销量</h5>
+							</div>
+							<div class="widget-content nopadding">
+								<table class="table table-bordered">
+									<thead>
+										<tr>
+											<th>日期</th>
+											<th>数量</th>
+										</tr>
+									</thead>
+									<tbody>
+									<foreach name="consume_list" item="vo1">
+										<tr>
+											<td>[{$vo1.time}]</td>
+											<td>[{$vo1.num}]</td>
+										</tr>
+									</foreach>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+					<div class="span4">
+						<div class="widget-box">
+							<div class="widget-title">
+								<span class="icon">
+									<i class="icon-arrow-right"></i>
+								</span>
+								<h5>所在门店</h5>
+							</div>
+							<div class="widget-content nopadding">
+								<table class="table table-bordered">
+									<thead>
+										<tr>
+											<th>门店</th>
+											<th>数量</th>
+										</tr>
+									</thead>
+									<tbody>
+									<foreach name="consume_cinema" item="vo2">
+										<tr>
+											<td>[{$key|get_cinemaId_cinema}]</td>
+											<td>[{$vo2}]</td>
+										</tr>
+									</foreach>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+					<div class="span4">
+						<div class="widget-box">
+							<div class="widget-title">
+								<span class="icon">
+									<i class="icon-file"></i>
+								</span>
+								<h5>中医馆集团</h5>
+							</div>
+							<div class="widget-content nopadding">
+								<table class="table table-bordered">
+									<thead>
+										<tr>
+											<th>集团</th>
+											<th>数量</th>
+										</tr>
+									</thead>
+									<tbody>
+										<foreach name="consume_group" item="vo3">
+										<tr>
+											<td>[{$key|get_group_name}]</td>
+											<td>[{$vo3}]</td>
+										</tr>
+									</foreach>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row-fluid">
+					<div class="span4">
+						<div class="widget-box">
+							<div class="widget-title">
+								<span class="icon">
+									<i class="icon-arrow-right"></i>
+								</span>
+								<h5>核销人员</h5>
+							</div>
+							<div class="widget-content nopadding">
+								<table class="table table-bordered">
+									<thead>
+										<tr>
+											<th>昵称</th>
+											<th>数量</th>
+										</tr>
+									</thead>
+									<tbody>
+									<foreach name="consume_user" item="vo5">
+										<tr>
+											<td>[{$vo5.user|get_member_nickname}]</td>
+											<td>[{$vo5.num}]</td>
+										</tr>
+									</foreach>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+</div>
+<script src="__JS__/excanvas.min.js"></script> 
+<script src="__JS__/jquery.min.js"></script> 
+<script src="__JS__/jquery.ui.custom.js"></script> 
+<script src="__JS__/bootstrap.min.js"></script> 
+<script src="__JS__/jquery.flot.min.js"></script> 
+<script src="__JS__/jquery.flot.resize.min.js"></script> 
+
+<script src="__JS__/select2.min.js"></script>  
+<script src="__JS__/bootstrap-datepicker.js"></script>
+<script src="__JS__/bootstrap-colorpicker.js"></script>
+<script src="__JS__/maruti.form_common.js"></script>
+<script src="__JS__/jquery.dataTables.min.js"></script> 
+ <script src="__JS__/jquery.uniform.js"></script>
+<script src="__JS__/fullcalendar.min.js"></script> 
+<script src="__JS__/maruti.js"></script>
+<script src="__JS__/maruti.dashboard_def.js"></script>
+<script src="__JS__/maruti.popup.js"></script> 
+<script src="__JS__/jquery.peity.min.js"></script>
+<script>
+$(document).on('change','#cinema',function(){
+	cinema_change();
+})
+cinema_change(1);
+function cinema_change(type=0){
+var cinema_id=$("#cinema").val();
+	var exuser=[{$exuser}];
+	var exuser_def="[{$_GET['exuser']}]";
+	if(cinema_id==0){
+		$('.exuser').hide();
+	}else if(cinema_id>0){
+		$('.exuser').show();
+		if(type==0){
+			$("#s2id_exuser").find('span').html('不限');
+		}
+		var b='';
+			b+='<option value ="0">不限</option>';
+		if(exuser[cinema_id]){
+			exuser[cinema_id].forEach(function(i,e){
+			if(type==1){
+			if(exuser_def==i.openid){
+				b+='<option selected="selected" value ="'+i.openid+'">'+i.name+'</option>';
+			}else{
+				b+='<option value ="'+i.openid+'">'+i.name+'</option>';
+			}
+			}else{
+				b+='<option value ="'+i.openid+'">'+i.name+'</option>';
+			}
+			})
+		}
+		$('#exuser').html(b);
+		
+	}
+	return false;
+}
+
+</script>
+</block>

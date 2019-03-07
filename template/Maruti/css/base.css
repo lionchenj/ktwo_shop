@@ -1,0 +1,19 @@
+
+
+/* 布局样式 */
+.cf2{
+	*zoom: 1;
+}
+.cf2:before, .cf2:after
+{
+	display:table;
+	content: "";
+}
+
+.cf2:after{
+	clear: both;
+}
+
+
+
+

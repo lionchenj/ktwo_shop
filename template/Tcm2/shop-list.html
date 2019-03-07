@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="description" content=""/>
+    <meta name="keywords" content=""/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/><!-- 是否启用 WebApp 全屏模式 -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/><!-- 设置状态栏的背景颜色 -->
+    <meta name="viewport" content="initial-scale=1.0,user-scalable=no,width=device-width,minimum-scale=1.0,maximum-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no"/><!-- 禁止数字识自动别为电话号码 --><!-- 不让android识别邮箱 -->
+	<title>中医馆商品列表</title>
+	<link rel="stylesheet" type="text/css" href="__CSS__/common.css">
+	<link rel="stylesheet" type="text/css" href="__CSS__/style.css">
+	<link rel="stylesheet" type="text/css" href="__CSS__/mescroll.min.css">
+	<script type="text/javascript" src="__JS__/jquery-1.11.3.min.js"></script>
+	<script type="text/javascript" src="__JS__/resize.js"></script>
+	<script type="text/javascript" src="__JS__/common.js"></script>
+	<script type="text/javascript" src="__JS__/mescroll.min.js"></script>
+</head>
+<body>
+	<div class="title-info">
+		<a href="javascript:history.go(-1);" class="back-link">
+			<i class="icon-left-arrow"></i>返回
+		</a>
+		{$title}
+	</div>
+	<div class="shop-goods clearfix mescroll" id="mescroll">
+		<div class="mescroll-bounce">
+		<foreach name="lists" item="vo">
+			<div class="goods-item left">
+				<a href="shop-detail.html" class="goods-link">
+					<img src="{$vo.img_url}">
+					<div class="item-title">
+						{$vo.name}
+					</div>
+					<div class="item-money">
+						￥{$vo.money}
+					</div>
+				</a>
+				<div class="shop-btn clearfix">
+					<a href="shop-car.html" class="shop-list-btn left">加入购物车</a>
+					<a href="shop-confirm.html" class="shop-list-btn right">立即下单</a>
+				</div>
+			</div>
+		</foreach>	
+		</div>
+	</div>
+	<div class="fixed-btn fb-1">
+		<a href="shop-car.html">
+			<img src="__IMAGES__/shopcar-icon.png">
+			<div class="fixed-text">
+				购物车
+			</div>
+		</a>
+	</div>
+	<div class="fixed-btn fb-2">
+		<a href="tel:85855450">
+			<img src="__IMAGES__/call-icon.png">
+			<div class="fixed-text">
+				客服热线
+			</div>
+		</a>
+	</div>
+	<div class="fixed-btn fb-3">
+		<a href="">
+			<img src="__IMAGES__/weixin-icon.png">
+			<div class="fixed-text">
+				微信客服
+			</div>
+		</a>
+	</div>
+	<script type="text/javascript">
+		var mescroll = new MeScroll("mescroll", {
+			down:{
+				use:false//不启用下拉刷新
+			},
+			up:{
+				callback: upCallback //上拉加载的回调
+			}
+		})
+		//上拉加载的回调 page = {num:1, size:10}; num:当前页 默认从1开始, size:每页数据条数,默认10
+		function upCallback(page){
+			$.ajax({
+				url:'',
+				success:function(curPageData){
+					mescroll.endByPage(curPageData.length, totalPage);
+					setListData(curPageData);
+				},
+				error:function(){
+					mescroll.endErr();
+				}
+			})
+		}
+
+		function setListData(curPageData){
+
+		}
+	</script>
+</body>
+</html>

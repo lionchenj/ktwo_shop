@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="description" content=""/>
+    <meta name="keywords" content=""/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/><!-- 是否启用 WebApp 全屏模式 -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/><!-- 设置状态栏的背景颜色 -->
+    <meta name="viewport" content="initial-scale=1.0,user-scalable=no,width=device-width,minimum-scale=1.0,maximum-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no"/><!-- 禁止数字识自动别为电话号码 --><!-- 不让android识别邮箱 -->
+	<title>天辅安中医馆我的订单</title>
+	<link rel="stylesheet" type="text/css" href="__CSS__/common.css">
+	<link rel="stylesheet" type="text/css" href="__CSS__/mescroll.min.css?v=1.6">
+	<link rel="stylesheet" type="text/css" href="__CSS__/style.css?v=1.3">
+	<script type="text/javascript" src="__JS__/jquery-1.11.3.min.js"></script>
+	<script type="text/javascript" src="__JS__/resize.js"></script>
+	<script type="text/javascript" src="__JS__/common.js"></script>
+	<script type="text/javascript" src="__JS__/mescroll.min.js"></script>
+</head>
+<body class="bg-white" style="-webkit-tap-highlight-color:rgba(0,0,0,0)">
+	<div class="title-info">
+		<a href="javascript:history.go(-1);" class="back-link">
+			<i class="icon-left-arrow"></i>返回
+		</a>
+		我的订单
+	</div>
+	<div class="order-nav-wrap clearfix">
+		<div class="left order-nav active" data-id="0" style="width:50%;">待支付</div>
+		<!-- <div class="left order-nav" data-id="2">待收货</div>
+		<div class="left order-nav" data-id="3">待评价</div> -->
+		<div class="left order-nav" data-id="1" style="width:50%;">已完成</div>
+	</div>
+	<div class="order-container mescroll" id="mescroll">
+		<div class="order-item" id="dataList">
+			<div class="order-top clearfix">
+				<div class="order-shop left">天辅安中医馆</div>
+				<div class="order-state right">待支付</div>
+			</div>
+			<div class="order-info">
+				<ul>
+					<li>
+						<a href="order-detail.html" class="order-link clearfix">
+							<div class="order-img-wrap left" style="background-image: url(__IMAGES__/sm-bg.png);">
+								<div class="order-img-1">5000元</div>
+								<div class="order-img-2">充值卡</div>
+								<div class="order-img-3">送500元</div>
+							</div>
+							<div class="order-title left">天辅安中医馆5000元充值卡（送500元）</div>
+							<div class="order-payInfo right">
+								<div class="order-money">￥5000</div>
+								<div class="order-num">数量：1</div>
+							</div>
+						</a>
+					</li>
+					<li>
+						<a href="order-detail.html" class="order-link clearfix">
+							<div class="order-img-wrap left" style="background-image: url(__IMAGES__/sm-bg.png);">
+								<div class="order-img-1">5000元</div>
+								<div class="order-img-2">充值卡</div>
+								<div class="order-img-3">送500元</div>
+							</div>
+							<div class="order-title left">天辅安中医馆5000元充值卡（送500元）</div>
+							<div class="order-payInfo right">
+								<div class="order-money">￥5000</div>
+								<div class="order-num">数量：1</div>
+							</div>
+						</a>
+					</li>
+				</ul>
+			</div>
+			<div class="order-bottom">
+				<span class="order-text">共1件商品</span>
+				<span class="order-all">合计：￥<i class="fs-14">5000</i></span>
+			</div>
+			<div class="order-btn-wrap">
+				<a href="javascript:;" class="order-btn-1">取消订单</a>
+				<!-- <a href="javascript:;" class="order-btn-2">确认收货</a>-->
+				<a href="javascript:;" class="order-btn-2 pay-order-btn">付款</a>
+			</div>
+		</div>
+	</div>
+	</div>
+	<!-- <div class="order-container" id="empty-wrap" style="display: none">
+		<div class="order-null-wrap">
+			<img src="__IMAGES__/empty.png">
+			<div class="order-null-text-1">
+				您还没有相关的订单
+			</div>
+			<div class="order-null-text-2">
+				可以去看看有哪些想买的
+			</div>
+		</div>
+	</div> -->
+	<!-- 提示弹窗 -->
+	<div class="tips-box" style="display: none;"></div>
+	<!-- 付款弹窗 -->
+	<div class="popup-box pay-popup" style="display: none;">
+		<div class="black-mask"></div>
+		<div class="popup-pay">
+			<i class="icon-close"></i>
+			<div class="popup-info">付款</div>
+			<div class="popup-form">
+				<form action="" id="pay-form">
+					<div class="popup-item clearfix">
+						<label class="popup-label left">积分</label>
+						<div class="left mark-tips">
+							可使用20020分
+						</div>
+						<div class="right popup-radio">
+							<label class="circle">
+								<input type="radio" name="choose" value="1" checked="true">
+								<span></span>
+							</label>
+						</div>
+						<!-- 以下为空的显示 -->
+						<!-- <div class="left mark-tips empty-tips">
+							可使用0分
+						</div>
+						<div class="right popup-radio">
+							<label class="circle">
+								<input type="radio" name="choose" value="1" readonly>
+								<span></span>
+							</label>
+						</div>-->
+					</div>
+					<div class="popup-item clearfix">
+						<label class="popup-label left">卡券</label>
+						<div class="left mark-tips">
+							满300元减30
+						</div>
+						<div class="right popup-arrow">
+							<i class="icon-down-arrow"></i>
+						</div>
+						<select name="ticket" class="popup-select" onchange="select(this)">
+							<option value="1">满300元减30</option>
+							<option value="2">满500元减50</option>
+						</select>
+						<!-- 以下为空的显示 -->
+						<!-- <div class="left mark-tips empty-tips">
+							无代金券
+						</div>
+						<div class="right popup-arrow">
+							<i class="icon-down-arrow"></i>
+						</div>
+						<select name="ticket" class="popup-select" onchange="select(this)">
+							<option value="1">无代金券</option>
+						</select> -->
+					</div>
+					<div class="popup-item clearfix">
+						<label class="popup-label left">余额</label>
+						<div class="left money-tips">
+							1500元
+						</div>
+						<div class="right popup-radio">
+							<label class="circle">
+								<input type="radio" name="choose" value="2">
+								<span></span>
+							</label>
+						</div>
+					</div>
+					<div class="popup-text clearfix">
+						<div class="popup-t-left left">实际支付</div>
+						<div class="popup-t-right popup-total right">
+							￥1500元
+						</div>
+					</div>
+					<div class="popup-btn">
+						<button type="submit" class="popup-submit">立即购买</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<div class="nav-list clearfix">
+		<a href="{:U('About/recharge')}" class="left nav-item">
+			<i class="icon-nav-recharge"></i>
+			<div class="nav-name">
+				充值卡
+			</div>
+		</a>
+		<a href="{:U('About/order')}" class="left nav-item">
+			<i class="icon-nav-order active"></i>
+			<div class="nav-name active">
+				我的订单
+			</div>
+		</a>
+		<a href="{:U('Index/index')}" class="left nav-item">
+			<i class="icon-nav-user"></i>
+			<div class="nav-name">
+				个人中心
+			</div>
+		</a>
+	</div>
+	<script type="text/javascript">
+		$(function(){
+			var curNavIndex = 0;//待支付为0,已完成为1;
+			$(".order-nav").click(function(){
+				var i=Number($(this).attr("data-id"));
+				if(curNavIndex!=i){
+					//更改列表条件
+					curNavIndex=i;
+					$(this).addClass("active").siblings().removeClass("active");
+					//重置列表数据
+					mescroll.resetUpScroll();
+				}
+			})
+
+			// $(".pay-order-btn").on("click",function(){
+			// 	$(".pay-popup").show();
+			// })
+			// $(".black-mask,.icon-close").on("click",function(){
+			// 	$(".pay-popup").hide();
+			// })
+
+			//模拟select效果
+			function select(e) {
+				var value = $(e).find("option:selected").text();
+				$(e).siblings(".mark-tips").text(value);
+			}
+
+			//创建MeScroll对象,内部已默认开启下拉刷新,自动执行up.callback,刷新列表数据;
+			var mescroll = new MeScroll("mescroll", {
+				//上拉加载的配置项
+				up: {
+					callback: getListData, //上拉回调,此处可简写; 相当于 callback: function (page) { getListData(page); }
+					noMoreSize: 4, //如果列表已无数据,可设置列表的总数量要大于半页才显示无更多数据;避免列表数据过少(比如只有一条数据),显示无更多数据会不好看; 默认5
+					empty: {
+						icon: "__IMAGES__/empty.png", //图标,默认null
+						tip: "您还没有相关的订单"
+					},
+					clearEmptyId: "dataList", //相当于同时设置了clearId和empty.warpId; 简化写法;默认null
+					page:{
+						num:0,
+						size:5
+					}
+				}
+			});
+	
+
+			/*联网加载列表数据  page = {num:1, size:5}; num:当前页 从1开始, size:每页数据条数 */
+			function getListData(page){
+				//联网加载数据
+				var dataIndex=curNavIndex; //记录当前联网的nav下标,防止快速切换时,联网回来curNavIndex已经改变的情况;
+				var pageIndex = page.num-1;
+				getListDataFromNet(dataIndex, pageIndex, page.size, function(pageData){
+					//联网成功的回调,隐藏下拉刷新和上拉加载的状态;
+					//mescroll会根据传的参数,自动判断列表如果无任何数据,则提示空;列表无下一页数据,则提示无更多数据;
+					console.log("dataIndex="+dataIndex+", curNavIndex="+curNavIndex+", pageIndex="+pageIndex+", page.size="+page.size+", pageData.length="+pageData.length);
+					mescroll.endSuccess(pageData.length);
+
+					//设置列表数据
+					setListData(pageData,dataIndex);
+				}, function(){
+					//联网失败的回调,隐藏下拉刷新和上拉加载的状态;
+	                mescroll.endErr();
+				});
+			}
+
+			/*联网加载列表数据*/
+			function getListDataFromNet(curNavIndex,pageNum,pageSize,successCallback,errorCallback) {
+	        	$.ajax({
+	                type: 'POST',
+	                url: '{:U('About/ajax_order_list')}',
+					data:{
+						start:pageNum,
+						limit:pageSize,
+						status:curNavIndex
+					},
+	                dataType: 'json',
+	                success: function(data){
+						console.log(data);
+						if(data.status==1){
+		                	var listData=[];
+	                		for(var i = 0; i < data.length; i++){
+	                			listData.push(data[i]);
+	                		}
+		                	//回调
+		                	successCallback(listData);
+		                }else{
+							//为空处理
+						}
+					},
+	                error: errorCallback
+	            });
+			}
+
+			/*设置列表数据
+			 * pageData 当前页的数据
+			 * dataIndex 数据属于哪个nav */
+			function setListData(pageData,dataIndex){
+				var listDom=document.getElementById("dataList");
+			}
+		})
+
+	</script>
+</body>
+</html>

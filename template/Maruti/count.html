@@ -1,0 +1,472 @@
+<extend name="template/Maruti/common.html"/>
+<block name="body">
+<div id="content">
+  <div id="content-header">
+    <div id="breadcrumb"> <a href="index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i>首页</a></div>
+  </div>
+  <notempty name="twoMenu">
+	  <div  class="quick-actions_homepage">
+		<ul class="quick-actions">
+			<foreach name="twoMenu" item="two_menu">
+			  <li> <a href="__ROOT__/[{$two_menu.tip}]"> <i class="[{$two_menu.icon}]"></i>[{$two_menu.title}]</a> </li>
+			</foreach>
+		</ul>
+	  </div>
+  </notempty>
+ 
+  <div class="container-fluid">
+  <div class="row-fluid" id="select_map">
+					<div class="span12">
+						<div class="widget-box">
+							<div class="widget-title">
+								<span class="icon">
+									<i class="icon-align-justify"></i>									
+								</span>
+								<h5>高级检索</h5>
+							</div>
+							<div class="widget-content nopadding">
+								<form action="[{:U('index')}]" method="get" class="form-horizontal">                        
+                                   
+									<notempty name="user">
+									<div class="control-group">
+                                        <label class="control-label">操作账号</label>
+                                        <div class="controls">
+                                          <select name="userid" id="userid" style="width:200px">
+											<option value ="0">请选择</option>
+											<foreach name="user" item="_list">
+												<option value ="[{$_list.userid}]" <eq name="_GET['userid']" value="$_list.userid">selected="selected"</eq>>[{$_list.username}]</option>
+											</foreach>
+											</select>
+                                        </div>
+                                    </div>
+									</notempty>
+									
+									<notempty name="goods">
+									<div class="control-group">
+                                        <label class="control-label">商品</label>
+                                        <div class="controls">
+                                          <select name="goodsid"  style="width:150px">
+											<option value ="0">请选择</option>
+											<foreach name="goods" item="_list">
+												<option value ="[{$_list.goodsid}]" <eq name="_GET['goodsid']" value="$_list.goodsid">selected="selected"</eq>>[{$_list.goodsname}]</option>
+											</foreach>
+											</select>
+                                        </div>
+                                    </div>
+									</notempty>
+									<div class="control-group">
+										<label class="control-label">物流状态</label>
+										<div class="controls"><!-- <input name="orderid" type="text" class="span3" placeholder="订单号" value="[{$_GET['orderid']?$_GET['orderid']:''}]"/>  -->
+								            <select  name="trace" class="form-control" style="width:100px">
+								            	   <option size='2' value="0" >请选择</option>
+                                                   <option size='2' value="1" <if condition="$_GET['trace'] eq 1">selected</if> >未发货</option>
+                                                   <option size='2' value="2" <if condition="$_GET['trace'] eq 2">selected</if> >已发货</option>
+                                            </select>
+										</div>
+									</div> 
+									 <div class="control-group">
+                                        <label class="control-label">时间区间</label>
+                                        <div class="controls">
+                                            <input type="text" name="starttime" data-date="[{:time_format(null,'Y-m-d')}]" data-date-format="yyyy-mm-dd" value="[{$_GET['starttime']}]" placeholder="开始时间 格式YYYY-MM-DD" class="datepicker" /> --
+											<input type="text" name="endtime" data-date="[{:time_format(null,'Y-m-d')}]" data-date-format="yyyy-mm-dd" value="[{$_GET['endtime']}]" placeholder="结束时间 格式YYYY-MM-DD" class="datepicker" /><span style="margin-left:25px;">(开始时间默认为00:00:00、结束时间默认为23:59:59)</span>
+                                        </div>
+                                    </div>
+									
+                                    
+									<div class="form-actions">
+										<button type="submit" class="btn btn-success">立即查询</button>
+										<button type="button" class="btn" ><a href="__ROOT__/count.html" >清空</a></button>
+									</div>
+								</form>
+							</div>
+						</div>						
+					</div>
+				</div>
+   <div class="row-fluid">
+					<div class="span12">
+						<div class="widget-box widget-plain">
+							<div class="center">
+								 <ul class="stat-boxes stat-boxes2">
+      <li>
+        <div class="left peity_bar_good"><span>2,4,9,7,12,10,12</span></div>
+        <div class="right"> <strong>[{$order_num}]</strong> 下单量 </div>
+      </li>
+      <li>
+        <div class="left peity_bar_neutral"><span>20,15,18,14,10,9,9,9</span></div>
+        <div class="right"> <strong>[{$order_true_num+$offline_order_true_num}]</strong> 成交量 </div>
+      </li>
+      <li>
+        <div class="left peity_bar_bad"><span>3,5,9,7,12,20,10</span></div>
+        <div class="right" style="width:150px"> <strong>[{$order_true_money}]</strong> 积分交易额 </div>
+      </li>
+	  </ul>
+
+							</div>
+						</div>
+					</div>
+	</div>
+	
+    <div class="row-fluid">
+      <div class="span12"> 
+        <div class="widget-box">
+          <div class="widget-title"><span class="icon"><i class="icon-signal"></i></span>
+            <h5>按日统计数据</h5>
+            <div class="buttons"><a href="javascript:;" id="chart_update" class="btn btn-mini"><i class="icon-refresh"></i> 刷新</a></div>
+          </div>
+          <div class="widget-content">
+            <div class="row-fluid">
+              <div class="span12">
+                <div class="chart"></div>
+              </div>
+            </div></div></div>
+      </div>
+    </div> 
+  </div>
+  
+	
+				<div class="row-fluid">
+					<notempty name="order_list">
+					<div class="span4">
+						<div class="widget-box">
+							<div class="widget-title">
+								<span class="icon">
+									<i class="icon-eye-open"></i>
+								</span>
+								<h5>线上下单量</h5>
+							</div>
+							<div class="widget-content nopadding">
+								<table class="table table-bordered">
+									<thead>
+										<tr>
+											<th>日期</th>
+											<th>数量</th>
+										</tr>
+									</thead>
+									<tbody>
+									<foreach name="order_list" item="vo1">
+										<tr>
+											<td>[{$vo1.time}]</td>
+											<td>[{$vo1.num}]</td>
+										</tr>
+									</foreach>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+					</notempty>
+					<notempty name="order_true_list">
+					<div class="span4">
+						<div class="widget-box">
+							<div class="widget-title">
+								<span class="icon">
+									<i class="icon-arrow-right"></i>
+								</span>
+								<h5>线上成交量</h5>
+							</div>
+							<div class="widget-content nopadding">
+								<table class="table table-bordered">
+									<thead>
+										<tr>
+											<th>日期</th>
+											<th>数量</th>
+										</tr>
+									</thead>
+									<tbody>
+									<foreach name="order_true_list" item="vo2">
+										<tr>
+											<td>[{$vo2.time}]</td>
+											<td>[{$vo2.num}]</td>
+										</tr>
+									</foreach>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+					</notempty>
+					<notempty name="order_money_list">
+					<div class="span4">
+						<div class="widget-box">
+							<div class="widget-title">
+								<span class="icon">
+									<i class="icon-file"></i>
+								</span>
+								<h5>线上交易额</h5>
+							</div>
+							<div class="widget-content nopadding">
+								<table class="table table-bordered">
+									<thead>
+										<tr>
+											<th>日期</th>
+											<th>金额</th>
+										</tr>
+									</thead>
+									<tbody>
+										<foreach name="order_money_list" item="vo3">
+										<tr>
+											<td>[{$vo3.time}]</td>
+											<td>[{$vo3.num}]</td>
+										</tr>
+									</foreach>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+					</notempty>
+				</div>
+				
+				<!-- <div class="row-fluid">
+				<notempty name="offline_order_list">
+					<div class="span4">
+						<div class="widget-box">
+							<div class="widget-title">
+								<span class="icon">
+									<i class="icon-eye-open"></i>
+								</span>
+								<h5>线下下单量</h5>
+							</div>
+							<div class="widget-content nopadding">
+								<table class="table table-bordered">
+									<thead>
+										<tr>
+											<th>日期</th>
+											<th>数量</th>
+										</tr>
+									</thead>
+									<tbody>
+									<foreach name="offline_order_list" item="vo1">
+										<tr>
+											<td>[{$vo1.time}]</td>
+											<td>[{$vo1.num}]</td>
+										</tr>
+									</foreach>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+					</notempty>
+					<notempty name="offline_order_true_list">
+					<div class="span4">
+						<div class="widget-box">
+							<div class="widget-title">
+								<span class="icon">
+									<i class="icon-arrow-right"></i>
+								</span>
+								<h5>线下成交量</h5>
+							</div>
+							<div class="widget-content nopadding">
+								<table class="table table-bordered">
+									<thead>
+										<tr>
+											<th>日期</th>
+											<th>数量</th>
+										</tr>
+									</thead>
+									<tbody>
+									<foreach name="offline_order_true_list" item="vo2">
+										<tr>
+											<td>[{$vo2.time}]</td>
+											<td>[{$vo2.num}]</td>
+										</tr>
+									</foreach>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+					</notempty>
+					<notempty name="offline_order_money_list">
+					<div class="span4">
+						<div class="widget-box">
+							<div class="widget-title">
+								<span class="icon">
+									<i class="icon-file"></i>
+								</span>
+								<h5>线下交易额</h5>
+							</div>
+							<div class="widget-content nopadding">
+								<table class="table table-bordered">
+									<thead>
+										<tr>
+											<th>日期</th>
+											<th>金额</th>
+										</tr>
+									</thead>
+									<tbody>
+										<foreach name="offline_order_money_list" item="vo3">
+										<tr>
+											<td>[{$vo3.time}]</td>
+											<td>[{$vo3.num}]</td>
+										</tr>
+									</foreach>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+					</notempty>
+				</div> -->
+				<!-- <div class="row-fluid">
+					<div class="span4">
+						<div class="widget-box">
+							<div class="widget-title">
+								<span class="icon">
+									<i class="icon-eye-open"></i>
+								</span>
+								<h5>圈粉量</h5>
+							</div>
+							<div class="widget-content nopadding">
+								<table class="table table-bordered">
+									<thead>
+										<tr>
+											<th>日期</th>
+											<th>数量</th>
+										</tr>
+									</thead>
+									<tbody>
+									<foreach name="member_list" item="vo4">
+										<tr>
+											<td>[{$vo4.time}]</td>
+											<td>[{$vo4.num}]</td>
+										</tr>
+									</foreach>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+					<div class="span4">
+						<div class="widget-box">
+							<div class="widget-title">
+								<span class="icon">
+									<i class="icon-arrow-right"></i>
+								</span>
+								<h5>充值记录</h5>
+							</div>
+							<div class="widget-content nopadding">
+								<table class="table table-bordered">
+									<thead>
+										<tr>
+											<th>日期</th>
+											<th>数量</th>
+										</tr>
+									</thead>
+									<tbody>
+									<foreach name="recharge_data" item="vo5">
+										<tr>
+											<td>[{$vo5.time}]</td>
+											<td>[{$vo5.num}]</td>
+										</tr>
+									</foreach>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+					<div class="span4">
+						<div class="widget-box">
+							<div class="widget-title">
+								<span class="icon">
+									<i class="icon-arrow-right"></i>
+								</span>
+								<h5>充值金额</h5>
+							</div>
+							<div class="widget-content nopadding">
+								<table class="table table-bordered">
+									<thead>
+										<tr>
+											<th>日期</th>
+											<th>数量</th>
+										</tr>
+									</thead>
+									<tbody>
+									<foreach name="recharge_money" item="vo6">
+										<tr>
+											<td>[{$vo6.time}]</td>
+											<td>[{$vo6.money}]</td>
+										</tr>
+									</foreach>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div> -->
+</div>
+<script src="__JS__/excanvas.min.js"></script> 
+<script src="__JS__/jquery.min.js"></script> 
+<script src="__JS__/jquery.ui.custom.js"></script> 
+<script src="__JS__/bootstrap.min.js"></script> 
+<script src="__JS__/jquery.flot.min.js"></script> 
+<script src="__JS__/jquery.flot.resize.min.js"></script> 
+<script src="__JS__/jquery.peity.min.js"></script>
+<script src="__JS__/select2.min.js"></script>  
+<script src="__JS__/bootstrap-datepicker.js"></script>
+<script src="__JS__/bootstrap-colorpicker.js"></script>
+<script src="__JS__/maruti.form_common.js"></script>
+<script src="__JS__/jquery.dataTables.min.js"></script> 
+ <script src="__JS__/jquery.uniform.js"></script>
+<script src="__JS__/fullcalendar.min.js"></script> 
+<script src="__JS__/maruti.js"></script> 
+<script src="__JS__/maruti.dashboard1.js"></script>
+<script src="__JS__/maruti.popup.js"></script> 
+<script type="text/javascript">
+$(document).ready(function(){
+var data=[{$data}];
+var order=[];  var num=[];
+ for (var i = 1; i <= 31;i +=1) {
+        num.push([i, data['num'][i]]);
+        order.push([i, data['order'][i]]);
+    }
+index_charts(order,num,{ min: 0, max: 2000});	
+})
+$("#chart_update").click(function(){
+	var url="__SELF__";
+	 $.post(url,{type:"char"}).success(function(data){
+		var order=[]; var vip=[]; var num=[];
+		 for (var i = 1; i <= 31;i +=1) {
+				num.push([i, data['num'][i]]);
+				order.push([i, data['order'][i]]);
+			}
+		index_charts(order,num,{ min: -0, max: 2000 });	
+	 })
+	
+})
+$("#order_update").click(function(){
+	var url="__SELF__";
+	 $.post(url,{type:"order"}).success(function(data){
+		var order='';
+		 for (var i = 0; i <data.length; i++) {
+			order += '<div class="new-update clearfix"> <i class="icon-gift"></i> <span class="update-notice"> <a title="" href="orderedit/'+data[i]['orderid']+'.html"><strong>'+data[i].title+'</strong></a> <span>By:'+data[i].create_time+'</span> </span> <span class="update-date"><span class="update-day">'+data[i].num+'</span>手</span> </div>';
+			}
+		$('#order_box').html(order);
+	 })
+	
+})
+  // This function is called from the pop-up menus to transfer to
+  // a different page. Ignore if the value returned is a null string:
+  function goPage (newURL) {
+
+      // if url is empty, skip the menu dividers and reset the menu selection to default
+      if (newURL != "") {
+      
+          // if url is "-", it is this page -- reset the menu:
+          if (newURL == "-" ) {
+              resetMenu();            
+          } 
+          // else, send page to designated URL            
+          else {  
+            document.location.href = newURL;
+          }
+      }
+  }
+
+// resets the menu selection upon entry to this page:
+function resetMenu() {
+   document.gomenu.selector.selectedIndex = 2;
+}
+</script>
+</block>

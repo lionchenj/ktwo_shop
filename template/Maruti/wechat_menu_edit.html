@@ -1,0 +1,176 @@
+<extend name="template/Maruti/common.html"/>
+<block name="body">
+<style>
+
+</style>
+		<div id="content">
+			<div id="content-header">
+                <div id="breadcrumb">
+                    <a href="__ROOT__/index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i>首页</a>
+                    <a href="__ROOT__/wechatmenu.html" class="tip-bottom">公众号菜单管理</a>
+					 <a  class="tip-bottom current" >[{$meta_title}]</a>
+                </div>
+        		<h1>[{$meta_title}]</h1>
+				
+			</div>
+			
+			<div class="container-fluid">
+            <div class="row-fluid">
+					<div class="span12">
+						<div class="widget-box">
+							<div class="widget-title">
+								<span class="icon">
+									<i class="icon-align-justify"></i>									
+								</span>
+								<h5>[{$meta_title}]</h5>
+							</div>
+							<div class="widget-content nopadding">
+								<form id="updateform" action="__SELF__" method="POST" class="form-horizontal">
+									<notempty name="category">
+									<div class="control-group">
+										<label class="control-label">上级分类:</label>
+										<input class="common-text required" name="pid" size="50" value="[{$category['id']}]" type="hidden">
+										<div class="controls"><input type="text" class="3" placeholder="用户名" value="[{$category['title']}]" disabled="disabled"/></div>
+									</div>
+									</notempty>
+                                    <div class="control-group">
+										<label class="control-label">分类名称:</label>
+										<input class="common-text required" name="id" size="50" value="[{$id}]" type="hidden">
+										<input class="common-text required" name="type" size="50" value="[{$type}]" type="hidden">
+										<div class="controls"><input name="title" type="text" class="3" placeholder="分类名称" value="[{$array.title}]" />
+										<div><error class="color-red hidden"></error></div></div>
+										
+									</div>
+									<div class="control-group">
+										<label class="control-label">排序:</label>
+										<div class="controls"><input name="sort" type="text" class="span1 int"  value="[{$array['sort']?$array['sort']:0}]" />
+										<div><error class="color-red hidden"></error></div></div>
+										
+									</div>
+									<div class="control-group">
+										<label class="control-label">链接:</label>
+										<div class="controls"><input name="link" type="text" class="span20" placeholder="链接" value="[{$array.link}]" />
+										<div><error class="color-red hidden"></error></div></div>
+										
+									</div>
+									
+                          
+									<div class="form-actions">
+										<button type="submit" class="btn btn-success ajax-post">保存</button>
+									</div>
+								</form>
+							</div>
+						</div>						
+					</div>
+				</div>
+             </div>
+			</div>
+		</div>
+<script src="__JS__/jquery.min.js"></script>
+<script src="__JS__/jquery.ui.custom.js"></script>
+<script src="__JS__/bootstrap.min.js"></script>
+<script src="__JS__/bootstrap-colorpicker.js"></script>
+<script src="__JS__/bootstrap-datepicker.js"></script>
+<script src="__JS__/jquery.uniform.js"></script>
+<script src="__JS__/select2.min.js"></script>
+<script src="__JS__/maruti.js"></script>
+<script src="__JS__/maruti.form_common.js"></script>
+<script src="__JS__/maruti.popup.js"></script>
+<script>
+$("input").blur(function(){
+  
+  var name=$(this).attr('name');
+  var vlaue=$(this).val();
+  switch(name)
+  {
+	case "title":
+	if(vlaue.length==0){
+			$(this).addClass('redborder');
+			$(this).siblings('div').find('error').html("<span>*</span>请输入分类名称");
+			$(this).siblings('div').find('error').removeClass('hidden')
+	}else{
+		$(this).removeClass('redborder');
+		$(this).siblings('div').find('error').html("");
+			$(this).siblings('div').find('error').addClass('hidden')
+	}
+	break;
+	case "link":
+	if(vlaue.length==0){
+			$(this).addClass('redborder');
+			$(this).siblings('div').find('error').html("<span>*</span>请输入链接");
+			$(this).siblings('div').find('error').removeClass('hidden')
+	}else{
+		$(this).removeClass('redborder');
+		$(this).siblings('div').find('error').html("");
+			$(this).siblings('div').find('error').addClass('hidden')
+	}
+	break;
+	}
+ 
+});
+//数据格式验证int
+$(document).on('change',".int",function(){
+	var val=parseInt($(this).val());
+	if(isNaN(val) || val==0){
+		$(this).val(0);
+	}else{
+		$(this).val(val);
+		}
+})
+$("#updateform").submit(function(){
+	var stat=1;
+	var title=$("input[name='title']").val();	
+	if(title.length==0){
+		$("input[name='title']").addClass('redborder');
+		$("input[name='title']").siblings('div').find('error').html("<span>*</span>请输入分类名称");
+		$("input[name='title']").siblings('div').find('error').removeClass('hidden');
+		stat=0;
+	}
+	var link=$("input[name='link']").val();	
+	if(link.length==0){
+		$("input[name='link']").addClass('redborder');
+		$("input[name='link']").siblings('div').find('error').html("<span>*</span>请输入链接");
+		$("input[name='link']").siblings('div').find('error').removeClass('hidden');
+		stat=0;
+	}
+	if(stat==0){
+		return false;
+	}else{
+		var url=$(this).attr('action');
+		var query = $(this).serialize();
+		 $.post(url,query).success(function(data){
+			 if (data.status==1) {
+				 $('#popbox .controls').html(data.info);
+					center($("#popbox"));
+					setTimeout(function(){
+					if (data.url) {
+						location.href=data.url;
+					}else{
+						location.reload();
+					}
+				},1500);
+			 }else{
+				 switch(data.info)
+				 {
+					case -1:
+					$("input[name='title']").addClass('redborder');
+					$("input[name='title']").siblings('div').find('error').html("<span>*</span>请输入分类名称");
+					$("input[name='title']").siblings('div').find('error').removeClass('hidden');
+					break;
+					case -2:
+					$("input[name='title']").addClass('redborder');
+					$("input[name='title']").siblings('div').find('error').html("<span>*</span>分类名称已存在");
+					$("input[name='title']").siblings('div').find('error').removeClass('hidden');
+					break;
+					default:
+					alert("未知错误请联系管理员");
+					break;
+				 }
+			 }
+		})
+		return false;
+		}
+})
+
+</script>
+</block>

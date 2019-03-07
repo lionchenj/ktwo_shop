@@ -1,0 +1,188 @@
+<extend name="template/Maruti/common.html"/>
+<block name="body">
+<style>
+.counter{
+    border: medium none;
+    height: 27px;
+    line-height: 27px;
+    outline: medium none;
+    padding: 0;
+    text-align: center;
+    vertical-align: top;
+    width: 50px;
+}
+</style>
+<div id="content">
+  <div id="content-header">
+    <div id="breadcrumb"> <a href="__ROOT__/index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a> <a href="__ROOT__/order.html" class="current">订单列表</a> </div>
+	<h1>订单详情</h1>
+  </div>
+  <div class="container-fluid">
+		<div class="row-fluid" id="select_map">
+					<div class="span12">
+						<div class="widget-box">
+							<div class="widget-title">
+								<span class="icon">
+									<i class="icon-align-justify"></i>									
+								</span>
+								<h5>订单详情</h5>
+							</div>
+							<div class="widget-content nopadding">
+								<form action="__SELF__" method="get" class="myform form-horizontal">
+									<div class="control-group">
+										<label class="control-label">订单号:</label>
+											<input type="text" name="orderid" style="display:none" value="[{$order_info.orderid}]"/>
+										<div class="controls"><input name="orderid" type="text" class="span3" placeholder="订单号" value="[{$order_info.orderid}]" disabled /> </div>
+									</div>
+                                    <div class="control-group">
+										<label class="control-label">商品名称</label>
+										<div class="controls " >
+											
+												<input type="text"  class="span3" value="[{$order_info['goodsname']}]" disabled />
+			
+											
+										</div>
+									</div>                     
+                                    <!-- <div class="control-group">
+                                        <label class="control-label">总数</label>
+                                        <div class="controls">
+										<input type="text" name="num" class="counter int" value="[{$order_info.num}]" disabled/>
+                                        </div>
+                                    </div> -->
+									<div class="control-group">
+                                        <label class="control-label">支付积分</label>
+                                        <div class="controls">
+										<input type="text"  name="pay_integral" class="span3" value="[{$order_info.pay_integral}] " disabled  >
+                                        </div>
+                                    </div>
+								<!-- 	<div class="control-group">
+                                        <label class="control-label">选择城市</label>
+                                        <div class="controls">
+										<input type="text"  value="[{$order_info.city}]" disabled>
+                                        </div>
+                                    </div> -->
+									<div class="control-group">
+                                        <label class="control-label">交易时间</label>
+                                        <div class="controls">
+										<input type="text"  value="[{$order_info.create_time|time_format='Y-m-d H:i:s'}]" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">快递公司</label>
+                                        <div class="controls">
+										<input type="text"  value="[{$expressname}]" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label">物流号</label>
+                                        <div class="controls">
+										<input type="text"  name="traces_number" value="[{$order_info.traces_number}]">
+                                        </div>
+                                    </div>
+                                    
+									<div class="control-group">
+                                        <label class="control-label">买家姓名</label>
+                                        <div class="controls">
+										<input type="text"  name="name" value="[{$order_info.name}]">
+                                        </div>
+                                    </div>
+									<div class="control-group">
+                                        <label class="control-label">买家联系号码</label>
+                                        <div class="controls">
+										<input type="text" name="mobile" value="[{$order_info.mobile}]" >
+                                        </div>
+                                    </div>
+									<div class="control-group">
+										<label class="control-label">订单状态</label>
+										<div class="controls">
+											<label><input type="radio" name="status"  value="1" disabled <eq name="order_info['status']" value="1">checked=checked</eq> />未支付</label>
+											<label><input type="radio" name="status" value="2" disabled <eq name="order_info['status']" value="2" >checked=checked</eq> />已支付</label>
+											<label><input type="radio" name="status"  value="3" disabled <eq name="order_info['status']" value="3">checked=checked</eq> />待评价</label>
+											<label><input type="radio" name="status"  value="4" disabled <eq name="order_info['status']" value="4">checked=checked</eq> />已完成</label>
+											<label><input type="radio" name="status"  value="-1" disabled <eq name="order_info['status']" value="-1">checked=checked</eq> />无效订单</label>
+										</div>
+									</div> 
+                                    <div class="control-group">
+                                        <label class="control-label">物流信息：</label>
+                                        <?php if($order_info['is_trace']==1){ ?>
+                                        <div class="controls">暂无物流信息</div>
+                                        <?php }else{ ?>
+
+                                        
+                                        <div class="controls ">
+                                        	<?php if($express->State == 0){ ?>
+                                        	货物已发出----暂无轨迹信息
+                                        	<?php }else{ ?>
+                                        	       正式发货</br>
+                                                   [{$order_info.trace_time|time_format='Y-m-d H:i:s'}]</br>
+	                                        	<?php foreach($express->Traces as $k=>$v){ ?>
+	                                        	   
+	                                        	           |</br>
+	                                        	           |</br>
+	                                        	           |</br>
+	                                        	   [{$v->AcceptStation}]</br>
+	                                        	   [{$v->AcceptTime}]</br>
+	                                        	<?php }?>
+	                                        	
+                                        	<?php } ?>
+                                        </div>
+                                        <?php } ?>
+                                    </div>
+
+									<div class="form-actions">
+										<button type="submit" class="btn btn-success ajax-post" url="" target-form="myform">保存</button>
+											<button type="button" class="btn btn-warning"  onclick="window.location.href='<eq name="change" value="0">__ROOT__/offlineorder.html<else />__ROOT__/order.html</eq>'">返回</button>
+									</div>
+								</form>
+							</div>
+						</div>						
+					</div>
+				</div>
+       
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="__JS__/jquery.min.js"></script> 
+<script src="__JS__/jquery.ui.custom.js"></script> 
+<script src="__JS__/bootstrap.min.js"></script> 
+<script src="__JS__/select2.min.js"></script> 
+ <script src="__JS__/bootstrap-datepicker.js"></script>
+ <script src="__JS__/bootstrap-colorpicker.js"></script>
+<script src="__JS__/jquery.dataTables.min.js"></script> 
+ <script src="__JS__/jquery.uniform.js"></script>
+<script src="__JS__/maruti.js"></script> 
+<script src="__JS__/maruti.tables.js"></script>
+ <script src="__JS__/maruti.form_common.js"></script>
+<script src="__JS__/maruti.popup.js"></script>
+<script src="__JS__/maruti.ajax.js"></script>
+<script>
+$("#goodsname .dropdown-menu li a").click(function(){
+	var goodsid=$(this).attr('data-id');
+	var goodsname=$(this).html();
+	$("input[name='goodsid']").val(goodsid);
+	$(this).parent().parent().siblings('.goodsname').html(goodsname);
+
+})
+//数据格式验证int
+$(document).on('change',".int",function(){
+	var val=parseInt($(this).val());
+	if(isNaN(val) || val==0){
+		$(this).val(1);
+	}else{
+		$(this).val(val);
+		}
+		change_money();
+})
+$("#expressid").click(function(){
+	$('.express').removeClass('hide');
+})
+
+$('.express').click(function(){
+	$('.express').addClass('hide');
+})
+
+</script>
+</body>
+</block>

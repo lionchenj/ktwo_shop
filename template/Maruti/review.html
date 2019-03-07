@@ -1,0 +1,98 @@
+<extend name="template/Maruti/common.html"/>
+<block name="body"> 
+<div id="content">
+  <div id="content-header">
+    <div id="breadcrumb"> <a href="__ROOT__/index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a> <a href="__ROOT__/goods.html" class="current">商品列表</a> </div>
+	 	<notempty name="twoMenu">
+	  <div  class="quick-actions_homepage">
+		<ul class="quick-actions">
+			<foreach name="twoMenu" item="two_menu">
+			  <li> <a href="__ROOT__/[{$two_menu.tip}]"> <i class="[{$two_menu.icon}]"></i>[{$two_menu.title}]</a> </li>
+			</foreach>
+		</ul>
+	  </div>
+	<else />
+	 <h1>[{$two_title}]</h1>
+	</notempty>
+  </div>
+ 
+  <div class="container-fluid">               
+        <div class="widget-box">    			
+		  <div class="widget-content">
+		  <form name="myform" id="myform" method="post">
+		  <span class="btn ajax-post confirm" url="[{:U('help_del')}]" target-form="ids" style="padding:8px 12px;color:#333;background-color:#fff;border: 1px solid #ddd;"> <i class="icon-trash"></i> 批量删除</span>
+            <span class="btn" onclick=" window.location.href='[{:U('add',array('id'=>$_GET['id']))}]'" style="padding:8px 12px;color:#333;background-color:#fff;border: 1px solid #ddd;"> <i class="icon-plus"></i> 新增评论</span> 
+			<table class="table table-bordered table-striped with-check">
+              <thead>
+                <tr>
+                  <th><input type="checkbox" id="title-table-checkbox" name="title-table-checkbox" /></th>
+				   <th>ID</th>
+                  <th>评论人名称</th>
+				  <th>评论头像</th>
+                  <th>创建时间</th>		  
+				  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+				<foreach name="_list" item="vo">
+                  <td><input type="checkbox" class="ids" name="id[]" value="[{$vo.id}]"  /></td>
+                  <td>[{$vo.id}]</td>
+                  <td>[{$vo.nickname}]</td>
+				  <td><img  style="width:50px" src="[{$vo.headimgurl}]"></td>				 
+				  <td>[{$vo.create_time|time_format='Y-m-d H:i:s'}]</td>
+				    <td>
+					<span class="fr">
+					<eq name="vo.status" value="0"><a class="btn btn-danger btn-mini confirm ajax-get" ">未审核</a></eq>
+					<eq name="vo.status" value="1"><a class="btn btn-danger btn-mini confirm ajax-get" ">通过</a></eq>
+					<a class="btn btn-primary btn-mini" href="[{:U('edit',array('comment_id'=>$vo['id'],'id'=>$vo['goodsid']))}]">详情</a>
+					<neq name="vo.status" value="-1"><a class="btn btn-danger btn-mini confirm ajax-get" href="[{:U('help_del',array('id'=>$vo['id']))}]">删除</a></neq>
+					</span>
+					</td>
+                </tr>
+				</foreach>
+              </tbody>
+            </table>
+			</form>
+			 <div class="dataTables_paginate fg-buttonset ui-buttonset fg-buttonset-multi ui-buttonset-multi paging_full_numbers">
+			[{$_page}]
+			 </div>
+          </div>
+        </div>
+       
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="__JS__/jquery.min.js"></script> 
+<script src="__JS__/jquery.ui.custom.js"></script> 
+<script src="__JS__/bootstrap.min.js"></script> 
+<script src="__JS__/select2.min.js"></script> 
+ <script src="__JS__/bootstrap-datepicker.js"></script>
+ <script src="__JS__/bootstrap-colorpicker.js"></script>
+<script src="__JS__/jquery.dataTables.min.js"></script> 
+ <script src="__JS__/jquery.uniform.js"></script>
+<script src="__JS__/maruti.js"></script> 
+<script src="__JS__/maruti.tables.js"></script>
+ <script src="__JS__/maruti.form_common.js"></script>
+<script src="__JS__/maruti.popup.js"></script>
+<script src="__JS__/maruti.ajax.js"></script>
+<script>
+$(document).on('click','.click-show',function(){
+$("#select_map").show();
+$(this).html('<i class="icon-minus-sign"></i>关闭检索</span>');
+$(this).addClass('click-hide');
+$(this).removeClass('click-show');	
+
+})
+$(document).on('click','.click-hide',function(){
+$("#select_map").hide();
+$(this).html('<i class="icon-search"></i>高级检索</span> ');
+$(this).addClass('click-show');
+$(this).removeClass('click-hide');	
+
+})
+</script>
+</body>
+</block>

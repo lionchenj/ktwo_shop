@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>[{:C('WEB_SITE_TITLE')}]</title><meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" href="__CSS__/bootstrap.min.css" />
+<link rel="stylesheet" href="__CSS__/bootstrap-responsive.min.css" />
+<link rel="stylesheet" href="__CSS__/fullcalendar.css" />
+<link rel="stylesheet" href="__CSS__/maruti-style.css" />
+<link rel="stylesheet" href="__CSS__/maruti-media.css" class="skin-color" />
+<link rel="stylesheet" href="__CSS__/maruti-popup.css" />
+<link rel="stylesheet" href="__CSS__/uniform.css" />
+<link rel="stylesheet" href="__CSS__/select2.css" />
+<link rel="stylesheet" href="__CSS__/colorpicker.css" />
+   <link rel="stylesheet" href="__CSS__/datepicker.css" />
+</head>
+<body>
+<!--Header-part-->
+<section name="top">
+	<div id="header">
+	  <h1><a href="/">锦丰商城后台管理系统</a></h1>
+	</div>
+	<!--close-Header-part--> 
+
+	<!--top-Header-messaages-->
+	<div class="btn-group rightzero"> <a class="top_message tip-left" title="Manage Files"><i class="icon-file"></i></a> <a class="top_message tip-bottom" title="Manage Users"><i class="icon-user"></i></a> <a class="top_message tip-bottom" title="Manage Comments"><i class="icon-comment"></i><span class="label label-important">5</span></a> <a class="top_message tip-bottom" title="Manage Orders"><i class="icon-shopping-cart"></i></a> </div>
+	<!--close-top-Header-messaages--> 
+
+	<!--top-Header-menu-->
+	<div id="user-nav" class="navbar navbar-inverse">
+	  <ul class="nav">
+		<li class="" ><a title="" href="__ROOT__/about.html"><i class="icon icon-user"></i> <span class="text">[{:get_nickname()}]</span></a></li>
+		<php> $_head_set_auth=$__controller__->checkAuth(MODULE_NAME.'/Constant/index');</php>
+		<eq name="_head_set_auth" value="1">
+		<li class=""><a title="" href="__ROOT__/constant.html"><i class="icon icon-cog"></i> <span class="text">设置</span></a></li>
+		</eq>
+		<li class=""><a id="outlogin" href="javascript:;" url="__ROOT__/outlogin.html"><i class="icon icon-share-alt"></i> <span class="text">退出登录</span></a></li>
+	  </ul>
+	</div>
+	<div id="search">
+	  <input type="text" placeholder="快速搜索"/>
+	  <button type="submit" class="tip-left" title="搜索"><i class="icon-search icon-white"></i></button>
+	</div>
+	<!--close-top-Header-menu-->
+</section>	
+<section name="menu">
+<php>$__base_menu__ = $__controller__->getMenus();</php>
+<div id="sidebar"><a href="__ROOT__/index.html" class="visible-phone"><i class="icon icon-home"></i> 首页</a>
+  <ul>
+	<foreach name="__base_menu__" item="menu">
+    <li><a href="__ROOT__/[{$menu.tip}]"><i class="icon [{$menu.icon}]"></i> <span>[{$menu.title}]</span></a></li>
+	</foreach>
+  </ul>
+</div>
+</section>

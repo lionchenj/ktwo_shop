@@ -1,0 +1,179 @@
+<extend name="template/Maruti/common.html"/>
+<block name="body">
+<style>
+.counter{
+    border: medium none;
+    height: 27px;
+    line-height: 27px;
+    outline: medium none;
+    padding: 0;
+    text-align: center;
+    vertical-align: top;
+    width: 50px;
+}
+</style>
+<div id="content">
+  <div id="content-header">
+    <div id="breadcrumb"> <a href="__ROOT__/index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a> <a href="__ROOT__/split.html" class="current">分账列表</a> </div>
+	<h1>分账详情</h1>
+  </div>
+  <div class="container-fluid">
+		<div class="row-fluid" id="select_map">
+					<div class="span12">
+						<div class="widget-box">
+							<div class="widget-title">
+								<span class="icon">
+									<i class="icon-align-justify"></i>									
+								</span>
+								<h5>分账详情</h5>
+							</div>
+							<div class="widget-content nopadding">
+								<form action="__SELF__" method="get" class="myform form-horizontal">
+									<div class="control-group exuser">
+										<label class="control-label">真实姓名:</label>
+										<div class="controls">
+											<input  type="text" name="name" class="span3" placeholder="请输入真实姓名" value=""/>
+											<div><error class="color-red hidden"></error></div>
+										</div>
+									</div>			
+									<div class="control-group exuser">
+										<label class="control-label">银行卡号:</label>
+										<div class="controls">
+											<input  type="text" name="bank_num" class="span3" placeholder="请输入银行卡号" value=""/>
+											<div><error class="color-red hidden"></error></div>
+										</div>
+									</div>									
+									<div class="control-group exuser">
+										<label class="control-label">转账金额:</label>
+										<div class="controls">
+											<input  type="text" name="money" class="span3" placeholder="请输入转账金额" value=""/>
+											<div><error class="color-red hidden"></error></div>
+										</div>
+									</div>									
+
+									<div class="form-actions">
+										<button type="submit" class="btn btn-success ajax-post" url="" target-form="myform">保存</button>
+											<button type="button" class="btn btn-warning"  onclick="window.location.href='__ROOT__/split.html'">返回</button>
+									</div>
+								</form>
+							</div>
+						</div>						
+					</div>
+				</div>
+       
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="__JS__/jquery.min.js"></script> 
+<script src="__JS__/jquery.ui.custom.js"></script> 
+<script src="__JS__/bootstrap.min.js"></script> 
+<script src="__JS__/select2.min.js"></script> 
+ <script src="__JS__/bootstrap-datepicker.js"></script>
+ <script src="__JS__/bootstrap-colorpicker.js"></script>
+<script src="__JS__/jquery.dataTables.min.js"></script> 
+ <script src="__JS__/jquery.uniform.js"></script>
+<script src="__JS__/maruti.js"></script> 
+<script src="__JS__/maruti.tables.js"></script>
+ <script src="__JS__/maruti.form_common.js"></script>
+<script src="__JS__/maruti.popup.js"></script>
+<script src="__JS__/maruti.ajax.js"></script>
+<script>
+$("input").blur(function(){
+    var name=$(this).attr('name');
+  var vlaue=$(this).val();
+  switch(name)
+  {
+	case "name":
+	if(vlaue.length==0){
+			$(this).addClass('redborder');
+			$(this).siblings('div').find('error').html("<span>*</span>请输入用户真实姓名");
+			$(this).siblings('div').find('error').removeClass('hidden');
+			$("#submit").attr("disabled",true);
+	}else{
+		$(this).removeClass('redborder');
+		$(this).siblings('div').find('error').html("");
+		$(this).siblings('div').find('error').addClass('hidden');
+		$("#submit").attr("disabled",false);
+	}
+	break;
+		case "money":
+	if(vlaue.length==0){
+			$(this).addClass('redborder');
+			$(this).siblings('div').find('error').html("<span>*</span>请输入转账金额");
+			$(this).siblings('div').find('error').removeClass('hidden');
+			$("#submit").attr("disabled",true);
+	}else{
+		$(this).removeClass('redborder');
+		$(this).siblings('div').find('error').html("");
+		$(this).siblings('div').find('error').addClass('hidden');
+		$("#submit").attr("disabled",false);
+	}
+	break;
+		case "bank_num":
+	if(vlaue.length==0){
+			$(this).addClass('redborder');
+			$(this).siblings('div').find('error').html("<span>*</span>请输入转账银行卡号");
+			$(this).siblings('div').find('error').removeClass('hidden');
+			$("#submit").attr("disabled",true);
+	}else{
+		$(this).removeClass('redborder');
+		$(this).siblings('div').find('error').html("");
+		$(this).siblings('div').find('error').addClass('hidden');
+		$("#submit").attr("disabled",false);
+	}
+	break;
+	}
+})
+$(".myform").submit(function(){
+	var name=$("input[name='name']").val();
+	var money=$("input[name='money']").val();
+	var bank_num=$("input[name='bank_num']").val();
+	var stat=1;
+	if(name.length==0){
+		$("input[name='name']").addClass('redborder');
+		$("input[name='name']").siblings('div').find('error').html("<span>*</span>请输入用户真实姓名");
+		$("input[name='name']").siblings('div').find('error').removeClass('hidden');
+		stat=0;
+		}
+	if(money.length==0){
+		$("input[name='money']").addClass('redborder');
+		$("input[name='money']").siblings('div').find('error').html("<span>*</span>请输入转账金额");
+		$("input[name='money']").siblings('div').find('error').removeClass('hidden');
+		stat=0;
+		}
+	if(bank_num.length==0){
+		$("input[name='bank_num']").addClass('redborder');
+		$("input[name='bank_num']").siblings('div').find('error').html("<span>*</span>请输入转账银行卡号");
+		$("input[name='bank_num']").siblings('div').find('error').removeClass('hidden');
+		stat=0;
+		}		
+	if(stat==0){
+			return false;
+	}else{
+		var url=$(this).attr('action');
+		var query = {};
+
+		query['name']=name;
+		query['money']=money;
+		query['bank_num']=bank_num;
+		$.post(url,query).success(function(data){
+				 if (data.status==1) {
+					 $('#popbox .controls').html('保存成功');
+						center($("#popbox"));
+						 setTimeout(function(){
+                        location.href='__ROOT__/area.html';
+                    },1500);
+				 }else{
+				 $('#popbox .controls').html(data.info);
+					center($("#popbox"));
+					return false;
+				 }
+		})
+		return false;
+	}
+})
+</script>
+</body>
+</block>

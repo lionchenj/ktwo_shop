@@ -1,0 +1,225 @@
+<extend name="template/Maruti/common.html"/>
+<block name="body">
+<style>
+
+</style>
+		<div id="content">
+			<div id="content-header">
+			<div id="breadcrumb"> <a href="__ROOT__/index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a> <a href="__ROOT__/menu.html" class="current">官网设置</a> </div>
+			</div>
+			
+			<div class="container-fluid">
+            <div class="row-fluid">
+					<div class="span12">
+						<div class="widget-box">
+							<div class="widget-title">
+								<span class="icon">
+									<i class="icon-align-justify"></i>									
+								</span>
+								<h5>管理系统常量配置</h5>
+							</div>
+							<div class="widget-content nopadding">
+								<form id="updateform" action="[{:U('updateinfo')}]" method="get" class="form-horizontal">
+
+									<div class="control-group">
+										<label class="control-label">快递鸟电商id:</label>
+										<div class="controls"><input name="EBusinessID" type="text" class="span3" placeholder="积分使用比例" value="[{:C('EBusinessID')}]" />
+										<div><error class="color-red hidden"></error></div></div>
+										
+									</div>
+									<div class="control-group">
+										<label class="control-label">快递鸟电商key:</label>
+										<div class="controls"><input name="AppKey" type="text" class="span3" placeholder="积分使用比例" value="[{:C('AppKey')}]" />
+										<div><error class="color-red hidden"></error></div></div>
+										
+									</div>
+									<div class="control-group">
+										<label class="control-label">快递鸟接口地址:</label>
+										<div class="controls"><input name="ReqURL" type="text" class="span3" placeholder="积分使用比例" value="[{:C('ReqURL')}]" />
+										<div><error class="color-red hidden"></error></div></div>
+										
+									</div>
+									<div class="control-group">
+										<label class="control-label">X天确认收货:</label>
+										<div class="controls"><input name="ConfDay" type="text" class="span3" placeholder="积分使用比例" value="[{:C('ConfDay')}]" />
+										<div><error class="color-red hidden"></error></div></div>
+										
+									</div>
+                                 
+									<div class="form-actions">
+										<button type="submit" class="btn btn-success ajax-post">保存</button>
+									</div>
+								</form>
+							</div>
+						</div>						
+					</div>
+				</div>
+             </div>
+			 <div class="container-fluid hide">
+            <div class="row-fluid">
+					<div class="span12">
+						<div class="widget-box">
+							<div class="widget-title">
+								<span class="icon">
+									<i class="icon-align-justify"></i>									
+								</span>
+								<h5>官网常量配置</h5>
+							</div>
+							<div class="widget-content nopadding">
+								<form id="updateform2" action="[{:U('updateinfo')}]" method="get" class="form-horizontal">
+									<div class="control-group">
+										<label class="control-label">官网标题:</label>
+										<div class="controls"><input name="WEB_TITLE" type="text" class="span3" placeholder="官网标题" value="[{:C('WEB_TITLE')}]" />
+										<div><error class="color-red hidden"></error></div></div>	
+									</div>
+									<div class="control-group">
+										<label class="control-label">官网关键字:</label>
+										<div class="controls"><input name="WEB_KEYWORDS" type="text" class="span8" placeholder="官网关键字" value="[{:C('WEB_KEYWORDS')}]" />
+										<div><error class="color-red hidden"></error></div></div>
+										
+									</div>
+									<div class="control-group">
+										<label class="control-label">官网描述:</label>
+										<div class="controls"><input name="WEB_DESCRIPTION" type="text" class="span8" placeholder="官网描述" value="[{:C('WEB_DESCRIPTION')}]" />
+										<div><error class="color-red hidden"></error></div></div>
+										
+									</div>
+									<div class="control-group">
+										<label class="control-label">官网页尾标题:</label>
+										<div class="controls"><input name="WEB_FOOT_TITLE" type="text" class="span3" placeholder="官网页尾标题" value="[{:C('WEB_FOOT_TITLE')}]" />
+										<div><error class="color-red hidden"></error></div></div>	
+									</div>
+									<div class="control-group">
+										<label class="control-label">官网页尾描述:</label>
+										<div class="controls"><textarea  name="WEB_FOOT_DESCRIPTION" type="text" class="span8" placeholder="官网页尾描述" value="[{:C('WEB_FOOT_DESCRIPTION')}]" >[{:C('WEB_FOOT_DESCRIPTION')}]</textarea>
+										<div><error class="color-red hidden"></error></div></div>
+										
+									</div>
+									<div class="control-group">
+										<label class="control-label">官网页尾公司名称:</label>
+										<div class="controls"><input name="WEB_FOOT_COMPANY_NAME" type="text" class="span3" placeholder="官网页尾公司名称" value="[{:C('WEB_FOOT_COMPANY_NAME')}]" />
+										<div><error class="color-red hidden"></error></div></div>	
+									</div>
+									<div class="control-group">
+										<label class="control-label">官网页尾公司联系方式:</label>
+										<div class="controls"><input name="WEB_FOOT_COMPANY_CONTACT" type="text" class="span8" placeholder="官网页尾公司联系方式" value="[{:C('WEB_FOOT_COMPANY_CONTACT')}]" />
+										<div><error class="color-red hidden"></error></div></div>	
+									</div>
+									<div class="control-group">
+										<label class="control-label">官网页尾公司电话号码:</label>
+										<div class="controls"><input name="WEB_FOOT_COMPANY_PHONE" type="text" class="span3" placeholder="官网页尾公司电话号码" value="[{:C('WEB_FOOT_COMPANY_PHONE')}]" />
+										<div><error class="color-red hidden"></error></div></div>	
+									</div>
+									<div class="control-group">
+										<label class="control-label">官网页尾公司联系邮箱:</label>
+										<div class="controls"><input name="WEB_FOOT_COMPANY_EMAIL" type="text" class="span3" placeholder="官网页尾公司联系邮箱" value="[{:C('WEB_FOOT_COMPANY_EMAIL')}]" />
+										<div><error class="color-red hidden"></error></div></div>	
+									</div>
+									<div class="control-group">
+										<label class="control-label">官网页尾公司地址:</label>
+										<div class="controls"><input name="WEB_FOOT_COMPANY_ADDRESS" type="text" class="span8" placeholder="官网页尾公司地址" value="[{:C('WEB_FOOT_COMPANY_ADDRESS')}]" />
+										<div><error class="color-red hidden"></error></div></div>	
+									</div>
+									
+									<div class="control-group">
+										<label class="control-label">官网页尾二维码:</label>
+										  <div class="controls">
+										<img class="custom_img" style="width:150px" src="[{:C('WEB_FOOT_ERWEIMA')}]" onclick="getElementById('inputfile').click()">
+										<input class="common-text required imageFile" name="WEB_FOOT_ERWEIMA" value="[{:C('WEB_FOOT_ERWEIMA')}]" type="hidden">
+										<div style="display:none">
+										<input type="file" accept="image/*"  name="image2" multiple="multiple" style="width:100%;opacity:0;filter:alpha(opacity=0);" id="inputfile"/>
+										</div>	
+                                    </div>
+									</div>
+									<div class="control-group">
+										<label class="control-label">官网页尾二维码标语:</label>
+										<div class="controls"><input name="WEB_FOOT_ERWEIMA_TITLE" type="text" class="span8" placeholder="官网页尾二维码标语" value="[{:C('WEB_FOOT_ERWEIMA_TITLE')}]" />
+										<div><error class="color-red hidden"></error></div></div>	
+									</div>
+									<div class="control-group">
+										<label class="control-label">官网页尾ICP:</label>
+										<div class="controls"><input name="WEB_FOOT_ICP" type="text" class="span8" placeholder="官网页尾ICP" value="[{:C('WEB_FOOT_ICP')}]" />
+										<div><error class="color-red hidden"></error></div></div>	
+									</div>
+									
+									<div class="form-actions">
+										<button type="submit" class="btn btn-success ajax-post">保存</button>
+									</div>
+								</form>
+							</div>
+						</div>						
+					</div>
+				</div>
+             </div>
+			</div>
+		</div>
+<script src="__JS__/jquery.min.js"></script>
+<script src="__JS__/jquery.ui.custom.js"></script>
+<script src="__JS__/bootstrap.min.js"></script>
+<script src="__JS__/bootstrap-colorpicker.js"></script>
+<script src="__JS__/bootstrap-datepicker.js"></script>
+<script src="__JS__/jquery.uniform.js"></script>
+<script src="__JS__/select2.min.js"></script>
+<script src="__JS__/maruti.js"></script>
+<script src="__JS__/maruti.form_common.js"></script>
+<script src="__JS__/maruti.popup.js"></script>
+<script src="__JS__/maruti.constant.js"></script>
+<script type="text/javascript">	
+ $("#inputfile").change(function(){
+     //创建FormData对象
+     var data = new FormData();
+     //为FormData对象添加数据
+     //
+     $.each($('#inputfile')[0].files, function(i, file) {
+         data.append('imageFile', file);
+     });
+     $.ajax({
+         url:"[{:U('File/update')}]",
+         type:'POST',
+         data:data,
+         cache: false,
+         contentType: false,    //不可缺
+         processData: false,    //不可缺
+         success:function(data){
+			console.log(data);
+				if(data.status==1){
+				
+				var url=data.path;
+				$("input[name='WEB_CUSTOM_WECHAT']").val(url);
+				var click="getElementById('inputfile').click()"
+				$(".custom_img").attr('src',url);
+				}
+			   
+         }
+     });
+		})
+ $("#inputfile2").change(function(){
+     //创建FormData对象
+     var data = new FormData();
+     //为FormData对象添加数据
+     //
+     $.each($('#inputfile2')[0].files, function(i, file) {
+         data.append('imageFile', file);
+     });
+     $.ajax({
+         url:"[{:U('File/update')}]",
+         type:'POST',
+         data:data,
+         cache: false,
+         contentType: false,    //不可缺
+         processData: false,    //不可缺
+         success:function(data){
+			console.log(data);
+				if(data.status==1){
+				
+				var url=data.path;
+				$("input[name='WEB_WECHAT_PUBLIC']").val(url);
+				var click="getElementById('inputfile2').click()"
+				$(".public_img").attr('src',url);
+				}
+			   
+         }
+     });
+		})		
+</script>
+</block>

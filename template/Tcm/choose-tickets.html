@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="description" content=""/>
+    <meta name="keywords" content=""/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/><!-- 是否启用 WebApp 全屏模式 -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/><!-- 设置状态栏的背景颜色 -->
+    <meta name="viewport" content="initial-scale=1.0,user-scalable=no,width=device-width,minimum-scale=1.0,maximum-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no"/><!-- 禁止数字识自动别为电话号码 --><!-- 不让android识别邮箱 -->
+	<title>中医馆商城选择优惠券</title>
+	<link rel="stylesheet" type="text/css" href="__CSS__/common.css">
+	<link rel="stylesheet" type="text/css" href="__CSS__/style.css">
+	<script type="text/javascript" src="__JS__/jquery-1.11.3.min.js"></script>
+	<script type="text/javascript" src="__JS__/resize.js"></script>
+	<script type="text/javascript" src="__JS__/common.js"></script>
+</head>
+<body>
+	<div class="title-info">
+		<a href="javascript:history.go(-1);" class="back-link">
+			<i class="icon-left-arrow"></i>返回
+		</a>
+		选择优惠券
+	</div>
+	<div class="choose-wrap">
+	<empty name="list">
+	<div id="null-box" style="text-align:center;padding-top: 1.4rem;">
+			<img src="__IMAGES__/empty.png" style="width: 11rem;height: 11rem;">
+			<div style="color: #999;font-size: 1.6rem;line-height: 3rem;margin-top: 1.4rem;">
+				您还没有优惠券
+			</div>
+		</div>
+	<else />
+	<foreach name="list" item="_list">
+		<div class="shop-t-item clearfix">
+			<a href="{:u('addOrder',array('cardid'=>$_list['cardid'],'reduce'=>$_list['reduce']))}" class="choose-link">
+				<div class="t-row-1 left">{$_list.reduce}</div>
+				<div class="t-row-2 left">
+					<div class="t-row-item1">优惠券</div>
+					<div class="t-row-item2">
+						满{$_list.least}元立减
+					</div>
+					<div class="t-row-item3">
+						(截至{$_list.end_time|time_format})
+					</div>
+				</div>
+				<div class="t-state">
+					可使用
+				</div>
+			</a>
+		</div>
+	</foreach>	
+		</empty>
+		
+	</div>
+</body>
+</html>

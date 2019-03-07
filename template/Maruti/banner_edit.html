@@ -1,0 +1,215 @@
+<extend name="template/Maruti/common.html"/>
+<block name="body">
+<div id="content"> 
+  <div id="content-header">
+    <div id="breadcrumb"> <a href="__ROOT__/index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a> <a href="__ROOT__/banner.html" class="current">轮播管理</a> </div>
+	<h1>轮播详情</h1>
+  </div>
+  <div class="container-fluid">
+		<div class="row-fluid" id="select_map">
+					<div class="span12">
+						<div class="widget-box">
+							<div class="widget-title">
+								<span class="icon">
+									<i class="icon-align-justify"></i>									
+								</span>
+								<h5>轮播详情</h5>
+							</div>
+							<div class="widget-content nopadding">
+								<form action="__SELF__" method="post" class="myform form-horizontal">
+									<div class="control-group">
+										<label class="control-label">标题:</label>
+										<input name="id" type="hidden" class="span3"  value="[{$info.id}]"/>
+										<div class="controls"><input name="title" type="text" class="span3" placeholder="标题" value="[{$info.title}]"/>
+										<div><error class="color-red hidden"></error></div></div>
+									</div>
+                                            
+                                    <div class="control-group">
+                                        <label class="control-label">轮播图片:</label>
+                                        <div class="controls">
+										<img class="img_path" style="width:150px" src="<empty name="info['img_path']">__IMAGES__/add.jpg<else />[{$info.img_path}]</empty>" onclick="getElementById('inputfile').click()">
+										<input class="common-text required imageFile" name="img_path" value="[{$info.img_path}]" type="hidden">
+										<div style="display:none">
+										<input type="file" accept="image/*"  name="image2" multiple="multiple" style="width:100%;opacity:0;filter:alpha(opacity=0);" id="inputfile"/>
+										</div>
+										
+                                    </div>
+									  <div class="control-group">
+										<label class="control-label">跳转连接:</label>
+										<div class="controls"><input name="link" type="text" class="span6" placeholder="跳转连接" value="[{$info.link}]"/>
+										<div><error class="color-red hidden"></error></div></div>
+									</div>
+									<div class="control-group">
+										<label class="control-label">轮播类型:</label>
+											<div class="controls " id="type">
+												<div class="btn-group">
+												<input type="text" name="type" style="display:none" value="[{$info['type']}]"/>
+												<button type="button" class="btn type" onclick="javascript:;"><empty name="info['type']">--请选择--<else /><eq name="info.type" value="1">首页</eq><eq name="info.type" value="2">首页推荐</eq><eq name="info.type" value="3">编辑推荐商品</eq></empty></button>
+												<button data-toggle="dropdown" class="btn dropdown-toggle"><span class="caret"></span></button>
+												<ul class="dropdown-menu">
+												<li><a href="javascript:;" data-id="0">--请选择-—</a></li>
+												<li><a href="javascript:;" data-id="1">首页</a></li>
+												<li><a href="javascript:;" data-id="2">编辑推荐</a></li>
+												<li><a href="javascript:;" data-id="3">编辑推荐商品</a></li>
+												</ul>
+												</div>
+												<error class="color-red hidden"></error>
+											</div>
+									</div>
+									<div class="form-actions">
+										<button type="submit" class="btn btn-success">保存</button>
+											<button type="button" class="btn btn-warning"  onclick="window.location.href='__ROOT__/banner.html'">返回</button>
+									</div>
+								</form>
+							</div>
+						</div>						
+					</div>
+				</div>
+       
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="__JS__/jquery.min.js"></script> 
+<script src="__JS__/jquery.ui.custom.js"></script> 
+<script src="__JS__/bootstrap.min.js"></script> 
+<script src="__JS__/select2.min.js"></script> 
+ <script src="__JS__/bootstrap-datepicker.js"></script>
+ <script src="__JS__/bootstrap-colorpicker.js"></script>
+<script src="__JS__/jquery.dataTables.min.js"></script> 
+ <script src="__JS__/jquery.uniform.js"></script>
+<script src="__JS__/maruti.js"></script> 
+<script src="__JS__/maruti.tables.js"></script>
+ <script src="__JS__/maruti.form_common.js"></script>
+<script src="__JS__/maruti.popup.js"></script>
+<script>
+$("#type .dropdown-menu li a").click(function(){
+	var typeid=$(this).attr('data-id');
+	var type=$(this).html();
+	$('input[name="type"]').val(typeid);
+	$(this).parent().parent().siblings('.type').html(type);
+	$("#type").find('error').removeClass('redborder');
+	$("#type").find('error').html("");
+	$("#type").find('error').addClass('hidden')
+});
+$("input").blur(function(){
+  
+  var name=$(this).attr('name');
+  var vlaue=$(this).val();
+  switch(name)
+  {
+	case "title":
+	if(vlaue.length==0){
+			$(this).addClass('redborder');
+			$(this).siblings('div').find('error').html("<span>*</span>请输入标题");
+			$(this).siblings('div').find('error').removeClass('hidden')
+	}else{
+		$(this).removeClass('redborder');
+		$(this).siblings('div').find('error').html("");
+			$(this).siblings('div').find('error').addClass('hidden')
+	}
+	break;
+	case "img_path":
+	if(vlaue.length==0){
+			$(this).addClass('redborder');
+			$(this).siblings('div').find('error').html("<span>*</span>请上传图片");
+			$(this).siblings('div').find('error').removeClass('hidden')
+	}else{
+		$(this).removeClass('redborder');
+		$(this).siblings('div').find('error').html("");
+		$(this).siblings('div').find('error').addClass('hidden')
+	}
+	break;
+	case "link":
+	if(vlaue.length==0){
+			$(this).addClass('redborder');
+			$(this).siblings('div').find('error').html("<span>*</span>请输入跳转连接");
+			$(this).siblings('div').find('error').removeClass('hidden')
+	}else{
+	$(this).removeClass('redborder');
+		$(this).siblings('div').find('error').html("");
+		$(this).siblings('div').find('error').addClass('hidden')
+	}
+	break;
+  }
+ 
+});
+$(".myform").submit(function(){
+	var title=$("input[name='title']").val();
+	var img_path=$("input[name='img_path']").val();
+	var link=$("input[name='link']").val();
+	var stat=1;
+	if(title.length==0){
+			$("input[name='title']").addClass('redborder');
+			$("input[name='title']").siblings('div').find('error').html("<span>*</span>请输入标题");
+			$("input[name='title']").siblings('div').find('error').removeClass('hidden');
+			stat=0;
+		}
+		if(img_path.length==0){
+			$("input[name='img_path']").addClass('redborder');
+			$("input[name='img_path']").siblings('div').find('error').html("<span>*</span>请上传图片");
+			$("input[name='img_path']").siblings('div').find('error').removeClass('hidden');
+			stat=0;
+		}
+		if(link.length==0){
+			$("input[name='link']").addClass('redborder');
+			$("input[name='link']").siblings('div').find('error').html("<span>*</span>请输入跳转连接");
+			$("input[name='link']").siblings('div').find('error').removeClass('hidden');
+			stat=0;
+		}
+	if(stat==0){
+			return false;
+		}else{
+			 $.post("__SELF__",$(this).serialize()).success(function(data){
+				 if (data.status==1) {
+					 $('#popbox .controls').html('保存成功');
+						center($("#popbox"));
+						 setTimeout(function(){
+                        if (data.url) {
+                            location.href=data.url;
+                        }else{
+                            location.reload();
+                        }
+                    },1500);
+				 }else{
+					 $('#popbox .controls').html('保存失败');
+						center($("#popbox")); 
+				 }
+			});
+	}	
+	return false;	
+})
+</script>
+<script type="text/javascript">	
+ $("#inputfile").change(function(){
+     //创建FormData对象
+     var data = new FormData();
+     //为FormData对象添加数据
+     //
+     $.each($('#inputfile')[0].files, function(i, file) {
+         data.append('imageFile', file);
+     });
+     $.ajax({
+         url:"[{:U('File/update')}]",
+         type:'POST',
+         data:data,
+         cache: false,
+         contentType: false,    //不可缺
+         processData: false,    //不可缺
+         success:function(data){
+			console.log(data);
+				if(data.status==1){
+				
+				var url=data.path;
+				$('.imageFile').val(url);
+				var click="getElementById('inputfile').click()"
+				$(".img_path").attr('src',url);
+				}
+			   
+         }
+     });
+		})
+</script>
+</body>
+</block>

@@ -1,0 +1,459 @@
+<extend name="template/Maruti/common.html"/>
+<block name="body">
+<style>
+.counter{
+    border: medium none;
+    height: 27px;
+    line-height: 27px;
+    outline: medium none;
+    padding: 0;
+    text-align: center;
+    vertical-align: top;
+    width: 50px;
+}
+.select2-container{
+	width:150px;
+}
+.controls span{
+	margin-right:5px;
+}
+.uploader{
+display:none;
+}
+</style>
+<div id="content">
+  <div id="content-header">
+    <div id="breadcrumb"> <a href="__ROOT__/index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a> <a href="__ROOT__/member.html" class="current">会员管理</a> </div>
+	<h1>新增门店</h1>
+  </div>
+  <div class="container-fluid">
+		<div class="row-fluid" id="select_map">
+					<div class="span12">
+						<div class="widget-box">
+							<div class="widget-title">
+								<span class="icon">
+									<i class="icon-align-justify"></i>									
+								</span>
+								<h5>新增门店</h5>
+							</div>
+							<div class="widget-content nopadding">
+								<form action="[{:U('operate')}]" method="post" class="myform form-horizontal">
+									<div class="control-group">
+									<label class="control-label">地理位置:</label>
+										<div class="controls" id="store">
+											<span id="province">
+											</span>
+											<span id="city" class="hide">
+											</span>
+											<span id="area" class="hide">
+											</span>
+											<span id="address">
+												<input  type="text" name="keyword" class="span3" placeholder="门店名称" value=""/>
+											</span>
+											<span>
+												<a id="store_select" class="btn btn-success" data-url="[{:U('operate')}]" href="javascript:;">　搜索　</a>
+											</span>
+											<div><error class="color-red hidden"></error></div>
+										</div>
+									</div>
+			
+									<div class="control-group">
+										<label class="control-label">选择门店:</label>
+										<div class="controls" id="store_list">
+											<label>　</label>
+											<label>　</label>
+											<label>　</label>
+											<label>没有发现合适的门店</label>
+											<label>　</label>
+											<label>　</label>
+											<label>　</label>
+										</div>
+									</div>
+									<div class="control-group">
+										<label class="control-label">门店名称:</label>
+										<div class="controls">
+											<input  type="text" name="name" class="span3" placeholder="请先选择门店" value="" disabled/>
+											<div id="error_name" ><error class="color-red hidden"></error></div>
+										</div>
+									</div>
+									<div class="control-group">
+										<label class="control-label">联系电话:</label>
+										<div class="controls">
+											<input  type="text" name="contract_phone" class="span3" placeholder="联系电话" value=""/><span> (固定电话前加区号 例：020-888888)</span>
+											<div><error class="color-red hidden"></error></div>
+										</div>
+									</div>
+									<div class="control-group">
+										<label class="control-label">营业时间:</label>
+										<div class="controls">
+											<input  type="text" name="hour" class="span3" placeholder="格式09:00-18:00" value=""/><span> (格式09:00-18:00)</span>
+											<div><error class="color-red hidden"></error></div>
+										</div>
+									</div>
+									<div class="control-group">
+										<label class="control-label">经营资质证件号:</label>
+										<div class="controls">
+											<input  type="text" name="credential" class="span3" placeholder="经营资质证件号" value=""/>
+											<div><error class="color-red hidden"></error></div>
+										</div>
+									</div>
+									<div class="control-group">
+										<div class="span12">
+											<div class="widget-title">
+												<span class="icon">
+													<i class="icon-picture"></i>
+												</span>
+												<h5>门店图片</h5> <span class="icon"> 推荐图片为300*300像素 大小必须小于1M</span>
+											</div>
+											<div class="widget-content">
+												<ul class="thumbnails">
+													<li class="span2">
+														<a class="thumbnail imgadd" href="javascript:;" onclick="getElementById('inputfile').click()">
+															<img src="__IMAGES__/img_add.jpg" alt="" >
+														</a>
+													</li>
+												</ul>
+											</div>
+										</div>
+									</div>
+									<div class="form-actions">
+										<button id="submit" type="submit" class="btn btn-success">添加门店</button>
+											<button type="button" class="btn btn-warning"  onclick="window.location.href='__ROOT__/member.html'">返回</button>
+									</div>
+									<input type="file" accept="image/*"  name="image2" multiple="multiple" style="width:100%;opacity:0;filter:alpha(opacity=0);" id="inputfile"/>
+									<input type="file" accept="image/*"  name="image2" multiple="multiple" style="width:100%;opacity:0;filter:alpha(opacity=0);" id="item"/>
+								</form>
+							</div>
+						</div>						
+					</div>
+				</div>
+       
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="__JS__/jquery.min.js"></script> 
+<script src="__JS__/address.js"></script>
+<script src="__JS__/jquery.ui.custom.js"></script> 
+<script src="__JS__/bootstrap.min.js"></script> 
+<script src="__JS__/select2.min.js"></script>
+<script src="__JS__/pinyin.js"></script>
+ <script src="__JS__/bootstrap-datepicker.js"></script>
+ <script src="__JS__/bootstrap-colorpicker.js"></script>
+<script src="__JS__/jquery.dataTables.min.js"></script> 
+ <script src="__JS__/jquery.uniform.js"></script>
+<script src="__JS__/maruti.js"></script> 
+<script src="__JS__/maruti.tables.js"></script>
+ <script src="__JS__/maruti.form_common.js"></script>
+<script src="__JS__/maruti.popup.js"></script>
+<script src="__JS__/maruti.ajax.js"></script>
+<script>
+	var area_json={
+		data_area:[{$area}],
+		put_province:'#province',
+		put_city:'#city',
+		put_area:'#area',
+		put_town:'#town',
+	}
+	area_restart(area_json);
+</script>
+<script>
+$("#store_select").click(function(){
+	if($("#province").hasClass('hide')){
+		$("#store").find('error').html("<span>*</span>请选择省份");
+		$("#store").find('error').removeClass('hidden');
+		return false;
+	}else{
+		var province=$("#province_list").val();
+		if(province=='' || province==undefined || province=='请选择'){
+			$("#store").find('error').html("<span>*</span>请选择省份");
+			$("#store").find('error').removeClass('hidden');
+			return false;
+		}
+	}
+	if($("#city").hasClass('hide')){
+		$("#store").find('error').html("<span>*</span>请选择城市");
+		$("#store").find('error').removeClass('hidden');
+		return false;
+	}else{
+		var city=$("#city_list").val();
+		if(city=='' || city==undefined || city=='请选择'){
+			$("#store").find('error').html("<span>*</span>请选择城市");
+			$("#store").find('error').removeClass('hidden');
+			return false;
+		}
+	}
+	if($("#area").hasClass('hide')){
+		var area='';
+	}else{
+		var area=$("#area_list").val();
+		if(area=='' || area==undefined || area=='请选择'){
+			$("#store").find('error').html("<span>*</span>请选择区/镇");
+			$("#store").find('error').removeClass('hidden');
+			return false;
+		}
+	}
+	var keyword=$("input[name='keyword']").val();
+	if(keyword.length==0){
+		$("#store").find('error').html("<span>*</span>请输入门店名称");
+		$("#store").find('error').removeClass('hidden');
+		return false;
+	}
+	$("#store").find('error').addClass('hidden');
+	var url=$(this).attr('data-url');
+	var query = {};	
+	if(area==''){
+		query['name']=city;
+	}else{
+		query['name']=area;
+	}
+		query['keyword']=keyword;
+		query['type']='ajax_get_store';
+	$.post(url,query).success(function(data){
+		if (data.status==1) {
+				var list=data.info;
+				var count=list.length;
+				var b='';
+				if(count==0){
+					b+='<label>　</label>';
+					b+='<label>　</label>';
+					b+='<label>　</label>';
+					b+='<label>没有发现合适的门店</label>';
+					b+='<label>　</label>';
+					b+='<label>　</label>';
+					b+='<label>　</label>';
+				}else{
+					for(var i=0;i<count;i++){
+						b+='<label  style="background-color: #fff;border: 1px solid #ccc; padding:2px"><input class="store_list_checkbox" type="radio" name="map_poi_id"  data-name="'+list[i].branch_name+'" value="'+list[i].sosomap_poi_uid+'" />　'+list[i].branch_name+'('+list[i].address+')</label>'
+					}
+				}
+				$('#store_list').html(b);
+		}else{
+			$('#popbox .controls').html(data.info);
+			center($("#popbox"));
+		}
+	})
+	
+	
+})
+
+$("input").blur(function(){
+    var name=$(this).attr('name');
+  var vlaue=$(this).val();
+  switch(name)
+  {
+	case "contract_phone":
+	if(vlaue.length==0){
+			$(this).addClass('redborder');
+			$(this).siblings('div').find('error').html("<span>*</span>请输入联系电话");
+			$(this).siblings('div').find('error').removeClass('hidden');
+			$("#submit").attr("disabled",true);
+	}else{
+		$(this).removeClass('redborder');
+		$(this).siblings('div').find('error').html("");
+		$(this).siblings('div').find('error').addClass('hidden');
+		$("#submit").attr("disabled",false);
+	}
+	break;
+	case "hour":
+	if(vlaue.length==0){
+			$(this).addClass('redborder');
+			$(this).siblings('div').find('error').html("<span>*</span>请输入营业时间");
+			$(this).siblings('div').find('error').removeClass('hidden');
+			$("#submit").attr("disabled",true);
+	}else{
+		$(this).removeClass('redborder');
+		$(this).siblings('div').find('error').html("");
+		$(this).siblings('div').find('error').addClass('hidden');
+		$("#submit").attr("disabled",false);
+	}
+	break;
+	case "credential":
+	if(vlaue.length==0){
+			$(this).addClass('redborder');
+			$(this).siblings('div').find('error').html("<span>*</span>请输入经营资质证件号");
+			$(this).siblings('div').find('error').removeClass('hidden');
+			$("#submit").attr("disabled",true);
+	}else{
+		$(this).removeClass('redborder');
+		$(this).siblings('div').find('error').html("");
+		$(this).siblings('div').find('error').addClass('hidden');
+		$("#submit").attr("disabled",false);
+	}
+	break;
+	
+	}
+})
+$(document).on('change',".store_list_checkbox",function(){
+	var name=$(this).attr('data-name');
+	$("input[name='name']").val(name);
+	$("input[name='keyword']").val(name);
+	$("#error_name").find('error').addClass('hidden');
+})
+</script>
+<script type="text/javascript">	
+ $("#inputfile").change(function(){
+     //创建FormData对象
+     var data = new FormData();
+     //为FormData对象添加数据
+     //
+     $.each($('#inputfile')[0].files, function(i, file) {
+         data.append('imageFile', file);
+		});
+		$.ajax({
+			 url:"[{:U('File/updateWechat')}]",
+			 type:'POST',
+			 data:data,
+			 cache: false,
+			 contentType: false,    //不可缺
+			 processData: false,    //不可缺
+			 success:function(data){
+					if(data.status==1){
+						$('#imageFile').val('');
+						var b='';
+						b+='<li class="span2">';
+						b+='<a class="thumbnail lightbox_trigger" data-url="'+data.wx_img+'" href="'+data.url+'">';
+						b+='<img src="'+data.url+'" alt="" >';
+						b+='</a>';
+						b+='<div class="actions">';
+						b+='<a class="item" title="" href="javascript:;"><i class="icon-pencil icon-white"></i></a>';
+						b+='<a class="remove" title="" href="javascript:;"><i class="icon-remove icon-white"></i></a>';
+						b+='</div>';
+						b+='</li>';
+						b+='<li class="span2">';
+						b+='<a class="thumbnail imgadd" href="javascript:;" onclick="getElementById(\'inputfile\').click()">';
+						b+='<img src="__IMAGES__/img_add.jpg" alt="" >';
+						b+='</a>';
+						b+='</li>';
+						$('.imgadd').parent('li').remove();
+						$('.thumbnails').append(b);
+					}else{
+						$('#popbox .controls').html(data.info);
+						center($("#popbox"));
+					}
+			}
+				   
+		})
+	});
+	$("#item").change(function(){
+     //创建FormData对象
+     var data = new FormData();
+     //为FormData对象添加数据
+     //
+     $.each($('#item')[0].files, function(i, file) {
+         data.append('imageFile', file);
+     });
+     $.ajax({
+         url:"[{:U('File/updateWechat')}]",
+         type:'POST',
+         data:data,
+         cache: false,
+         contentType: false,    //不可缺
+         processData: false,    //不可缺
+         success:function(data){
+			console.log(data);
+				if(data.status==1){
+				$('#item').val('');
+				$(".thumbnails .default .lightbox_trigger").attr('href',data.url);
+				$(".thumbnails .default .lightbox_trigger").attr('data-url',data.wx_img);
+				$(".thumbnails .default .lightbox_trigger img").attr('src',data.url);
+				}
+			   
+         }
+		});
+		})
+	$(document).on('click','.remove',function(){
+	$(this).parent().parent('li').toggle(400);
+	});
+	$(document).on('click','.item',function(){
+	$(".thumbnails li").removeClass('default');
+	$(this).parent().parent('li').addClass('default');
+	$("#item").click();
+	});
+</script>
+<script>
+$(".myform").submit(function(){
+	var map_poi_id=$("input[name='map_poi_id']:checked").val();
+	
+	var contract_phone=$("input[name='contract_phone']").val();
+	var hour=$("input[name='hour']").val();
+	var credential=$("input[name='credential']").val();
+	var iamges_list='';
+	var stat=1;
+	alert(map_poi_id);
+	if(map_poi_id==undefined || map_poi_id==''){
+			$("#error_name").find('error').html("<span>*</span>请选择门店");
+			$("#error_name").find('error').removeClass('hidden');
+			stat=0;
+	}
+	if(contract_phone.length==0){
+		$("input[name='contract_phone']").addClass('redborder');
+		$("input[name='contract_phone']").siblings('div').find('error').html("<span>*</span>请输入联系号码");
+		$("input[name='contract_phone']").siblings('div').find('error').removeClass('hidden');
+		stat=0;
+		}
+	if(hour.length==0){
+		$("input[name='hour']").addClass('redborder');
+		$("input[name='hour']").siblings('div').find('error').html("<span>*</span>请输入营业时间");
+		$("input[name='hour']").siblings('div').find('error').removeClass('hidden');
+		stat=0;
+		}
+	if(credential.length==0){
+		$("input[name='credential']").addClass('redborder');
+		$("input[name='credential']").siblings('div').find('error').html("<span>*</span>请输入经营资质证件号");
+		$("input[name='credential']").siblings('div').find('error').removeClass('hidden');
+		stat=0;
+		}
+		alert(stat);
+	if(stat==0){
+			return false;
+	}else{
+		$('.span2').each(function(e){
+		if(!$(this).is(":hidden")){
+			var img_url=$(this).find('.lightbox_trigger').attr('data-url');
+			if(img_url){
+			iamges_list+=img_url+',';
+			}
+		}
+		})
+		
+		if(iamges_list==''){
+			$('#popbox .controls').html('请上传门店图片，至少一张');
+			center($("#popbox"));
+			return false;
+		}
+		if(iamges_list!=''){
+			iamges_list=iamges_list.substring(0,iamges_list.length-1);
+		}
+		var url=$(this).attr('action');
+		var query = {};
+		query['type']='add';
+		query['map_poi_id']=map_poi_id;
+		query['contract_phone']=contract_phone;
+		query['hour']=hour;
+		query['credential']=credential;
+		query['pic_list']=iamges_list;
+		$.post(url,query).success(function(data){
+				 if (data.status==1) {
+					 $('#popbox .controls').html('保存成功');
+						center($("#popbox"));
+						 setTimeout(function(){
+                        if (data.url) {
+                            location.href=data.url;
+                        }else{
+                            location.reload();
+                        }
+                    },1500);
+				 }else{
+				 $('#popbox .controls').html(data.info);
+					center($("#popbox"));
+					return false;
+				 }
+		})
+		return false;
+	}
+})
+</script>
+</body>
+</block>

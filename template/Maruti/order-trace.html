@@ -1,0 +1,169 @@
+<extend name="template/Maruti/common.html"/>
+<block name="body">
+<div id="content">
+  <div id="content-header">
+    <div id="breadcrumb"> <a href="__ROOT__/index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a> <a href="__ROOT__/trace/index.html" class="current">物流管理列表</a> </div>
+	<notempty name="twoMenu">
+	  <div  class="quick-actions_homepage">
+		<ul class="quick-actions">
+			<foreach name="twoMenu" item="two_menu">
+			  <li> <a href="__ROOT__/[{$two_menu.tip}]"> <i class="[{$two_menu.icon}]"></i>[{$two_menu.title}]</a> </li>
+			</foreach>
+		</ul>
+	  </div>
+	<else />
+	 <h1>[{$two_title}]</h1>
+	</notempty>
+  </div>
+  <div class="container-fluid">
+		<div class="row-fluid" id="select_map" <neq name="select_status" value="1"></neq>>
+					<div class="span12">
+						<div class="widget-box">
+							<div class="widget-title">
+								<span class="icon">
+									<i class="icon-align-justify"></i>									
+								</span>
+								<h5>高级检索</h5>
+							</div>
+							<div class="widget-content nopadding">
+								<form action="[{:U('trace/index')}]" method="get" class="form-horizontal">
+									<div class="control-group">
+										<label class="control-label">快递公司:</label>
+										<div class="controls"><!-- <input name="orderid" type="text" class="span3" placeholder="订单号" value="[{$_GET['orderid']?$_GET['orderid']:''}]"/>  -->
+								            <select  name="expressid" class="form-control" size="0.5">
+								            	<option size='2' value="0" >请选择物流</option>
+								            	<foreach name ='express'  item='v'>
+								            		<?php 
+								            		     if($_GET['expressid'] == $v['id']){
+                                                             $select = 'selected="selected"';
+								            		     }else{
+                                                             $select = '';
+								            		     }
+								            		?>
+                                                   <option size='2' value="[{$v.id}]" <?php echo $select ?> >[{$v.expressname}]</option>
+                                                </foreach>
+                                            </select>
+										</div>
+									</div>
+									<div class="control-group">
+										<label class="control-label">收货手机号码:</label>
+										<div class="controls"><input name="mobile" type="text" class="span3" placeholder="手机号码" value="[{$_GET['mobile']?$_GET['mobile']:''}]"/> </div>
+									</div>
+                             
+									
+									
+                                    
+									<div class="form-actions">
+										<button type="submit" class="btn btn-success">立即查询</button>
+										<button type="button" class="btn btn-fail"><a href="__ROOT__/Trace.html" >清空</a></button>
+									</div>
+								</form>
+							</div>
+						</div>						
+					</div>
+				</div>
+                
+        <div class="widget-box">
+          <div class="widget-title"> <span class="icon"> <i class="icon-th"></i> </span>
+            <h5>物流单列表</h5>
+            <span class="label label-info <neq name="select_status" value="1">click-show<else />click-hide</neq>"><neq name="select_status" value="1"><i class="icon-search"></i>高级检索<else /><i class="icon-minus-sign"></i>关闭检索</span></neq></span> </div>
+          <div class="widget-content">
+		  <form name="myform" id="myform" method="post">
+		  <eq name="_Auth" value="1">
+		  <span class="btn ajax-post confirm" url="[{:U('tracelist')}]" target-form="ids" style="padding:8px 12px;color:#333;background-color:#fff;border: 1px solid #ddd;">  批量提交物流号</span>
+		<span class="btn" onclick='window.location.href="[{:U('operate',array('type'=>'download'))}]"' target-form="ids" style="padding:8px 12px;color:#333;background-color:#fff;border: 1px solid #ddd;"> <i class="icon-circle-arrow-down"></i> 数据下载</span> 	
+		   </eq>
+			<table class="table table-bordered table-striped with-check">
+              <thead>
+                <tr>
+                  <th><input type="checkbox" id="title-table-checkbox" name="title-table-checkbox" /></th>
+                  <th>订单号</th>
+                  <th>商品详情</th>
+				  <th>买家姓名</th>
+				  <th>收货手机号码</th>
+				  <th>积分</th>
+				  <th>快递公司</th>
+				  <th>下单时间</th>
+				  <th>状态</th>
+				  <th>填写物流单号</th>
+
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+				<foreach name="_list" item="vo">
+                  <td><input type="checkbox" class="ids" name="id[]" value="[{$vo.orderid}]"  /></td>
+                  <td>[{$vo.orderid}]</td>
+                  <td>[{$vo.goodsname}]</td>
+				  <td>[{$vo.name}]</td>
+                  <td>[{$vo.mobile}]</td>
+                  <td>[{$vo.pay_integral}]</td>
+                  <td>[{$vo.expressid}]</td>
+				  <td>[{$vo.create_time|time_format='Y-m-d H:i:s'}]</td>
+				  <td>
+					<eq name="vo.is_trace" value="1">已支付(未发货)</eq>
+				  </td>
+			      <td>
+				    <input type="text" class="ids"  name="trace[[{$vo.orderid}]]" value="[{$vo.traces_number}]"  />
+				  </td>
+                </tr>
+				</foreach>
+              </tbody>
+            </table>
+			</form>
+			 <div class="dataTables_paginate fg-buttonset ui-buttonset fg-buttonset-multi ui-buttonset-multi paging_full_numbers">
+			[{$_page}]
+			 </div>
+          </div>
+        </div>
+       
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="__JS__/jquery.min.js"></script> 
+<script src="__JS__/jquery.ui.custom.js"></script> 
+<script src="__JS__/bootstrap.min.js"></script> 
+<script src="__JS__/select2.min.js"></script> 
+ <script src="__JS__/bootstrap-datepicker.js"></script>
+ <script src="__JS__/bootstrap-colorpicker.js"></script>
+<script src="__JS__/jquery.dataTables.min.js"></script> 
+ <script src="__JS__/jquery.uniform.js"></script>
+<script src="__JS__/maruti.js"></script> 
+<script src="__JS__/maruti.tables.js"></script>
+ <script src="__JS__/maruti.form_common.js"></script>
+<script src="__JS__/maruti.popup.js"></script>
+<script src="__JS__/maruti.ajax.js"></script>
+<script>
+$(document).on('click','.click-show',function(){
+$("#select_map").show();
+$(this).html('<i class="icon-minus-sign"></i>关闭检索</span>');
+$(this).addClass('click-hide');
+$(this).removeClass('click-show');	
+
+})
+$(document).on('click','.click-hide',function(){
+$("#select_map").hide();
+$(this).html('<i class="icon-search"></i>高级检索</span> ');
+$(this).addClass('click-show');
+$(this).removeClass('click-hide');	
+
+})
+$("#goodsname .dropdown-menu li a").click(function(){
+	var goodsid=$(this).attr('data-id');
+	var goodsname=$(this).html();
+	$("input[name='goodsid']").val(goodsid);
+	$(this).parent().parent().siblings('.goodsname').html(goodsname);
+
+})
+$("#nickname .dropdown-menu li a").click(function(){
+	var userid=$(this).attr('data-id');
+	var nickname=$(this).html();
+	$("input[name='userid']").val(userid);
+	$(this).parent().parent().siblings('.nickname').html(nickname);
+
+})
+</script>
+</body>
+</block>

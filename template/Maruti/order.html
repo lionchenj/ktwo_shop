@@ -1,0 +1,261 @@
+<extend name="template/Maruti/common.html"/>
+<block name="body">
+<div id="content">
+  <div id="content-header">
+    <div id="breadcrumb"> <a href="__ROOT__/index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a> <a href="__ROOT__/order.html" class="current">线上订单列表</a> </div>
+	<notempty name="twoMenu">
+	  <div  class="quick-actions_homepage">
+		<ul class="quick-actions">
+			<foreach name="twoMenu" item="two_menu">
+			  <li> <a href="__ROOT__/[{$two_menu.tip}]"> <i class="[{$two_menu.icon}]"></i>[{$two_menu.title}]</a> </li>
+			</foreach>
+		</ul>
+	  </div>
+	<else />
+	 <h1>[{$two_title}]</h1>
+	</notempty>
+  </div>
+  <div class="container-fluid">
+		<div class="row-fluid" id="select_map" <neq name="select_status" value="1">style="display:none"</neq>>
+					<div class="span12">
+						<div class="widget-box">
+							<div class="widget-title">
+								<span class="icon">
+									<i class="icon-align-justify"></i>									
+								</span>
+								<h5>高级检索</h5>
+							</div>
+							<div class="widget-content nopadding">
+								<form action="[{:U('index')}]" method="get" class="form-horizontal">
+									<div class="control-group">
+										<label class="control-label">订单号:</label>
+										<div class="controls"><input name="orderid" type="text" class="span3" placeholder="订单号" value="[{$_GET['orderid']?$_GET['orderid']:''}]"/> </div>
+									</div>
+									<div class="control-group">
+										<label class="control-label">手机号码:</label>
+										<div class="controls"><input name="mobile" type="text" class="span3" placeholder="手机号码" value="[{$_GET['mobile']?$_GET['mobile']:''}]"/> </div>
+									</div>
+<!--                                     <div class="control-group">
+										<label class="control-label">商品名称</label>
+										<div class="controls " id="goodsname">
+											<div class="btn-group">
+												<input type="text" name="goodsid" style="display:none" value="[{$_GET['goodsid']?$_GET['goodsid']:0}]"/>
+												<button type="button" class="btn goodsname" onclick="javascript:;"><empty name="_GET['goodsid']">不限<else />[{$_GET['goodsid']|get_goods_goodsname}]</empty></button>
+												<button data-toggle="dropdown" class="btn dropdown-toggle"><span class="caret"></span></button>
+												<ul class="dropdown-menu">
+												<li>
+												<a href="javascript:;" data-id="0">不限</a></li>
+												<foreach name="select_goods" item="vo">
+												<li><a href="javascript:;" data-id="[{$vo.id}]">[{$vo.name}]</a></li>
+												</foreach>
+												</ul>
+											</div>
+										</div>
+									</div> -->
+                                    <div class="control-group">
+										<label class="control-label">积分区间</label>
+										<div class="controls">
+											<label><input type="radio" name="money"  value="1" <eq name="_GET['money']" value="1">checked=checked</eq> />< 500</label>
+											<label><input type="radio" name="money" value="2" <eq name="_GET['money']" value="2">checked=checked</eq> />500 ~ 3000</label>
+											<label><input type="radio" name="money"  value="3" <eq name="_GET['money']" value="3">checked=checked</eq> />>3000</label>
+										</div>
+									</div>
+
+									<div class="control-group">
+										<label class="control-label">订单状态</label>
+										<div class="controls">
+										<empty name="_GET['status']">
+											<label><input type="checkbox" name="status[]"  value="1"/>未支付</label>
+											<label><input type="checkbox" name="status[]" value="2"/>已支付</label>
+											<label><input type="checkbox" name="status[]"  value="3"/>待评价</label>
+											<label><input type="checkbox" name="status[]"  value="4"/>已完成</label>
+										<else />
+										<if condition="in_array(1,$status)">
+										<label><input type="checkbox" name="status[]" checked="checked" value="1"/>未支付</label>
+										<else />
+											<label><input type="checkbox" name="status[]" value="1"/>未支付</label>
+										</if>
+										<if condition="in_array(2,$status)">
+										<label><input type="checkbox" name="status[]" checked="checked" value="2"/>已支付</label>
+										<else />
+										<label><input type="checkbox" name="status[]" value="2"/>已支付</label>
+										</if>
+										<if condition="in_array(3,$status)">
+										<label><input type="checkbox" name="status[]" checked="checked" value="3"/>待评价</label>
+										<else />
+										<label><input type="checkbox" name="status[]" value="3"/>待评价</label>
+										</if>
+										<if condition="in_array(4,$status)">
+										<label><input type="checkbox" name="status[]" checked="checked" value="4"/>已完成</label>
+										<else />
+										<label><input type="checkbox" name="status[]" value="4"/>已完成</label>
+										</if>
+									
+										</empty>
+										</div>
+									</div>
+									<div class="control-group">
+										<label class="control-label">物流状态</label>
+										<div class="controls"><!-- <input name="orderid" type="text" class="span3" placeholder="订单号" value="[{$_GET['orderid']?$_GET['orderid']:''}]"/>  -->
+								            <select  name="trace" class="form-control" size="0.5">
+								            	   <option size='2' value="0" >请选择</option>
+                                                   <option size='2' value="1" <if condition="$_GET['trace'] eq 1">selected</if> >未发货</option>
+                                                   <option size='2' value="2" <if condition="$_GET['trace'] eq 2">selected</if> >已发货</option>
+                                            </select>
+										</div>
+									</div>
+									<div class="control-group">
+										<label class="control-label">快递公司:</label>
+										<div class="controls"><!-- <input name="orderid" type="text" class="span3" placeholder="订单号" value="[{$_GET['orderid']?$_GET['orderid']:''}]"/>  -->
+								            <select  name="expressid" class="form-control" size="0.5">
+								            	<option size='2' value="0" >请选择物流</option>
+								            	<foreach name ='express'  item='v'>
+								            		<?php 
+								            		     if($_GET['expressid'] == $v['id']){
+                                                             $select = 'selected="selected"';
+								            		     }else{
+                                                             $select = '';
+								            		     }
+								            		?>
+                                                   <option size='2' value="[{$v.id}]" <?php echo $select ?> >[{$v.expressname}]</option>
+                                                </foreach>
+                                            </select>
+										</div>
+									</div>                              
+                                    <div class="control-group">
+                                        <label class="control-label">时间区间</label>
+                                        <div class="controls">
+                                            <input type="text" name="starttime" data-date="[{:time_format(null,'Y-m-d')}]" data-date-format="yyyy-mm-dd" value="[{$_GET['starttime']}]" placeholder="开始时间 格式YYYY-MM-DD" class="datepicker" /> --
+											<input type="text" name="endtime" data-date="[{:time_format(null,'Y-m-d')}]" data-date-format="yyyy-mm-dd" value="[{$_GET['endtime']}]" placeholder="结束时间 格式YYYY-MM-DD" class="datepicker" /><span style="margin-left:25px;">(开始时间默认为00:00:00、结束时间默认为23:59:59)</span>
+                                        </div>
+                                    </div>
+
+									
+									
+                                    
+									<div class="form-actions">
+										<button type="submit" class="btn btn-success">立即查询</button>
+									</div>
+								</form>
+							</div>
+						</div>						
+					</div>
+				</div>
+                
+        <div class="widget-box">
+          <div class="widget-title"> <span class="icon"> <i class="icon-th"></i> </span>
+            <h5>线上订单列表</h5>
+            <span class="label label-info <neq name="select_status" value="1">click-show<else />click-hide</neq>"><neq name="select_status" value="1"><i class="icon-search"></i>高级检索<else /><i class="icon-minus-sign"></i>关闭检索</span></neq></span> </div>
+          <div class="widget-content">
+		  <form name="myform" id="myform" method="post">
+		  <eq name="_Auth" value="1">
+		  <span class="btn ajax-post confirm" url="[{:U('operate',array('type'=>'status'))}]" target-form="ids" style="padding:8px 12px;color:#333;background-color:#fff;border: 1px solid #ddd;"> <i class="icon-trash"></i> 批量删除</span>
+		<span class="btn" onclick='window.location.href="[{:U('operate',array('type'=>'download'))}]"' target-form="ids" style="padding:8px 12px;color:#333;background-color:#fff;border: 1px solid #ddd;"> <i class="icon-circle-arrow-down"></i> 数据下载</span> 	
+		   </eq>
+			<table class="table table-bordered table-striped with-check">
+              <thead>
+                <tr>
+                  <th><input type="checkbox" id="title-table-checkbox" name="title-table-checkbox" /></th>
+                  <th>订单号</th>
+                  <th>商品详情</th>
+				  <th>买家姓名</th>
+				  <th>积分</th>
+				  <th>快递公司</th>
+				  <th>物流状态</th>
+				  <th>下单时间</th>
+				  <th>状态</th>
+				  <eq name="_Auth" value="1">
+				  <th>操作</th>
+				  </eq>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+				<foreach name="_list" item="vo">
+                  <td><input type="checkbox" class="ids" name="id[]" value="[{$vo.orderid}]"  /></td>
+                  <td>[{$vo.orderid}]</td>
+                  <td>[{$vo.goodsname}]</td>
+				  <td>[{$vo.name}]</td>
+
+                  <td>[{$vo.pay_integral}]</td>
+                  <td>[{$vo.expressid}]</td>
+                  <td>
+                  	<eq name="vo.is_trace" value="1">未发货</eq>
+					<eq name="vo.is_trace" value="2">已发货</eq>
+				 </td>
+				  <td>[{$vo.create_time|time_format='Y-m-d H:i:s'}]</td>
+				  <td>
+					<eq name="vo.status" value="1">待支付</eq>
+					<eq name="vo.status" value="2">已支付</eq>
+					<eq name="vo.status" value="3">待评价</eq>
+					<eq name="vo.status" value="4">已完成</eq>
+				  </td>
+				   <eq name="_Auth" value="1">
+				    <td>
+					<span class="fr">
+					<a class="btn btn-primary btn-mini" href="[{:U('operate',array('id'=>$vo['orderid'],'type'=>'edit'))}]">详情</a>
+					<a class="btn btn-danger btn-mini confirm ajax-get" href="[{:U('operate',array('id'=>$vo['orderid'],'type'=>'status'))}]">删除</a>
+					</span>
+					</td>
+					</eq>
+                </tr>
+				</foreach>
+              </tbody>
+            </table>
+			</form>
+			 <div class="dataTables_paginate fg-buttonset ui-buttonset fg-buttonset-multi ui-buttonset-multi paging_full_numbers">
+			[{$_page}]
+			 </div>
+          </div>
+        </div>
+       
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="__JS__/jquery.min.js"></script> 
+<script src="__JS__/jquery.ui.custom.js"></script> 
+<script src="__JS__/bootstrap.min.js"></script> 
+<script src="__JS__/select2.min.js"></script> 
+ <script src="__JS__/bootstrap-datepicker.js"></script>
+ <script src="__JS__/bootstrap-colorpicker.js"></script>
+<script src="__JS__/jquery.dataTables.min.js"></script> 
+ <script src="__JS__/jquery.uniform.js"></script>
+<script src="__JS__/maruti.js"></script> 
+<script src="__JS__/maruti.tables.js"></script>
+ <script src="__JS__/maruti.form_common.js"></script>
+<script src="__JS__/maruti.popup.js"></script>
+<script src="__JS__/maruti.ajax.js"></script>
+<script>
+$(document).on('click','.click-show',function(){
+$("#select_map").show();
+$(this).html('<i class="icon-minus-sign"></i>关闭检索</span>');
+$(this).addClass('click-hide');
+$(this).removeClass('click-show');	
+
+})
+$(document).on('click','.click-hide',function(){
+$("#select_map").hide();
+$(this).html('<i class="icon-search"></i>高级检索</span> ');
+$(this).addClass('click-show');
+$(this).removeClass('click-hide');	
+
+})
+$("#goodsname .dropdown-menu li a").click(function(){
+	var goodsid=$(this).attr('data-id');
+	var goodsname=$(this).html();
+	$("input[name='goodsid']").val(goodsid);
+	$(this).parent().parent().siblings('.goodsname').html(goodsname);
+
+})
+$("#nickname .dropdown-menu li a").click(function(){
+	var userid=$(this).attr('data-id');
+	var nickname=$(this).html();
+	$("input[name='userid']").val(userid);
+	$(this).parent().parent().siblings('.nickname').html(nickname);
+
+})
+</script>
+</body>
+</block>

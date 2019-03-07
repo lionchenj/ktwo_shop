@@ -1,0 +1,292 @@
+<?php if (!defined('THINK_PATH')) exit();?><!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="description" content=""/>
+    <meta name="keywords" content=""/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/><!-- 是否启用 WebApp 全屏模式 -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/><!-- 设置状态栏的背景颜色 -->
+    <meta name="viewport" content="initial-scale=1.0,user-scalable=no,width=device-width,minimum-scale=1.0,maximum-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no"/><!-- 禁止数字识自动别为电话号码 --><!-- 不让android识别邮箱 -->
+	<title>商城购物车</title>
+	<link rel="stylesheet" type="text/css" href="/zhouzf/www/tcm/template/Tcm/css/common.css">
+	<link rel="stylesheet" type="text/css" href="/zhouzf/www/tcm/template/Tcm/css/style.css">
+	<script type="text/javascript" src="/zhouzf/www/tcm/template/Tcm/js/jquery-1.11.3.min.js"></script>
+	<script type="text/javascript" src="/zhouzf/www/tcm/template/Tcm/js/resize.js"></script>
+	<script type="text/javascript" src="/zhouzf/www/tcm/template/Tcm/js/common.js"></script>
+</head>
+<style type="text/css">
+	.nav-item {
+		width: 33.3%;
+	}
+	.shopCar-total {
+	    bottom: 5rem;
+	}
+	.nav-list{
+		height: 50px;
+		}
+	.nav-item {
+	    padding-top: .5rem;
+	}
+	.mescroll-upwarp{
+		line-height:  2.5rem;
+		text-align: center;
+		font-size: 12px;
+        color: #666;
+	}
+</style>
+<body>
+	<div class="title-info">
+		<a href="javascript:history.go(-1);" class="back-link">
+			<i class="icon-left-arrow"></i>返回
+		</a>
+		购物车
+	</div>
+	<div class="shopCar-wrap">
+	<?php if(is_array($_list)): foreach($_list as $key=>$list): ?><div class="shopCar-item" data-id="<?php echo ($list["goodsid"]); ?>">
+			<div class="shopCar-top">置入时间：<?php echo (time_format($list["create_time"])); ?></div>
+			<div class="shopCar-row clearfix">
+				<div class="shopCar-choose left"><span></span></div>
+				<div class="order-img-wrap left" style="background-image: url(<?php echo ($list["img_url"]); ?>);">
+				</div>
+				<div class="shopCar-middle left">
+					<div class="shopCar-title"><?php echo ($list["goodsname"]); ?></div>
+					<div class="shopCar-btn">
+						<button type="button" class="num-btn reduce-btn" id="reduce-btn" onclick="calc(this)"></button>
+						<input type="text" name="num" class="num-input" id="num-input" value="<?php echo ($list["num"]); ?>" oninput="setInt(this)">
+						<button type="button" class="num-btn add-btn" id="add-btn" onclick="calc(this)"></button>
+					</div>
+				</div>
+				<div class="shopCar-right right">
+					<div class="shopCar-money"><?php echo ($list['integral_pay']); ?></div>
+					<div class="shopCar-del">
+						<i class="icon-del" data-id="<?php echo ($list['cartid']); ?>"></i>
+					</div>
+				</div>
+			</div>
+			<div class="shopCar-bottom">
+				共<i class="shopCar-allNum"><?php echo ($list["num"]); ?></i>件商品 合计积分：<i class="shopCar-allMoney"><?php echo ($list['integral_pay']*$list['num']); ?></i>
+			</div>
+		</div><?php endforeach; endif; ?>
+	<div class="shopCar-total">
+		<!-- <div class="shopCar-totalItem left">
+			<span class="choose-circle"></span>
+			<span class="inline-block choose-text">全选</span>
+			<span class="shopCar-totalNum">0</span>
+		</div>
+		<div class="right">
+			<i class="shopCar-totalMoney">0</i>
+			<a href="javascript:void(0);" class="shopCar-confirm">立即付款</a>
+		</div> -->
+		<!-- <div class="mescroll-upwarp mescroll-hardware" style="visibility: visible;">- - 购物车空空如也 - -</div>
+ -->	</div>
+	
+	<!-- <div class="nav-list clearfix">
+		<a href="<?php echo U('Shop/index');?>" class="left nav-item">
+			<i class="icon-nav-index active"></i>
+			<div class="nav-name active">
+				商城
+			</div>
+		</a>
+		<a href="https://dev170.weibanker.cn/lvsk/www/jinfeng/#ProfileTab" class="left nav-item">
+			<i class="icon-nav-user"></i>
+			<div class="nav-name">
+				个人中心
+			</div>
+		</a>
+		<a href="https://dev170.weibanker.cn/lvsk/www/jinfeng/#MyWallet" class="left nav-item">
+			<i class="icon-nav-type"></i>
+			<div class="nav-name">
+				钱包
+			</div>
+		</a>
+		
+	</div> -->
+	<div class="tips-box" style="display: none"></div>
+	<script type="text/javascript">
+		//加减方法
+		function calc(ele){
+			var input = $(ele).siblings("input");
+			var n1 = input.val();
+			var cName = $(ele).attr("class").split(" ");
+			var	money= $(ele).parents(".shopCar-middle").siblings(".shopCar-right").find(".shopCar-money").text();
+			var allNum = $(ele).parents(".shopCar-row").siblings(".shopCar-bottom").find(".shopCar-allNum");
+			var allMoney = $(ele).parents(".shopCar-row").siblings(".shopCar-bottom").find(".shopCar-allMoney");
+			console.log(allMoney)
+			var isChoosed = $(ele).parents(".shopCar-middle").siblings('.shopCar-choose').find("span").hasClass("active");
+			var m1 = parseFloat($(".shopCar-totalMoney").text());
+			var flag;
+
+			$.each(cName,function(i){
+				if(cName[i]=="reduce-btn"){
+					flag = true;
+				}else if(cName[i]=="add-btn"){
+					flag = false;
+				}
+			})
+			if(flag){
+				if(n1>1){
+					n1--;
+				}else{
+					return false;
+				}
+				input.val(n1).change();
+				allNum.text(n1);
+				allMoney.text(n1*money);
+			}else{
+				n1++;
+				input.val(n1).change();
+				allNum.text(n1);
+				allMoney.text(n1*money);
+			}
+
+			var a1 = $(".shopCar-choose .active").parents('.shopCar-row').siblings(".shopCar-bottom").find(".shopCar-allMoney");
+			console.log(a1)
+			var a2 = 0;
+			if(a1.length>0){
+				for (var i = 0; i < a1.length; i++) {
+					a2 += parseFloat($(a1[i]).text());
+				}
+			}else{
+				return false;
+			}
+			$(".shopCar-totalMoney").text(a2);
+		}
+
+		/*控制输入0或者正整数*/
+		function setInt(e){
+			var val=parseInt(e.value);
+			var allNum = $(e).parents(".shopCar-row").siblings(".shopCar-bottom").find(".shopCar-allNum");
+			var	money= $(e).parents(".shopCar-middle").siblings(".shopCar-right").find(".shopCar-money").text();
+			var allMoney = $(e).parents(".shopCar-row").siblings(".shopCar-bottom").find(".shopCar-allMoney");
+			if(isNaN(val)){
+				e.value = "1";
+				allNum.text("1");
+				allMoney.text("1");
+			}else{
+				e.value = val;
+				allNum.text(val);
+				allMoney.text(val*money);
+			}
+
+		}
+
+		$(function(){
+			/*删除*/
+			$(".icon-del").on("click",function(){
+			
+				$(this).parents(".shopCar-item").remove();
+				if($(".shopCar-item").length!=0){
+					var a1 = $(".shopCar-choose .active").parents('.shopCar-row').siblings(".shopCar-bottom").find(".shopCar-allMoney");
+					var a2 = 0;
+					if(a1.length>0){
+						for (var i = 0; i < a1.length; i++) {
+							a2 += parseFloat($(a1[i]).text());
+						}
+					}
+					$(".shopCar-totalMoney").text(a2);
+					$(".shopCar-totalNum").text($(".shopCar-choose .active").length);
+				}else{
+					$(".shopCar-totalNum").text(0);
+					$(".shopCar-totalMoney").text(0);
+					$(".choose-circle").removeClass("active");
+				}
+				var url="<?php echo U('del_card');?>";
+					var query ={};
+					query['id']=$(this).attr('data-id');
+					$.post(url,query).success(function(res){
+					return false;
+					});
+				hasShopcar()
+			})
+
+			/*全选*/
+			$(".choose-circle").on("click",function(){
+				if($(this).hasClass("active")){
+					$(this).removeClass("active");
+					$(".shopCar-choose span").removeClass("active");
+					$(".shopCar-totalNum").text(0);
+					$(".shopCar-totalMoney").text(0);
+				}else{
+					var m1 = 0;
+					$(this).addClass("active");
+					$(".shopCar-choose span").addClass("active");
+					for(var j = 0; j<$(".shopCar-allMoney").length;j++){
+						var m2  = parseFloat($(".shopCar-allMoney").eq(j).text());
+						m1 = m2+m1;
+					}
+					$(".shopCar-totalNum").text($(".shopCar-item").length);
+					$(".shopCar-totalMoney").text(m1);
+				}
+			})
+
+			/*单选*/
+			$(".shopCar-choose span").on("click",function(){
+				var n1 = parseInt($(".shopCar-totalNum").text());
+				var m1 = parseFloat($(".shopCar-totalMoney").text());
+				var m2 = parseFloat($(this).parents(".shopCar-row").siblings(".shopCar-bottom").find(".shopCar-allMoney").text());
+				var m3;
+				if($(this).hasClass("active")){
+					$(this).removeClass("active");
+					$(".choose-circle").removeClass("active");
+					n1--;
+					$(".shopCar-totalNum").text(n1);
+					m3 = m1 - m2;
+					$(".shopCar-totalMoney").text(m3);
+				}else{
+					$(this).addClass("active");
+					n1++;
+					$(".shopCar-totalNum").text(n1);
+					m3 = m1 + m2;
+					$(".shopCar-totalMoney").text(m3);
+				}
+				if($(".shopCar-choose .active").length === $(".shopCar-choose").length){
+					$(".choose-circle").addClass("active");
+				}
+			})
+			$(".shopCar-confirm").click(function(){
+			var id="";
+				$(".shopCar-item").each(function(){
+					if($(this).find('span').hasClass("active")){
+						var goodsid=$(this).attr('data-id');
+						var num=$(this).find('input[name="num"]').val();
+						id+=goodsid+"|"+num+","
+					}
+				})
+				id=id.substring(0,id.length-1)
+				if(id){
+					var url="<?php echo U('addOrder',array('id'=>abc));?>";
+					url=url.replace('abc',id);
+					window.location.href=url;
+					return false;
+				}else{
+					return false;
+				}
+			})
+		})
+
+		function hasShopcar(){
+			var shopTotal = document.getElementsByClassName("shopCar-total")[0];
+			console.log(shopTotal.innerHTML)
+			if($(".shopCar-item").length){
+				var hasgoods =  '<div class="shopCar-totalItem left">' +
+					'<span class="choose-circle"></span>' +
+					'<span class="inline-block choose-text">全选</span>' +
+					'<span class="shopCar-totalNum">0</span></div>' + 
+		            '<div class="right">' +
+		                '<i class="shopCar-totalMoney">0</i>'+
+			            '<a href="javascript:void(0);" class="shopCar-confirm">立即付款</a>'+
+		            '</div>';
+				shopTotal.innerHTML = hasgoods;
+
+			}
+			else{
+				var nogoods = '<div class="mescroll-upwarp mescroll-hardware" style="visibility: visible;">- - 购物车空空如也 - -</div>';
+				shopTotal.innerHTML = nogoods;
+			}
+		}
+
+		hasShopcar();
+	</script>
+</body>
+</html>

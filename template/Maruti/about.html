@@ -1,0 +1,76 @@
+<extend name="template/Maruti/common.html"/>
+<block name="body">
+<style>
+
+</style>
+		<div id="content">
+			<div id="content-header">
+                <div id="breadcrumb">
+                    <a href="index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i>首页</a>
+                    <a href="about.htnl" class="tip-bottom">个人信息</a>
+                </div>
+        		<h1>个人信息</h1>
+				
+			</div>
+			
+			<div class="container-fluid">
+            <div class="row-fluid">
+					<div class="span12">
+						<div class="widget-box">
+							<div class="widget-title">
+								<span class="icon">
+									<i class="icon-align-justify"></i>									
+								</span>
+								<h5>个人信息</h5>
+							</div>
+							<div class="widget-content nopadding">
+								<form id="updateform" action="[{:U('updateinfo')}]" method="get" class="form-horizontal">
+									<div class="control-group">
+										<label class="control-label">用户名:</label>
+										<div class="controls"><input type="text" class="span20" placeholder="用户名" value="[{$about.username}]" disabled="disabled"/></div>
+									</div>
+                                    <div class="control-group">
+										<label class="control-label">昵称:</label>
+										<div class="controls"><input name="nickname" type="text" class="span20" placeholder="昵称" value="[{$about.nickname}]" />
+										<div><error class="color-red hidden"></error></div></div>
+										
+									</div>
+									<div class="control-group">
+										<label class="control-label">密码</label>
+										<div class="controls" id="hidePW">
+											<input type="password"  class="span6" placeholder="密码" value="怎么可能把密码写出来" disabled="disabled"/> <a class="text-decoration-underline color-5bb75b" href="javascript:;" >修改密码</a>
+										</div>
+										<div class="controls hidden" id="updatePW">
+											<input type="password" name="newPassword" class="span5" placeholder="输入新密码"  /> <input name="confirmPassword" type="password"  class="span5" placeholder="输入确认密码"  /> <button type="submit" data-url="[{:U('savepassword')}]" class="savePassword btn btn-success">保存密码</button>
+										<div><error class="color-red hidden"></error></div>
+										</div>
+									</div>
+                                    <div class="control-group">
+										<label class="control-label">绑定邮箱 :</label>
+										<div class="controls"><input type="text" class="span20" name="email" placeholder="邮箱地址" value="[{$about.email}]"/>
+										<div><error class="color-red hidden"></error></div>
+										</div>
+									</div>
+									<div class="form-actions">
+										<button type="submit" class="btn btn-success ajax-post">保存</button>
+									</div>
+								</form>
+							</div>
+						</div>						
+					</div>
+				</div>
+             </div>
+			</div>
+		</div>
+<script src="__JS__/jquery.min.js"></script>
+<script src="__JS__/jquery.ui.custom.js"></script>
+<script src="__JS__/bootstrap.min.js"></script>
+<script src="__JS__/bootstrap-colorpicker.js"></script>
+<script src="__JS__/bootstrap-datepicker.js"></script>
+<script src="__JS__/jquery.uniform.js"></script>
+<script src="__JS__/select2.min.js"></script>
+<script src="__JS__/maruti.js"></script>
+<script src="__JS__/maruti.form_common.js"></script>
+<script src="__JS__/maruti.popup.js"></script>
+<script src="__JS__/maruti.about.js"></script>
+</block>

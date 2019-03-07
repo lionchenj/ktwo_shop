@@ -1,0 +1,215 @@
+<extend name="template/Maruti/common.html"/>
+<block name="body">
+<style>
+.table th, .table td {
+    border-top: 1px solid #ddd;
+    line-height: 20px;
+    padding: 8px;
+    text-align: left;
+	vertical-align:middle;
+}
+
+</style>
+<div id="content">
+   <div id="content-header">
+    <div id="breadcrumb"> <a href="__ROOT__/index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a> <a href="__ROOT__/auth.html" class="current">权限管理</a> </div>
+	<notempty name="twoMenu">
+	  <div  class="quick-actions_homepage">
+		<ul class="quick-actions">
+			<foreach name="twoMenu" item="two_menu">
+			  <li> <a href="__ROOT__/[{$two_menu.tip}]"> <i class="[{$two_menu.icon}]"></i>[{$two_menu.title}]</a> </li>
+			</foreach>
+		</ul>
+	  </div>
+	<else />
+	 <h1>[{$two_title}]</h1>
+	</notempty>
+  </div>
+  <div class="container-fluid">
+        <div class="widget-box">
+          <div class="widget-title"> <span class="icon"> <i class="icon-th"></i> </span>
+            <h5>权限列表</h5>
+           </div>
+          <div class="widget-content">
+		  <form action="__SELF__" method="post" class="myform form-horizontal">
+			<table class="table table-bordered table-striped">
+              <thead>
+                <tr>
+				  <th>顶级模块</th>
+				  <th>二级模块</th>
+                  <th>权限列表</th>				 
+                </tr>
+              </thead>
+              <tbody>				
+                <tr>
+				<td colspan="2">首页</td>
+				<td><input  type="checkbox" name="list[]" <if condition="in_array(3,$array)"> checked="true"</if> value="3" />查看</td>
+                </tr>
+				<tr>
+				<td rowspan="2">门店管理</td>
+				<td>中医馆集团</td>
+				<td>
+				<span><input  type="checkbox" name="list[]" <if condition="in_array(4,$array)"> checked="true"</if> value="4"/>查看</span>
+				<span><input  type="checkbox" name="list[]" <if condition="in_array(5,$array)"> checked="true"</if> value="5"/>操作</span>
+				</td>
+                </tr>
+				<tr>
+				<td>中医馆</td>
+				<td>
+				<span><input  type="checkbox" name="list[]"<if condition="in_array(24,$array)"> checked="true"</if>  value="24"/>查看</span>
+				<span><input  type="checkbox" name="list[]" <if condition="in_array(6,$array)"> checked="true"</if>  value="6"/>操作</span>
+                </td>
+				</tr>
+				<tr>
+				<td colspan="2">卡券管理</td>
+				<td>
+				<span><input  type="checkbox" name="list[]" <if condition="in_array(32,$array)"> checked="true"</if> value="32"/>查看</span>
+				<span><input  type="checkbox" name="list[]" <if condition="in_array(8,$array)"> checked="true"</if>  value="8"/>操作</span>
+				</td>
+				</tr>
+				<tr>
+				<td rowspan="2">订单管理</td>
+				<td>线上订单</td>
+				<td>
+				<span><input  type="checkbox" name="list[]" <if condition="in_array(9,$array)"> checked="true"</if>  value="9"/>查看</span>
+				<span><input  type="checkbox" name="list[]" <if condition="in_array(10,$array)"> checked="true"</if> value="10"/>操作</span>
+				</td>
+                </tr>
+				<tr>
+				<td>线下订单</td>
+				<td>
+				<span><input  type="checkbox" name="list[]" <if condition="in_array(25,$array)"> checked="true"</if>  value="25"/>查看</span>
+				<span><input  type="checkbox" name="list[]" <if condition="in_array(15,$array)"> checked="true"</if>  value="15"/>操作</span>
+                </td>
+				</tr>
+				<tr>
+				<td rowspan="3">代客充值</td>
+				<td>购买充值卡</td>
+				<td>
+				<span><input  type="checkbox" name="list[]" <if condition="in_array(17,$array)"> checked="true"</if>  value="17"/>查看</span>
+				<span><input  type="checkbox" name="list[]" <if condition="in_array(38,$array)"> checked="true"</if>  value="38"/>操作</span>
+				</td>
+                </tr>
+				<tr>
+				<td>卡号充值</td>
+				<td>
+				<span><input  type="checkbox" name="list[]" <if condition="in_array(27,$array)"> checked="true"</if>  value="27"/>查看</span>
+				<span><input  type="checkbox" name="list[]" <if condition="in_array(30,$array)"> checked="true"</if>  value="30"/>操作</span>
+                </td>
+				</tr>
+				<tr>
+				<td>任意充值</td>
+				<td>
+				<span><input  type="checkbox" name="list[]" <if condition="in_array(35,$array)"> checked="true"</if>  value="35"/>查看</span>
+				<span><input  type="checkbox" name="list[]" <if condition="in_array(37,$array)"> checked="true"</if>  value="37"/>操作</span>
+                </td>
+				</tr>
+				<tr>
+				<td rowspan="3">会员管理</td>
+				<td>会员列表</td>
+				<td>
+				<span><input  type="checkbox" name="list[]" <if condition="in_array(2,$array)"> checked="true"</if>  value="2"/>查看</span>
+				<span><input  type="checkbox" name="list[]" <if condition="in_array(11,$array)"> checked="true"</if>  value="11"/>操作</span>
+				</td>
+                </tr>
+				<tr>
+				<td>会员卡列表</td>
+				<td>
+				<span><input  type="checkbox" name="list[]" <if condition="in_array(19,$array)"> checked="true"</if>  value="19"/>查看</span>
+				<span><input  type="checkbox" name="list[]" <if condition="in_array(22,$array)"> checked="true"</if>  value="22"/>操作</span>
+                </td>
+				</tr>
+				<tr>
+				<td>会员等级管理</td>
+				<td>
+				<span><input  type="checkbox" name="list[]" <if condition="in_array(28,$array)"> checked="true"</if>  value="28"/>查看</span>
+				<span><input  type="checkbox" name="list[]" <if condition="in_array(31,$array)"> checked="true"</if>  value="31"/>操作</span>
+                </td>
+				</tr>
+				<tr>
+				<td colspan="2">数据统计</td>
+				<td>
+				<span><input  type="checkbox" name="list[]" <if condition="in_array(39,$array)"> checked="true"</if>  value="39"/>查看</span>
+                </td>
+				</tr>
+				<tr>
+				<td rowspan="3">核销管理</td>
+				<td>核销列表</td>
+				<td>
+				<span><input  type="checkbox" name="list[]" <if condition="in_array(12,$array)"> checked="true"</if>  value="12"/>查看</span>
+                </td>
+                </tr>
+				<tr>
+				<td>核销统计</td>
+				<td>
+				<span><input  type="checkbox" name="list[]" <if condition="in_array(26,$array)"> checked="true"</if>  value="26"/>查看</span>
+                </td>
+				</tr>
+				<tr>
+				<td>核销人员</td>
+				<td>
+				<span><input  type="checkbox" name="list[]" <if condition="in_array(34,$array)"> checked="true"</if>  value="34"/>查看</span>
+				<span><input  type="checkbox" name="list[]" <if condition="in_array(13,$array)"> checked="true"</if>  value="13"/>操作</span>
+                </td>
+				</tr>
+				<tr>
+				<td rowspan="2">充值管理</td>
+				<td>充值记录</td>
+				<td>
+				<span><input  type="checkbox" name="list[]" <if condition="in_array(1,$array)"> checked="true"</if>  value="1"/>查看</span>
+                <span><input  type="checkbox" name="list[]" <if condition="in_array(41,$array)"> checked="true"</if>  value="23"/>操作</span>
+				</td>
+                </tr>
+				<tr>
+				<td>充值卡管理</td>
+				<td>
+				<span><input  type="checkbox" name="list[]" <if condition="in_array(18,$array)"> checked="true"</if>  value="18"/>查看</span>
+				<span><input  type="checkbox" name="list[]" <if condition="in_array(23,$array)"> checked="true"</if>  value="23"/>操作</span>
+                </td>
+				</tr>
+				<tr>
+				<td rowspan="2">权限管理</td>
+				<td>角色组</td>
+				<td>
+				<span><input  type="checkbox" name="list[]" <if condition="in_array(20,$array)"> checked="true"</if>  value="20"/>查看</span>
+				<span><input  type="checkbox" name="list[]" <if condition="in_array(21,$array)"> checked="true"</if>  value="21"/>操作</span>
+                </td>
+                </tr>
+				<tr>
+				<td>管理员</td>
+				<td>
+				<span><input  type="checkbox" name="list[]" <if condition="in_array(29,$array)"> checked="true"</if>  value="29"/>查看</span>
+				<span><input  type="checkbox" name="list[]" <if condition="in_array(36,$array)"> checked="true"</if>  value="36"/>操作</span>
+                </td>
+				</tr>
+				</foreach>
+              </tbody>
+            </table>
+			<div class="form-actions">
+				<button type="submit"  class="btn btn-success ajax-post"  target-form="myform">保存</button>
+				<button type="button" class="btn btn-warning"  onclick="window.location.href='__ROOT__/auth.html'">返回</button>
+			</div>
+			</form>
+          </div>
+        </div>
+       
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="__JS__/jquery.min.js"></script> 
+<script src="__JS__/jquery.ui.custom.js"></script> 
+<script src="__JS__/bootstrap.min.js"></script> 
+<script src="__JS__/select2.min.js"></script> 
+ <script src="__JS__/bootstrap-datepicker.js"></script>
+ <script src="__JS__/bootstrap-colorpicker.js"></script>
+<script src="__JS__/jquery.dataTables.min.js"></script> 
+ <script src="__JS__/jquery.uniform.js"></script>
+<script src="__JS__/maruti.js"></script> 
+<script src="__JS__/maruti.tables.js"></script>
+ <script src="__JS__/maruti.form_common.js"></script>
+<script src="__JS__/maruti.popup.js"></script>
+<script src="__JS__/maruti.ajax.js"></script>
+</body>
+</block>

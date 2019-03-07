@@ -1,0 +1,38 @@
+<volist name="tree" id="list">
+	<dl class="cate-item">
+		<dt class="cf2">
+			<form action="[{:U('edit')}]" method="post">
+				
+				<div class="fold"><i></i></div>
+				<div class="order"><input type="text" name="sort" class="text input-mini" value="[{$list.sort}]"></div>
+				<div class="order"> 
+				<switch name="list['level']">
+					<case value="1">顶级分类</case>
+					<case value="2">二级分类</case>
+					<case value="3">三级分类</case>
+					<default />未知分类
+				</switch>
+				</div>
+				<div class="name">
+					<span class="tab-sign"></span>
+					<input type="hidden" name="id" value="[{$list.id}]">
+					<input type="text" name="title" class="span3" value="[{$list.title}]">
+					<a class="add-sub-cate" title="添加子分类" href="[{:U('add?pid='.$list['id'])}]">
+						<i class="icon-add"></i>
+					</a>
+					<span class="help-inline msg"></span>
+				</div>
+				<div class="order fc2">
+					<a title="编辑" href="[{:U('edit?id='.$list['id'].'&pid='.$list['pid'])}]">编辑</a>
+					
+					<a title="删除" href="[{:U('remove?id='.$list['id'])}]" class="confirm ajax-get">删除</a>
+				</div>
+			</form>
+		</dt>
+		<notempty name="list['_']">
+			<dd>
+				[{:R('Classify/tree', array($list['_']))}]
+			</dd>
+		</notempty>
+	</dl>
+</volist>
